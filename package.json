@@ -1,0 +1,21 @@
+{
+  "name": "ornament-page",
+  "version": "1.0.0",
+  "description": "Website for @sirpepe/ornament",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/generate.js && parcel src/index.html",
+    "build": "rm -rf dist && node scripts/generate.js && parcel build --no-source-maps src/index.html"
+  },
+  "author": "peter@peterkroener.de",
+  "license": "MIT",
+  "devDependencies": {
+    "@sirpepe/ornament": "^2.0.0",
+    "highlight.js": "^11.10.0",
+    "marked": "^13.0.3",
+    "marked-gfm-heading-id": "^4.0.0",
+    "marked-highlight": "^2.1.3",
+    "parcel": "^2.12.0",
+    "rimraf": "^6.0.1"
+  }
+}

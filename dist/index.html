@@ -1,0 +1,1002 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Ornament | Build your own frontend framework</title><meta name="viewport" content="width=device-width"><meta name="description" content="A framework for web component frameworks"><meta name="fediverse:creator" content="@sirpepe@mastodon.social"><link rel="icon" href="/favicon.62a79e40.svg" type="image/svg+xml"><script type="module" src="/index.3216fb40.js"></script><link rel="stylesheet" href="/index.6ad37af3.css"></head><body> <div class="wrapper"> <header> <h1>A framework for <mark>web component frameworks</mark></h1> <p><code>npm i @sirpepe/ornament</code></p> </header> <main><p>📢 <strong>What&#39;s new in 2.0.0?</strong> <a href="https://github.com/SirPepe/ornament/blob/main/changelog.md">Check out the Changelog!</a></p> <p><strong>Build your own frontend framework</strong> with Ornament, a mid-level, pareto-optimal, treeshakable and tiny (&lt; 5k) TypeScript-positive toolkit for web component infrastructure! Escape from heavyweight frameworks, constant rewrites and the all-encompassing frontend FOMO with a declarative, simple, and type-safe API for web components:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> {
+  define,
+  attr,
+  string,
+  number,
+  connected,
+  reactive,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// Register the element with the specified tag name</span>
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-greeter&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyGreeter</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// No built-in rendering functionality. Shadow DOM or light DOM? Template</span>
+  <span class="hljs-comment">// strings, JSX, or something else entirely? You decide!</span>
+  #shadow = <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">attachShadow</span>({ <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;open&quot;</span> });
+
+  <span class="hljs-comment">// Define content attributes alongside corresponding getter/setter pairs</span>
+  <span class="hljs-comment">// for a JS api and attribute change handling and type checking. If you use</span>
+  <span class="hljs-comment">// TypeScript, the type checks will work at compile time *and* at run time</span>
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">string</span>()) accessor name = <span class="hljs-string">&quot;Anonymous&quot;</span>;
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">number</span>({ <span class="hljs-attr">min</span>: <span class="hljs-number">0</span> })) accessor age = <span class="hljs-number">0</span>;
+
+  <span class="hljs-comment">// Mark the method as reactive to have it run every time one of the attributes</span>
+  <span class="hljs-comment">// change, and also run it when the component first connects to the DOM.</span>
+  @<span class="function_ hljs-title">reactive</span>()
+  @<span class="function_ hljs-title">connected</span>()
+  <span class="function_ hljs-title">greet</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">this</span>.#shadow.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">`Hello! My name is <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.name}</span>, my age is <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.age}</span>`</span>;
+  }
+}
+</code></pre><p>Ornament makes web components fun and easy when compared to the equivalent boilerplate monstrosity that one would have to write by hand otherwise:</p> <details> <summary>😱 Unveil the horror 😱</summary> <pre><code class="hljs language-javascript"><span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyGreeter</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  #shadow = <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">attachShadow</span>({ <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;open&quot;</span> });
+
+  <span class="hljs-comment">// Internal &quot;name&quot; and &quot;age&quot; states, initialized from the element&#x27;s content</span>
+  <span class="hljs-comment">// attributes, with default values in case the content attributes are not set.</span>
+  <span class="hljs-comment">// The value for &quot;age&quot; has to be figured out with some imperative code in the</span>
+  <span class="hljs-comment">// constructor to keep NaN off our backs.</span>
+  #name = <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">getAttribute</span>(<span class="hljs-string">&quot;name&quot;</span>) || <span class="hljs-string">&quot;Anonymous&quot;</span>;
+  #age;
+
+  <span class="function_ hljs-title">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">super</span>(); <span class="hljs-comment">// mandatory boilerplate</span>
+    <span class="hljs-keyword">let</span> age = <span class="class_ hljs-title">Number</span>(<span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">getAttribute</span>(<span class="hljs-string">&quot;age&quot;</span>));
+    <span class="hljs-keyword">if</span> (<span class="class_ hljs-title">Number</span>.<span class="hljs-built_in">isNaN</span>(age)) {
+      <span class="hljs-comment">// Remember to keep NaN in check</span>
+      age = <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-variable language_">this</span>.#age = <span class="hljs-number">0</span>;
+  }
+
+  <span class="hljs-comment">// Remember to run the reactive method when connecting to the DOM</span>
+  <span class="function_ hljs-title">connectedCallback</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">greet</span>();
+  }
+
+  <span class="hljs-comment">// Method to run each time `#name` or `#age` changes</span>
+  <span class="function_ hljs-title">greet</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">this</span>.#shadow.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">`Hello! My name is <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.#name}</span>, my age is <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.#age}</span>`</span>;
+  }
+
+  <span class="hljs-comment">// DOM getter for the IDL attribute, required to make JS operations like</span>
+  <span class="hljs-comment">// `console.log(el.name)` work</span>
+  <span class="hljs-keyword">get</span> <span class="function_ hljs-title">name</span>() {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.#name;
+  }
+
+  <span class="hljs-comment">// DOM setter for the IDL attribute with type checking and/or conversion *and*</span>
+  <span class="hljs-comment">// attribute updates, required to make JS operations like `el.name = &quot;Alice&quot;`</span>
+  <span class="hljs-comment">// work.</span>
+  <span class="hljs-keyword">set</span> <span class="function_ hljs-title">name</span>(<span class="hljs-params">value</span>) {
+    value = <span class="class_ hljs-title">String</span>(value); <span class="hljs-comment">// Remember to convert/check the type!</span>
+    <span class="hljs-variable language_">this</span>.#name = value;
+    <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">setAttribute</span>(<span class="hljs-string">&quot;name&quot;</span>, value); <span class="hljs-comment">// Remember to sync the content attribute!</span>
+    <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">greet</span>(); <span class="hljs-comment">// Remember to run the method!</span>
+  }
+
+  <span class="hljs-comment">// DOM getter for the IDL attribute, required to make JS operations like</span>
+  <span class="hljs-comment">// `console.log(el.age)` work</span>
+  <span class="hljs-keyword">get</span> <span class="function_ hljs-title">age</span>() {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.#age;
+  }
+
+  <span class="hljs-comment">// DOM setter for the IDL attribute with type checking and/or conversion *and*</span>
+  <span class="hljs-comment">// attribute updates, required to make JS operations like `el.age = 42` work.</span>
+  <span class="hljs-keyword">set</span> <span class="function_ hljs-title">age</span>(<span class="hljs-params">value</span>) {
+    value = <span class="class_ hljs-title">Number</span>(value); <span class="hljs-comment">// Remember to convert/check the type!</span>
+    <span class="hljs-keyword">if</span> (<span class="class_ hljs-title">Number</span>.<span class="hljs-built_in">isNaN</span>(value) || value &lt; <span class="hljs-number">0</span>) {
+      <span class="hljs-comment">// Remember to keep NaN in check</span>
+      value = <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-variable language_">this</span>.#age = value;
+    <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">setAttribute</span>(<span class="hljs-string">&quot;age&quot;</span>, value); <span class="hljs-comment">// Remember to sync the content attribute!</span>
+    <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">greet</span>(); <span class="hljs-comment">// Remember to run the method!</span>
+  }
+
+  <span class="hljs-comment">// Attribute change handling, required to make JS operations like</span>
+  <span class="hljs-comment">// `el.setAttribute(&quot;name&quot;, &quot;Bob&quot;)` update the internal element state.</span>
+  <span class="function_ hljs-title">attributeChangedCallback</span>(<span class="hljs-params">name, oldValue, newValue</span>) {
+    <span class="hljs-comment">// Because `#name` is a string, and attribute values are always strings as</span>
+    <span class="hljs-comment">// well we don&#x27;t need to convert the types at this stage, but we still need</span>
+    <span class="hljs-comment">// to manually make sure that we fall back to &quot;Anonymous&quot; if the new value</span>
+    <span class="hljs-comment">// is null (if the attribute got removed) or if the value is (essentially)</span>
+    <span class="hljs-comment">// an empty string</span>
+    <span class="hljs-keyword">if</span> (name === <span class="hljs-string">&quot;name&quot;</span>) {
+      <span class="hljs-keyword">if</span> (newValue === <span class="hljs-literal">null</span> || newValue.<span class="function_ hljs-title">trim</span>() === <span class="hljs-string">&quot;&quot;</span>) {
+        newValue = <span class="hljs-string">&quot;Anonymous&quot;</span>;
+      }
+      <span class="hljs-variable language_">this</span>.#name = newValue;
+      <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">greet</span>(); <span class="hljs-comment">// Remember to run the method!</span>
+    }
+    <span class="hljs-comment">// But for &quot;#age&quot; we do again need to convert types, check for NaN, enforce</span>
+    <span class="hljs-comment">// the min value of 0...</span>
+    <span class="hljs-keyword">if</span> (name === <span class="hljs-string">&quot;age&quot;</span>) {
+      <span class="hljs-keyword">const</span> value = <span class="class_ hljs-title">Number</span>(value); <span class="hljs-comment">// Remember to convert/check the type!</span>
+      <span class="hljs-keyword">if</span> (<span class="class_ hljs-title">Number</span>.<span class="hljs-built_in">isNaN</span>(value) || value &lt; <span class="hljs-number">0</span>) {
+        <span class="hljs-comment">// Remember to keep NaN in check</span>
+        value = <span class="hljs-number">0</span>;
+      }
+      <span class="hljs-variable language_">this</span>.#age = value;
+      <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">greet</span>(); <span class="hljs-comment">// Remember to run the method!</span>
+    }
+  }
+
+  <span class="hljs-comment">// Required for attribute change monitoring to work</span>
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">get</span> <span class="function_ hljs-title">observedAttributes</span>() {
+    <span class="hljs-keyword">return</span> [<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>]; <span class="hljs-comment">// remember to always keep this up to date</span>
+  }
+}
+
+<span class="hljs-comment">// Finally remember to register the element</span>
+<span class="hljs-variable language_">window</span>.<span class="hljs-property">customElements</span>.<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-greeter&quot;</span>, <span class="class_ hljs-title">MyGreeter</span>);
+</code></pre></details> <p>Ornament makes <em>only the most tedious bits</em> of building vanilla web components (attribute handling and lifecycle reactions) easy by adding some primitives that really should be part of the standard, but aren&#39;t. <strong>Ornament is not a framework,</strong> but something that you want to build your own framework on top of. Combine Ornament&#39;s baseline web component features with something like <a href="https://github.com/WebReflection/uhtml">uhtml</a> or <a href="https://preactjs.com/">Preact</a> for rending, add your favorite state management library, write some glue code and enjoy your very own frontend web framework.</p> <aside> <h3>About the author</h3> <img src="/peter.77e23c2e.jpg"> <div> <p> Hi, I'm Peter! I made Ornament and do workshops, code reviews and consulting on web technologies. <strong><mark>Hire me</mark></strong> to level up your colleagues, review your TypeScript, or to solve your web component issues! </p> <p> <a href="mailto:peter@peterkroener.de">Contact me via email</a>, follow me <a href="https://mastodon.social/@sir_pepe">on Mastodon</a> or <a href="https://github.com/SirPepe/">on GitHub</a>, and check out <a href="https://code.movie/">Code.Movie</a> for something <em>entirely</em> different! </p> </div> </aside> <h2 id="guide">Guide</h2> <h3 id="installation">Installation</h3> <p>Install <a href="https://www.npmjs.com/package/@sirpepe/ornament">@sirpepe/ornament</a> with your favorite package manager. To get the decorator syntax working in 2024, you will probably need <a href="https://babeljs.io/docs/babel-plugin-proposal-decorators">@babel/plugin-proposal-decorators</a> (with option <code>version</code> set to <code>&quot;2023-11&quot;</code>) or <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators">TypeScript 5.0+</a> (with the option <code>experimentalDecorators</code> turned <em>off</em>).</p> <p>Apart from that, Ornament is just a bunch of functions. No further setup required, no extra concepts to learn.</p> <h3 id="general-philosophy">General philosophy</h3> <p>The native APIs for web components are verbose and imperative, but lend themselves to quite a bit of streamlining with <a href="https://2ality.com/2022/10/javascript-decorators.html">the upcoming syntax for ECMAScript Decorators</a>. The native APIs are also missing a few important primitives. Ornament&#39;s goal is to provide the missing primitives and to streamline the developer experience. Ornament is <strong>not a framework</strong> but instead aims to be:</p> <ul> <li><strong>as stable as possible</strong> by remaining dependency-free, keeping its own code to an absolute minimum, and relying on iron-clad web standards where possible</li> <li><strong>fast and lean</strong> by being nothing more than just a bag of relatively small and simple functions</li> <li>supportive of <strong>gradual</strong> adoption and removal by being able to co-exist with vanilla web component code</li> <li><strong>malleable</strong> by being easy to extend, easy to customize, and easy to get rid of</li> <li><strong>universal</strong> by adhering to (the spirit of) web standards, thereby staying compatible with vanilla web component code as well as all sorts of web frameworks</li> <li>equipped with <strong>useful type definitions</strong> (and work within the constraints of TypeScript)</li> </ul> <p>Ornament is <em>infrastructure for web components</em> and not a framework itself. It makes dealing with the native APIs bearable and leaves building something actually sophisticated up to you. Ornament does not come with <em>any</em> of the following:</p> <ul> <li>state management (even though it is simple to connect components to signals or event targets)</li> <li>rendering (but it works well with <a href="https://github.com/WebReflection/uhtml">uhtml</a>, <a href="https://preactjs.com/">Preact</a> and similar libraries)</li> <li>built-in solutions for client-side routing, data fetching, or anything beyond the components themselves</li> <li>any preconceived notions about what should be going on server-side</li> <li>specialized syntax for every (or any specific) use case</li> </ul> <p>You can (and probably have to) therefore pick or write your own solutions for the above features. Check out the <code>examples</code> folder for inspiration!</p> <h3 id="exit-strategy">Exit strategy</h3> <p>Every good library should come with an exit strategy as well as install instructions. Here is how you can get rid of Ornament if you want to migrate away:</p> <ul> <li>Components built with Ornament will generally turn out to be very close to vanilla web components, so <strong>they will most probably just keep working</strong> when used with other frameworks/libraries. You can theoretically just keep your components and replace them only when the need for change arises. A compatibility wrapper for frameworks that are not quite friendly to web components (eg. React) may be required.</li> <li>If you want to replace Ornament with hand-written logic for web components, you can <strong>replace all attribute and update handling piecemeal.</strong> Ornament&#39;s decorators co-exist with native <code>attributeChangedCallback()</code> and friends just fine. Ornament <em>extends</em> what you can do with custom elements, it does not abstract anything away.</li> <li>Much of your migration will depend on <strong>how you build on top of Ornament.</strong> You should keep reusable components and app-specific state containers separate, just as you would do in e.g. React. This will make maintenance and eventual migration much easier, but this is really outside of Ornament&#39;s area of responsibility.</li> </ul> <p>In general, migrating away should not be too problematic. The components that you will build with Ornament will naturally tend to be self-contained and universal, and will therefore more or less always keep chugging along.</p> <h2 id="decorators">Decorators</h2> <h3 id="api-overview">API overview</h3> <table> <thead> <tr> <th>Decorator</th> <th>Class element</th> <th><code>static</code></th> <th><code>#private</code></th> <th>Symbols</th> <th>Summary</th> </tr> </thead> <tbody><tr> <td><code>@define()</code></td> <td>Class</td> <td>-</td> <td>-</td> <td>-</td> <td>Register a custom element class with a tag name and set it up for use with Ornament&#39;s other decorators</td> </tr> <tr> <td><code>@enhance()</code></td> <td>Class</td> <td>-</td> <td>-</td> <td>-</td> <td>Set up a custom element class for use with Ornament&#39;s other decorators, but do <em>not</em> register it with a tag name</td> </tr> <tr> <td><code>@prop()</code></td> <td>Accessor</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Define an accessor to work as an IDL attribute with a given data type</td> </tr> <tr> <td><code>@attr()</code></td> <td>Accessor</td> <td>✕</td> <td>✓[^1]</td> <td>✓[^1]</td> <td>Define an accessor to work as a content attribute and associated IDL attribute with a given data type</td> </tr> <tr> <td><code>@reactive()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function when accessors decorated with <code>@prop()</code> or <code>@attr()</code> change value (with optional conditions)</td> </tr> <tr> <td><code>@init()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function after the class constructor finishes</td> </tr> <tr> <td><code>@connected()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function when the element connects to the DOM</td> </tr> <tr> <td><code>@disconnected()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function when the element disconnects from the DOM</td> </tr> <tr> <td><code>@adopted()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function when the element is adopted by a new document</td> </tr> <tr> <td><code>@formAssociated()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function when the element is associated with a form element</td> </tr> <tr> <td><code>@formReset()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function when the element&#39;s form owner resets</td> </tr> <tr> <td><code>@formDisabled()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function when the element&#39;s ancestor fieldset is disabled</td> </tr> <tr> <td><code>@formStateRestore()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function when the element&#39;s <code>formStateRestoreCallback</code> fires</td> </tr> <tr> <td><code>@subscribe()</code></td> <td>Accessor, Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Update a reactive accessor or run a method or class field function to react to changes to a signal or to events on an EventTarget</td> </tr> <tr> <td><code>@observe()</code></td> <td>Method, Field[^2]</td> <td>✕</td> <td>✓</td> <td>✓</td> <td>Run a method or class field function as a callback for an IntersectionObserver, MutationObserver, or ResizeObserver</td> </tr> <tr> <td><code>@debounce()</code></td> <td>Method, Field[^2]</td> <td>✓</td> <td>✓</td> <td>✓</td> <td>Debounce a method or class field function, (including <code>static</code>)</td> </tr> </tbody></table> <p>[^1]: Can be <code>#private</code> or a symbol <em>if</em> a non-private non-symbol getter/setter pair for the attribute name exists and a content attribute name has been set using the <code>as</code> option.</p> <p>[^2]: Class field values must be of type <code>function</code></p> <h3 id="definetagname-string-options-elementdefinitionoptions--"><code>@define(tagName: string, options: ElementDefinitionOptions = {})</code></h3> <p><strong>Class decorator</strong> to register a class as a custom element, basically an alternative syntax for <a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define"><code>customElements.define()</code></a>;</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyTest</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {}
+
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>)); <span class="hljs-comment">// instance of MyTest</span>
+</code></pre><p><code>@define()</code> also sets up attribute observation for use with the <code>@attr()</code> decorator, prepares the hooks for lifecycle decorators like <code>@connected()</code> and ensures that property upgrades for previously undefined elements happen in a predictable fashion.</p> <details> <summary>What are safe upgrades?</summary> <p>HTML tags can be used even if the browser does not (yet) know about them, and this also works with web components - the browser can upgrade custom elements event after the parser has processed them as unknown elements. <a href="https://codepen.io/SirPepe/pen/poqLege?editors=0010">But this can lead to unexpected behavior</a> when properties are set on elements that have not yet been properly defined, shadowing relevant accessors on the prototype:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> x = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;hello-world&quot;</span>);
+<span class="hljs-comment">// &quot;x&quot; = unknown element = object with &quot;HTMLElement.prototype&quot; as prototype</span>
+
+x.<span class="hljs-property">data</span> = <span class="hljs-number">42</span>;
+<span class="hljs-comment">// &quot;x&quot; now has an _own_ property data=42</span>
+
+<span class="hljs-comment">// Implements an accessor for hello-world. The getters and</span>
+<span class="hljs-comment">// setters end up as properties on the prototype</span>
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">HelloWorld</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  accessor data = <span class="hljs-number">23</span>;
+}
+
+<span class="hljs-variable language_">window</span>.<span class="hljs-property">customElements</span>.<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;hello-world&quot;</span>, <span class="class_ hljs-title">HelloWorld</span>);
+<span class="hljs-comment">// It is now clear that &quot;x&quot; should have had &quot;HelloWorld.prototype&quot; as its</span>
+<span class="hljs-comment">// prototype all along</span>
+
+<span class="hljs-variable language_">window</span>.<span class="hljs-property">customElements</span>.<span class="function_ hljs-title">upgrade</span>(x);
+<span class="hljs-comment">// &quot;x&quot; now gets &quot;HelloWorld.prototype&quot; as its prototype (with the accessor)</span>
+
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(x.<span class="hljs-property">data</span>);
+<span class="hljs-comment">// logs 42, bypassing the getter - &quot;x&quot; itself has an own property &quot;data&quot;, the</span>
+<span class="hljs-comment">// accessor on the prototype is shadowed</span>
+</code></pre><p>Ornament ensures safe upgrades, always making sure that no prototype accessors for attributes are ever shadowed by properties defined before an element was properly upgraded.</p> </details> <details> <summary>Notes for TypeScript</summary> <p>You should add your custom element&#39;s interface to <code>HTMLElementTagNameMap</code> to make it work with native DOM APIs:</p> <pre><code class="hljs language-typescript"><span class="hljs-meta">@define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyTest</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  foo = <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-keyword">declare</span> <span class="hljs-variable language_">global</span> {
+  <span class="hljs-keyword">interface</span> <span class="class_ hljs-title">HTMLElementTagNameMap</span> {
+    <span class="hljs-string">&quot;my-test&quot;</span>: <span class="class_ hljs-title">MyTest</span>;
+  }
+}
+
+<span class="hljs-keyword">let</span> test = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(test.<span class="hljs-property">foo</span>); <span class="hljs-comment">// only type checks with the above interface declaration</span>
+</code></pre></details> <h3 id="enhance"><code>@enhance()</code></h3> <p><strong>Class decorator</strong> to set up attribute observation and lifecycle hooks <em>without</em> registering the class as a custom element.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { enhance } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">enhance</span>()
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyTest</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {}
+
+<span class="hljs-comment">// MyTest can only be instantiated when it has been registered as a custom</span>
+<span class="hljs-comment">// element. Because we use @enhance() instead of @define() in this example, we</span>
+<span class="hljs-comment">// have to take care of this manually.</span>
+<span class="hljs-variable language_">window</span>.<span class="hljs-property">customElements</span>.<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>, <span class="class_ hljs-title">MyTest</span>);
+
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>)); <span class="hljs-comment">// instance of MyTest</span>
+</code></pre><p>This decorator is only really useful if you need to handle element registration in some other way than what <code>@define()</code> provides. It is safe to apply <code>@enhance()</code> more than once on a class, or on both (or either) a base class and subclass:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { enhance } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// Not useful, but also not a problem</span>
+@<span class="function_ hljs-title">enhance</span>()
+@<span class="function_ hljs-title">enhance</span>()
+@<span class="function_ hljs-title">enhance</span>()
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyTest0</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {}
+
+<span class="hljs-comment">// Works</span>
+@<span class="function_ hljs-title">enhance</span>()
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Base1</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {}
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyTest1</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">Base1</span> {}
+
+<span class="hljs-comment">// Works</span>
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Base2</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {}
+@<span class="function_ hljs-title">enhance</span>()
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyTest2</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">Base2</span> {}
+
+<span class="hljs-comment">// Works</span>
+@<span class="function_ hljs-title">enhance</span>()
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Base3</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {}
+@<span class="function_ hljs-title">enhance</span>()
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyTest3</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">Base3</span> {}
+</code></pre><h3 id="proptransformer-transformer"><code>@prop(transformer: Transformer)</code></h3> <p><strong>Accessor decorator</strong> to define an IDL property on the custom element class <em>without</em> an associated content attribute. Such a property is more or less a regular accessor with two additional features:</p> <ul> <li>it uses <strong>transformers</strong> for type checking and validation</li> <li>changes cause class members decorated with <code>@reactive()</code> to run</li> </ul> <p>Example:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, prop, number } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// Applies the number transformer to ensure that foo is always a number</span>
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">number</span>()) accessor foo = <span class="hljs-number">23</span>;
+
+  <span class="hljs-comment">// Automatically runs when &quot;foo&quot; (or any accessor decorated with @prop() or</span>
+  <span class="hljs-comment">// @attr()) changes</span>
+  @<span class="function_ hljs-title">reactive</span>()
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">`Foo changed to <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.foo}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(testEl.<span class="hljs-property">foo</span>); <span class="hljs-comment">// logs 23</span>
+testEl.<span class="hljs-property">foo</span> = <span class="hljs-number">42</span>; <span class="hljs-comment">// logs &quot;Foo changed to 42&quot;</span>
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(testEl.<span class="hljs-property">foo</span>); <span class="hljs-comment">// logs 42</span>
+testEl.<span class="hljs-property">foo</span> = <span class="hljs-string">&quot;asdf&quot;</span>; <span class="hljs-comment">// throw exception (thanks to the number transformer)</span>
+</code></pre><p>Accessors defined with <code>@prop()</code> work as a <em>JavaScript-only API</em>. Values can only be accessed through the accessor&#39;s getter, invalid values are rejected by the setter with exceptions. <code>@prop()</code> can be used on private accessors or symbols without problem.</p> <p>Note that you can still define your own accessors, getters, setters etc. as you would usually do. They will still work as expected, but they will not cause <code>@reactive()</code> methods to run.</p> <h3 id="attrtransformer-transformer-options-attroptions--"><code>@attr(transformer: Transformer, options: AttrOptions = {})</code></h3> <p><strong>Accessor decorator</strong> to define an IDL attribute with a matching content attribute on the custom element class. This results in something very similar to accessors decorated with <code>@prop()</code>, but with the following additional features:</p> <ul> <li>Its value can be initialized from a content attribute, if the attribute is present</li> <li>Changes to the content attribute&#39;s value (eg. via <code>setAttribute()</code>) update the value of the IDL attribute to match (depending on the options and the transformer)</li> </ul> <details> <summary>What's the deal with content attributes?</summary> <p>Getting attribute handling on Web Components right is <em>hard</em>, because many different APIs and states need to interact in just the right way and the related code tends to end up scattered across various class members. Attributes on HTML elements have two faces: the <em>content attribute</em> and the <em>IDL attribute</em>. Content attributes are always strings and are defined either via HTML or via DOM methods like <code>setAttribute()</code>. IDL attributes can be accessed via object properties such as <code>someElement.foo</code> and may be of any type. Both faces of attributes need to be implemented and properly synced up for an element to be truly compatible with any software out there - a JS frontend framework may work primarily with IDL attributes, while HTML authors or server-side rendering software will work with content attributes.</p> <p>Keeping content and IDL attributes in sync can entail any or all of the following tasks:</p> <ul> <li>Updating the content attribute when the IDL attribute gets changed (eg. update the HTML attribute <code>id</code> when running <code>element.id = &quot;foo&quot;</code> in JS)</li> <li>Updating the IDL attribute when the content attribute gets changed (eg. <code>element.id</code> should return <code>&quot;bar&quot;</code> after <code>element.setAttribute(&quot;id&quot;, &quot;bar&quot;)</code>)</li> <li>Converting types while updating content and/or IDL attributes (an attribute may be a <code>number</code> as an IDL attribute, but content attributes are by definition always strings)</li> <li>Rejecting invalid types on the IDL setter (as opposed to converting types from content to IDL attributes which, like all of HTML, never throws an error)</li> <li>Connecting IDL and content attributes with different names (like how the content attribute <code>class</code> maps to the IDL attribute <code>className</code>)</li> <li>Fine-tuning the synchronization behavior depending on circumstances (see the interaction between the <code>value</code> content and IDL attributes on <code>&lt;input&gt;</code>)</li> <li>Remembering to execute side effects (like updating Shadow DOM) when any IDL and/or content attribute changes</li> </ul> <p>This is all <em>very</em> annoying to write by hand, but because the above behavior is more or less the same for all attributes, it is possible to to simplify the syntax quite a bit:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { attr, define number } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">MyTest</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">number</span>({ <span class="hljs-attr">min</span>: -<span class="hljs-number">100</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">100</span> })) accessor value = <span class="hljs-number">0</span>;
+
+  @<span class="function_ hljs-title">reactive</span>()
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>);
+  }
+}
+</code></pre><p>The line starting with with <code>@attr</code> gets you a content and a matching IDL attribute named <code>value</code>, which...</p> <ul> <li>Always reflects a number between <code>-100</code> and <code>100</code></li> <li>Initializes from the content attribute and falls back to the initializer value <code>0</code> if the attribute is missing or can&#39;t be interpreted as a number</li> <li>Automatically updates the content attribute with the stringified value of the IDL attribute when the IDL attribute is updated</li> <li>Automatically updates the IDL attribute when the content attribute is updated (it parses the attribute value into a number and clamps it to the specified range)</li> <li>Implements getters and setters for the IDL attributes, with the getter always returning a number and the setter rejecting invalid values (non-numbers or numbers outside the specified range of <code>[-100, 100]</code>)</li> <li>Causes the method marked <code>@reactive()</code> to run on update</li> </ul> <p>You can use <code>@prop()</code> for standalone IDL attribute (that is, DOM properties without an associated content attributes), swap out the <code>number()</code> transformer for something else, or combine any of the above with hand-written logic.</p> </details> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, number } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// Applies the number transformer to ensure that content attribute values get</span>
+  <span class="hljs-comment">// parsed into numbers and that new non-number values passed to the IDL</span>
+  <span class="hljs-comment">// attribute&#x27;s setter get rejected</span>
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">number</span>()) accessor foo = <span class="hljs-number">23</span>; <span class="hljs-comment">// 23 = fallback value</span>
+
+  <span class="hljs-comment">// Automatically runs when &quot;foo&quot;, or any accessor decorated with @prop() or</span>
+  <span class="hljs-comment">// @attr(), changes (plus once on element initialization)</span>
+  @<span class="function_ hljs-title">reactive</span>() <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">`Foo changed to <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.foo}</span>`</span>);
+  }
+}
+
+<span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">`&lt;my-test foo=&quot;42&quot;&gt;&lt;/my-test&gt;`</span>;
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">querySelector</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(testEl.<span class="hljs-property">foo</span>); <span class="hljs-comment">// logs 42 (initialized from the attribute)</span>
+testEl.<span class="hljs-property">foo</span> = <span class="hljs-number">1337</span>; <span class="hljs-comment">// logs &quot;Foo changed to 1337&quot;</span>
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(testEl.<span class="hljs-property">foo</span>); <span class="hljs-comment">// logs 1337</span>
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(testEl.<span class="function_ hljs-title">getAttribute</span>(<span class="hljs-string">&quot;foo&quot;</span>)); <span class="hljs-comment">// logs &quot;1337&quot;</span>
+testEl.<span class="hljs-property">foo</span> = <span class="hljs-string">&quot;asdf&quot;</span>; <span class="hljs-comment">// throw exception (thanks to the number transformer)</span>
+testEl.<span class="function_ hljs-title">setAttribute</span>(<span class="hljs-string">&quot;foo&quot;</span>, <span class="hljs-string">&quot;asdf&quot;</span>); <span class="hljs-comment">// works, content attributes can be any string</span>
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(testEl.<span class="hljs-property">foo</span>); <span class="hljs-comment">// logs 23 (fallback value)</span>
+</code></pre><p>Accessors defined with <code>@attr()</code> work like all other supported attributes on built-in elements. Content attribute values (which are always strings) get parsed by the transformer, which also deals with invalid values in a graceful way (ie without throwing exceptions). Values can also be accessed through the IDL property&#39;s accessor, where invalid values <em>are</em> rejected with exceptions by the setter.</p> <p><code>@attr()</code> can only be used on private accessors or symbols only if the following holds true:</p> <ol> <li>The option <code>as</code> <em>must</em> be set</li> <li>A non-private, non-symbol getter/setter pair for the attribute name defined in the option <code>as</code> <em>must</em> exist on the custom element class</li> </ol> <p>Content attributes always have public IDL attribute APIs, and ornament enforces this. A private/symbol attribute accessor with a manually-provided public facade may be useful if you want to attach some additional logic to the public API (= hand-written getters and setters) while still having the convenience of of using <code>@attr</code> on an <code>accessor</code>.</p> <p>Note that you can still define your own attribute handling with <code>attributeChangedCallback()</code> and <code>static get observedAttributes()</code> as you would usually do. This will keep working work as expected, but changes to such attributes will not cause <code>@reactive()</code> methods to run.</p> <h4 id="options-for-attr">Options for <code>@attr()</code></h4> <ul> <li><strong><code>as</code> (string, optional)</strong>: Sets an attribute name different from the accessor&#39;s name, similar to how the <code>class</code> content attribute works for the <code>className</code> IDL attribute on built-in elements. If <code>as</code> is not set, the content attribute&#39;s name will be equal to the accessor&#39;s name. <code>as</code> is required when the decorator is applied to a symbol or private property.</li> <li><strong><code>reflective</code> (boolean, optional)</strong>: If <code>false</code>, prevents the content attribute from updating when the IDL attribute is updated, similar to how <code>value</code> works on <code>input</code> elements. Defaults to true.</li> </ul> <h3 id="reactiveoptions-reactiveoptions--"><code>@reactive(options: ReactiveOptions = {})</code></h3> <p><strong>Method and class field decorator</strong> that runs class members when accessors decorated with <code>@prop()</code> or <code>@attr()</code> change their values:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, reactive, prop, number } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">number</span>()) accessor foo = <span class="hljs-number">0</span>;
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">number</span>()) accessor bar = <span class="hljs-number">0</span>;
+
+  @<span class="function_ hljs-title">reactive</span>()
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">`foo is now <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.foo}</span>, bar is now <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.bar}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+testEl.<span class="hljs-property">foo</span> = <span class="hljs-number">1</span>;
+testEl.<span class="hljs-property">bar</span> = <span class="hljs-number">2</span>;
+
+<span class="hljs-comment">// first logs &quot;foo is now 1, bar is now 0&quot;</span>
+<span class="hljs-comment">// then logs &quot;foo is now 1, bar is now 2&quot;</span>
+</code></pre><p>Decorated members are called with no arguments. They react to changes to the instances&#39; internal state and should therefore be able to access all relevant data through <code>this</code>. In many cases you may want to apply <code>@reactive()</code> to methods decorated with <code>@debounce()</code> to prevent excessive calls.</p> <p>The <code>predicate</code> and/or <code>keys</code> options can be used to control whether the decorated method or function reacts to an update. For the decorated member to run, the following needs to be true:</p> <ol> <li><code>options.keys</code> must either have been omitted or must contain the IDL or content attribute name that changed</li> <li><code>options.excludeKeys</code> must either have been omitted or must not contain the IDL or content attribute name that changed</li> <li><code>options.predicate</code> must either have been omitted or must return true when called immediately before the function is scheduled to run</li> </ol> <h4 id="options-for-reactive">Options for <code>@reactive()</code></h4> <ul> <li><strong><code>keys</code> (Array&lt;string | symbol&gt;, optional)</strong>: List of attributes (defined by <code>@prop()</code> or <code>@attr()</code>) to monitor. Can include private names and symbols. Defaults to monitoring all content and IDL attributes defined by <code>@prop()</code> or <code>@attr()</code>.</li> <li><strong><code>excludeKeys</code> (Array&lt;string | symbol&gt;, optional)</strong>: List of attributes (defined by <code>@prop()</code> or <code>@attr()</code>) not to monitor. Can include private names and symbols. Defaults to an empty array.</li> <li><strong><code>predicate</code> (Function <code>(instance: T) =&gt; boolean</code>)</strong>: If provided, controls whether or not the decorated method is called for a given change. Note that this function is not part of the class declaration itself and can therefore <em>not</em> access private fields on <code>instance</code>.</li> </ul> <h3 id="init"><code>@init()</code></h3> <p><strong>Method and class field decorator</strong> that runs class members when the class constructor finishes. This has the same effect as adding method calls to the end of the constructor&#39;s body.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, init } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="function_ hljs-title">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">super</span>();
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-number">23</span>);
+  }
+
+  @<span class="function_ hljs-title">init</span>()
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-number">42</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-comment">// first logs 23, then logs 42</span>
+</code></pre><p>This decorator is particularly useful if you need to run <code>@reactive()</code> methods once on component initialization.</p> <p>Decorated members are run with no arguments and <em>always</em> right after the constructor finishes, even methods and class field functions decorated with <code>@debounce()</code>.</p> <h3 id="connected"><code>@connected()</code></h3> <p><strong>Method and class field decorator</strong> that runs class members when the component connects to the DOM and the component&#39;s <code>connectedCallback()</code> fires:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, connected } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">connected</span>() <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Connected!&quot;</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="function_ hljs-title">append</span>(testEl);
+<span class="hljs-comment">// testEl.log logs &quot;Connected!&quot;</span>
+</code></pre><p>Decorated members are run with no arguments. You can also still use the regular <code>connectedCallback()</code>.</p> <h3 id="disconnected"><code>@disconnected()</code></h3> <p><strong>Method and class field decorator</strong> that runs decorated class members when the component disconnects from the DOM and the component&#39;s <code>disconnectedCallback()</code> fires:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, adopted } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">disconnected</span>() <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Disconnected!&quot;</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="function_ hljs-title">append</span>(testEl);
+testEl.<span class="function_ hljs-title">remove</span>();
+<span class="hljs-comment">// testEl.log logs &quot;Disconnected!&quot;</span>
+</code></pre><p>Decorated members are run with no arguments. You can also still use the regular <code>disconnectedCallback()</code>.</p> <h3 id="adopted"><code>@adopted()</code></h3> <p><strong>Method and class field decorator</strong> that runs decorated class members when the component is moved to a new document and the component&#39;s <code>adoptedCallback()</code> fires:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, adopted } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">adopted</span>() <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Adopted!&quot;</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-keyword">const</span> newDocument = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">Document</span>();
+newDocument.<span class="function_ hljs-title">adoptNode</span>(testEl);
+<span class="hljs-comment">// testEl.log logs &quot;Adopted!&quot;</span>
+</code></pre><p>Decorated members are run with no arguments. You can also still use the regular <code>adoptedCallback()</code>.</p> <h3 id="formassociated"><code>@formAssociated()</code></h3> <p><strong>Method and class field decorator</strong> that runs decorated class members when a form-associated component&#39;s form owner changes and its <code>formAssociatedCallback()</code> fires:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, formAssociated } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-keyword">static</span> formAssociated = <span class="hljs-literal">true</span>;
+  @<span class="function_ hljs-title">formAssociated</span>() <span class="function_ hljs-title">log</span>(<span class="hljs-params">newOwner</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(newOwner); <span class="hljs-comment">// null or HTMLFormElement</span>
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-keyword">let</span> form = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;form&quot;</span>);
+form.<span class="function_ hljs-title">append</span>(testEl);
+<span class="hljs-comment">// testEl.log logs &quot;form&quot;</span>
+</code></pre><p>Decorated members are passed the new form owner (if any) as an argument. You can also still use the regular <code>formAssociatedCallback()</code>.</p> <h3 id="formreset"><code>@formReset()</code></h3> <p><strong>Method and class field decorator</strong> that runs decorated class members when a form-associated component&#39;s form owner resets and its <code>formResetCallback()</code> fires:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, formReset } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-keyword">static</span> formAssociated = <span class="hljs-literal">true</span>;
+  @<span class="function_ hljs-title">formReset</span>() <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Reset!&quot;</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-keyword">let</span> form = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;form&quot;</span>);
+form.<span class="function_ hljs-title">append</span>(testEl);
+form.<span class="function_ hljs-title">reset</span>();
+<span class="hljs-comment">// ... some time passes...</span>
+<span class="hljs-comment">// testEl.log logs &quot;Reset!&quot;</span>
+</code></pre><p>Decorated members are run with no arguments. You can also still use the regular <code>formResetCallback()</code>.</p> <p>Note that form reset events are observably asynchronous, unlike all other lifecycle events. This is due to the form reset algorithm itself being async.</p> <h3 id="formdisabled"><code>@formDisabled()</code></h3> <p><strong>Method and class field decorator</strong> that runs decorated class members when a form-associated component&#39;s fieldset gets disabled and its <code>formDisabledCallback()</code> fires:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, formDisabled } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-keyword">static</span> formAssociated = <span class="hljs-literal">true</span>;
+  @<span class="function_ hljs-title">formDisabled</span>() <span class="function_ hljs-title">log</span>(<span class="hljs-params">state</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Disabled via fieldset:&quot;</span>, state); <span class="hljs-comment">// true or false</span>
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+<span class="hljs-keyword">let</span> fieldset = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;fieldset&quot;</span>);
+<span class="hljs-keyword">let</span> form = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;form&quot;</span>);
+form.<span class="function_ hljs-title">append</span>(fieldset);
+fieldset.<span class="function_ hljs-title">append</span>(testEl);
+fieldset.<span class="hljs-property">disabled</span> = <span class="hljs-literal">true</span>;
+<span class="hljs-comment">// testEl.log logs &quot;Disabled via fieldset: true&quot;</span>
+</code></pre><p>Decorated members are passed the new form disabled state as an argument. You can also still use the regular <code>formDisabledCallback()</code>.</p> <h3 id="formstaterestore"><code>@formStateRestore()</code></h3> <p><strong>Method and class field decorator</strong> that causes runs decorated class methods when a form-associated component&#39;s <code>formStateRestoreCallback()</code> fires. This does not work in Chrome-based browsers as of November 2023.</p> <h3 id="subscribeargs"><code>@subscribe(...args)</code></h3> <p><strong>Accessor, method or class field decorator</strong> that subscribes to either <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget">Event Targets</a> or <a href="https://github.com/preactjs/signals">signals</a>, depending on the arguments. If the decorated class member is a method or a function, it runs when the EventTarget emits a new event or when the signal receives a new value. If the decorated member is an accessor, it gets updated with the last event object (for event targets) or signal values (for signals) and in turn causes methods decorated with <code>@reactive()</code> to run.</p> <h4 id="subscribe-to-eventtargets-subscribetargetortargetfactory-eventnames-options">Subscribe to EventTargets: <code>@subscribe(targetOrTargetFactory, eventNames, options?)</code></h4> <p>Subscribe the decorated class member to one or more events an EventTarget. <code>EventTarget</code> is an interface that objects such as HTMLElement, Window, Document and <em>many</em> more objects implement. You can also create a vanilla event target or extend the <code>EventTarget</code> class:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-keyword">const</span> myTarget = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">EventTarget</span>();
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">subscribe</span>(myTarget, <span class="hljs-string">&quot;foo&quot;</span>)
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params">evt</span>) {
+    <span class="hljs-comment">// evt = Event({ name: &quot;foo&quot;, target: myTarget })</span>
+    <span class="hljs-comment">// this = Test instance</span>
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">`&#x27;<span class="hljs-subst">${evt.type}</span>&#x27; event fired!`</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+
+myTarget.<span class="function_ hljs-title">dispatchEvent</span>(<span class="hljs-keyword">new</span> <span class="class_ hljs-title">Event</span>(<span class="hljs-string">&quot;foo&quot;</span>));
+
+<span class="hljs-comment">// testEl.log logs &quot;&#x27;foo&#x27; event fired!&quot;</span>
+</code></pre><p>To subscribe to multiple events, pass a single string with the event names separated by whitespace:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-keyword">const</span> myTarget = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">EventTarget</span>();
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">subscribe</span>(myTarget, <span class="hljs-string">&quot;foo bar&quot;</span>) #<span class="function_ hljs-title">a</span>(<span class="hljs-params"></span>) {} <span class="hljs-comment">// subscribed to both &quot;foo&quot; and &quot;bar&quot;</span>
+}
+</code></pre><p>You can also provide a target-producing factory or promise in place of the target itself:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// &quot;window&quot; is a perfectly valid event target</span>
+  @<span class="function_ hljs-title">subscribe</span>(<span class="hljs-variable language_">window</span>, <span class="hljs-string">&quot;update&quot;</span>) #<span class="function_ hljs-title">a</span>(<span class="hljs-params"></span>) {} <span class="hljs-comment">// same effect as below</span>
+  @<span class="function_ hljs-title">subscribe</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">window</span>, <span class="hljs-string">&quot;update&quot;</span>) #<span class="function_ hljs-title">b</span>(<span class="hljs-params"></span>) {} <span class="hljs-comment">// same effect as above</span>
+  @<span class="function_ hljs-title">subscribe</span>(<span class="class_ hljs-title">Promise</span>.<span class="function_ hljs-title">resolve</span>(<span class="hljs-variable language_">window</span>), <span class="hljs-string">&quot;update&quot;</span>) #<span class="function_ hljs-title">c</span>(<span class="hljs-params"></span>) {} <span class="hljs-comment">// same effect as above</span>
+}
+</code></pre><p>The target-producing factory function can be used to access targets that depend on the element instance, such as the element&#39;s shadow root. The factory function gets called each time an element initializes, with its first argument set to the instance.</p> <details> <summary>Notes for TypeScript</summary> <p>An event target can actually be delivered by an <em>arbitrarily</em> long chain of nested functions and promises. This is annoying to handle on the type level, you&#39;ll just have to <code>any</code> your way around that or provide this capability in a type-safe wrapper.</p> <p>Making the <code>@subscribe()</code> decorator type-safe for use with events is a gnarly prospect. Given an event target and an event name, the decorator can&#39;t know what type of event the method must expect. Therefore the following is possible by default:</p> <pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-keyword">let</span> target = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;div&quot;</span>);
+
+<span class="hljs-meta">@define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-meta">@subscribe</span>(target, <span class="hljs-string">&quot;click&quot;</span>)
+  #<span class="function_ hljs-title">handleClicks</span>(<span class="hljs-params"><span class="hljs-attr">evt</span>: <span class="class_ hljs-title">MouseEvent</span></span>) {} <span class="hljs-comment">// This type checks, as it should</span>
+
+  <span class="hljs-meta">@subscribe</span>(target, <span class="hljs-string">&quot;click&quot;</span>)
+  #<span class="function_ hljs-title">handleAnimations</span>(<span class="hljs-params"><span class="hljs-attr">evt</span>: <span class="class_ hljs-title">AnimationEvent</span></span>) {} <span class="hljs-comment">// This type checks too!</span>
+}
+</code></pre><p>A mapping between event names and corresponding event types (such as <code>&quot;click&quot;</code> → <code>MouseEvent</code>) exists for specific cases. For example <code>HTMLElementEventMap</code> contains the mappings for events emitted by HTML elements. But because <code>@subscribe()</code> can work with <em>any event target</em>, the existence or relevancy of such a mapping can&#39;t be assumed. The only way around this is to create an abstraction for specific use cases where such a mapping is available. This can be based on <code>@subscribe()</code> itself:</p> <pre><code class="hljs language-typescript"><span class="hljs-comment">// Create a variant of @subscribe() specific to DOM events</span>
+<span class="hljs-keyword">const</span> listen = &lt;
+  T <span class="hljs-keyword">extends</span> <span class="class_ hljs-title">HTMLElement</span>,
+  K <span class="hljs-keyword">extends</span> keyof <span class="class_ hljs-title">HTMLElementEventMap</span>,
+&gt;<span class="hljs-function">(<span class="hljs-params">
+  <span class="hljs-attr">source</span>: <span class="class_ hljs-title">HTMLElement</span>,
+  ...<span class="hljs-attr">eventNames</span>: K[]
+</span>) =&gt;</span>
+  subscribe&lt;T, <span class="class_ hljs-title">HTMLElement</span>, <span class="class_ hljs-title">HTMLElementEventMap</span>[K]&gt;(
+    source,
+    eventNames.<span class="function_ hljs-title">join</span>(<span class="hljs-string">&quot; &quot;</span>),
+  );
+
+<span class="hljs-keyword">const</span> eventSource = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;div&quot;</span>);
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// Works: &quot;click&quot; is a MouseEvent</span>
+  <span class="hljs-meta">@listen</span>(eventSource, <span class="hljs-string">&quot;click&quot;</span>)
+  <span class="function_ hljs-title">handleClick</span>(<span class="hljs-params"><span class="hljs-attr">evt</span>: <span class="class_ hljs-title">MouseEvent</span></span>) {}
+
+  <span class="hljs-comment">// Works: all event types listed by name are covered in the union</span>
+  <span class="hljs-meta">@listen</span>(eventSource, <span class="hljs-string">&quot;transitionstart&quot;</span>, <span class="hljs-string">&quot;animationstart&quot;</span>)
+  <span class="function_ hljs-title">handleAnimationStart</span>(<span class="hljs-params"><span class="hljs-attr">evt</span>: <span class="class_ hljs-title">AnimationEvent</span> | <span class="class_ hljs-title">TransitionEvent</span></span>) {}
+
+  <span class="hljs-comment">// Type error: &quot;focus&quot; is not a mouse event</span>
+  <span class="hljs-meta">@listen</span>(eventSource, <span class="hljs-string">&quot;focus&quot;</span>)
+  <span class="function_ hljs-title">handleFocus</span>(<span class="hljs-params"><span class="hljs-attr">evt</span>: <span class="class_ hljs-title">MouseEvent</span></span>) {}
+
+  <span class="hljs-comment">// Type error: type &quot;TransitionEvent&quot; is not covered</span>
+  <span class="hljs-meta">@listen</span>(eventSource, <span class="hljs-string">&quot;transitionend&quot;</span>, <span class="hljs-string">&quot;animationend&quot;</span>)
+  <span class="function_ hljs-title">handleAnimationEnd</span>(<span class="hljs-params"><span class="hljs-attr">evt</span>: <span class="class_ hljs-title">AnimationEvent</span></span>) {}
+
+  <span class="hljs-comment">// Type error: &quot;asdf&quot; is not a DOM event</span>
+  <span class="hljs-meta">@listen</span>(eventSource, <span class="hljs-string">&quot;asdf&quot;</span>)
+  <span class="function_ hljs-title">handleAsdf</span>(<span class="hljs-params"><span class="hljs-attr">evt</span>: <span class="class_ hljs-title">Event</span></span>) {}
+</code></pre></details> <h5 id="options-for-subscribe-for-eventtarget">Options for <code>@subscribe()</code> for EventTarget</h5> <ul> <li><strong><code>targetOrTargetFactory</code> (EventTarget | Promise&lt;EventTarget&gt; | (instance: T) =&gt; EventTarget | Promise&lt;EventTarget&gt;)</strong>: The event target (or event-target-returning function/promise) to subscribe to</li> <li><strong><code>eventNames</code> (string)</strong>: The event(s) to listen to. To subscribe to multiple events, pass a single string with the event names separated by whitespace</li> <li><strong><code>options</code> (object, optional)</strong>: Event handling options, consisting of...<ul> <li><strong>predicate (function <code>(instance: T, event: Event) =&gt; boolean</code>, optional)</strong>: If provided, controls whether or not the decorated method is called for a given event. Gets passed the element instance and the event object, and must return a boolean. Note that this method always handles the raw event object, before and eventual <code>transform()</code> is applied.</li> <li><strong>transform (function <code>&lt;U&gt;(instance: T, event: Event) =&gt; U</code>, optional)</strong>: If provided, transforms the event object into something else. The decorated class element must be compatible with the type returned from <code>transform()</code>.</li> <li><strong>activateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to activate the subscription (that is, when to actually start listening on the EventTarget). Defaults to <code>[&quot;init&quot;, &quot;connected&quot;]</code>.</li> <li><strong>deactivateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to deactivate the subscription (when to call <code>removeEventListener()</code> on the EventTarget). Defaults to <code>[&quot;disconnected&quot;]</code>.</li> <li><strong>capture (boolean, optional):</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#parameters">option for <code>addEventListener()</code></a></li> <li><strong>once (boolean, optional):</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#parameters">option for <code>addEventListener()</code></a></li> <li><strong>passive (boolean, optional):</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#parameters">option for <code>addEventListener()</code></a></li> <li><strong>signal (AbortSignal, optional):</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#parameters">option for <code>addEventListener()</code></a></li> </ul> </li> </ul> <h4 id="subscribe-to-signals-subscribesignal-options">Subscribe to Signals: <code>@subscribe(signal, options?)</code></h4> <p>Subscribe to a signal:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+<span class="hljs-keyword">import</span> { signal } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@preact/signals-core&quot;</span>;
+
+<span class="hljs-keyword">const</span> counter = <span class="function_ hljs-title">signal</span>(<span class="hljs-number">0</span>);
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">subscribe</span>(counter)
+  <span class="function_ hljs-title">test</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(counter.<span class="hljs-property">value</span>);
+  }
+}
+<span class="hljs-keyword">const</span> instance = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">Test</span>();
+counter.<span class="hljs-property">value</span> = <span class="hljs-number">1</span>;
+counter.<span class="hljs-property">value</span> = <span class="hljs-number">2</span>;
+counter.<span class="hljs-property">value</span> = <span class="hljs-number">3</span>;
+<span class="hljs-comment">// logs 0, 1, 2, 3</span>
+</code></pre><p>Any signal object that implements the following API should work:</p> <pre><code class="hljs language-typescript"><span class="hljs-keyword">type</span> <span class="class_ hljs-title">Signal</span>&lt;T&gt; = {
+  <span class="hljs-comment">// Takes an update callback and returns an unsubscribe function</span>
+  <span class="function_ hljs-title">subscribe</span>(<span class="hljs-attr">callback</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>): <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-comment">// Represents the current value</span>
+  <span class="hljs-attr">value</span>: T;
+};
+</code></pre><p>Because signals permanently represent reactive values, subscribing itself causes the method to be called with the then-current signal value. This is in contrast to subscribing to Event Targets, which do not represent values, but just happen to throw events around.</p> <h5 id="options-for-subscribe-for-signals">Options for <code>@subscribe()</code> for signals</h5> <ul> <li><strong><code>signal</code> (Signal)</strong>: The signal to subscribe to</li> <li><strong><code>options</code> (object, optional)</strong>: Update handling options, consisting of...<ul> <li><strong>predicate (function <code>(instance: T, value) =&gt; boolean</code>, optional)</strong>: If provided, controls whether or not the decorated method is called for a given signal update. Gets passed the element instance and the signal&#39;s value, and must return a boolean. Note that this method always handles the raw signal value, before and eventual <code>transform()</code> is applied.</li> <li><strong>transform (function <code>&lt;U&gt;(instance: T, value) =&gt; U</code>, optional)</strong>: If provided, transforms the signal value into something else. The decorated class element must be compatible with the type returned from <code>transform()</code>.</li> <li><strong>activateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to activate the subscription (that is, when to actually subscribe to the Signal). Defaults to <code>[&quot;init&quot;, &quot;connected&quot;]</code>.</li> <li><strong>deactivateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to unsubscribe from the signal. Defaults to <code>[&quot;disconnected&quot;]</code>.</li> </ul> </li> </ul> <h3 id="debounceoptions"><code>@debounce(options?)</code></h3> <p><strong>Method and class field decorator</strong> for debouncing method/function invocation:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, debounce } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// Debounce a class method</span>
+  @<span class="function_ hljs-title">debounce</span>()
+  <span class="function_ hljs-title">test1</span>(<span class="hljs-params">x</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(x);
+  }
+  <span class="hljs-comment">// Debounce a class field function</span>
+  @<span class="function_ hljs-title">debounce</span>() test2 = <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(x);
+}
+
+<span class="hljs-keyword">const</span> el = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">Test</span>();
+
+el.<span class="function_ hljs-title">test1</span>(<span class="hljs-number">1</span>);
+el.<span class="function_ hljs-title">test1</span>(<span class="hljs-number">2</span>);
+el.<span class="function_ hljs-title">test1</span>(<span class="hljs-number">3</span>);
+<span class="hljs-comment">// only logs &quot;3&quot;</span>
+
+el.<span class="function_ hljs-title">test2</span>(<span class="hljs-string">&quot;a&quot;</span>);
+el.<span class="function_ hljs-title">test2</span>(<span class="hljs-string">&quot;b&quot;</span>);
+el.<span class="function_ hljs-title">test2</span>(<span class="hljs-string">&quot;c&quot;</span>);
+<span class="hljs-comment">// only logs &quot;c&quot;</span>
+</code></pre><p><code>@debounce()</code> works with class methods, static methods, and class field functions.</p> <details> <summary>Notes for TypeScript</summary> <p>Debouncing a method or class field function makes it impossible for the method or function to return anything but <code>undefined</code>. TypeScript does currently not allow decorators to modify its target&#39;s type, so <code>@debounce()</code> can&#39;t do that. If you apply <code>@debounce()</code> to a method <code>(x: number) =&gt; number</code>, TypeScript will keep using this signature, even though the decorated method will no longer be able to return anything but <code>undefined</code>.</p> </details> <h4 id="options-for-debounce">Options for <code>@debounce()</code></h4> <ul> <li><strong><code>fn</code> (function, optional)</strong>: The debounce function to use. Defaults to <code>debounce.raf()</code>. The following debounce functions are available:<ul> <li><code>debounce.raf()</code>: uses <code>requestAnimationFrame()</code></li> <li><code>debounce.timeout(ms: number)</code>: uses <code>setTimeout()</code></li> <li><code>debounce.asap()</code>: runs the function after the next microtask</li> </ul> </li> </ul> <h3 id="observeobserverconstructor-options"><code>@observe(ObserverConstructor, options?)</code></h3> <p><strong>Method and class field decorator</strong> that sets up a <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver">MutationObserver</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver">ResizeObserver</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API">IntersectionObserver</a> with the element instance as the target and the decorated method as the callback. This enables the element to observe itself:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, observe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// Pass the observer constructor and relevant options</span>
+  @<span class="function_ hljs-title">observe</span>(<span class="class_ hljs-title">MutationObserver</span>, { <span class="hljs-attr">childList</span>: <span class="hljs-literal">true</span> })
+  <span class="function_ hljs-title">reactToChanges</span>(<span class="hljs-params">mutations, observer</span>) {
+    <span class="hljs-comment">// &quot;mutations&quot; = array of MutationRecord objects</span>
+    <span class="hljs-comment">// &quot;observer&quot; = the observer instance</span>
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(mutations);
+  }
+}
+
+<span class="hljs-keyword">const</span> el = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">Test</span>();
+el.<span class="hljs-property">innerText</span> = <span class="hljs-string">&quot;Test&quot;</span>; <span class="hljs-comment">// cause mutation</span>
+
+<span class="hljs-comment">// Test.reactToChanges() gets called asynchronously by the observer</span>
+</code></pre><p><code>@observe()</code> always observes the element that the decorated method belongs to and its reactions are always observably (heh) asynchronous. The decorator does little more than create an observer object with the options provided and the decorated method as the callback function. In theory this should work with every kind of DOM-related observer but has only been tested with MutationObserver, ResizeObserver and IntersectionObserver so far.</p> <h4 id="options-for-observe">Options for <code>@observe()</code></h4> <ul> <li><strong><code>Ctor</code> (function)</strong>: The observer constructor function (probably <code>MutationObserver</code>, <code>ResizeObserver</code>, or <code>IntersectionObserver</code>)</li> <li><strong><code>options</code> (object, optional)</strong>: The options for the observer (see MDN for options for <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe#options">MutationObserver</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#options">ResizeObserver</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver/observe#options">IntersectionObserver</a>)</li> <li><strong>activateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to start observing the element. Defaults to <code>[&quot;init&quot;, &quot;connected&quot;]</code>.</li> <li><strong>deactivateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to stop observing the element. Defaults to <code>[&quot;disconnected&quot;]</code>.</li> </ul> <h2 id="transformers">Transformers</h2> <p>Transformers define how the accessor decorators <code>@attr()</code> and <code>@prop()</code> implement attribute handling and type transformations. This includes converting content attributes from and to IDL attributes, type checks on IDL setters, and running side effects.</p> <h3 id="transformers-overview">Transformers overview</h3> <table> <thead> <tr> <th>Transformer</th> <th>Type</th> <th>Options</th> </tr> </thead> <tbody><tr> <td><code>string()</code></td> <td><code>string</code></td> <td></td> </tr> <tr> <td><code>href()</code></td> <td><code>string</code> (URL)</td> <td></td> </tr> <tr> <td><code>bool()</code></td> <td><code>boolean</code></td> <td></td> </tr> <tr> <td><code>number()</code></td> <td><code>number</code></td> <td><code>min</code>, <code>max</code>, <code>allowNaN</code>, <code>nullable</code></td> </tr> <tr> <td><code>int()</code></td> <td><code>bigint</code></td> <td><code>min</code>, <code>max</code>, <code>nullable</code></td> </tr> <tr> <td><code>json()</code></td> <td>Any (JSON serializable for use with <code>@attr()</code>)</td> <td><code>reviver</code>, <code>replacer</code></td> </tr> <tr> <td><code>list()</code></td> <td>Array</td> <td><code>separator</code>, <code>transform</code></td> </tr> <tr> <td><code>literal()</code></td> <td>Any</td> <td><code>values</code>, <code>transform</code></td> </tr> <tr> <td><code>any()</code></td> <td><code>any</code></td> <td></td> </tr> <tr> <td><code>event()</code></td> <td><code>function | null</code></td> <td></td> </tr> </tbody></table> <p>A transformer is just a bag of functions with the following type signature:</p> <pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="class_ hljs-title">Transformer</span>&lt;
+  T <span class="hljs-keyword">extends</span> <span class="class_ hljs-title">HTMLElement</span>,
+  <span class="class_ hljs-title">Value</span>,
+  <span class="class_ hljs-title">IntermediateValue</span> = <span class="class_ hljs-title">Value</span>,
+&gt; = {
+  <span class="hljs-comment">// Validates and/or transforms a value before it is used to initialize the</span>
+  <span class="hljs-comment">// accessor. Can also be used to run a side effect when the accessor</span>
+  <span class="hljs-comment">// initializes. Defaults to the identity function.</span>
+  <span class="hljs-attr">init</span>: <span class="hljs-function">(<span class="hljs-params">
+    <span class="hljs-attr">this</span>: T,
+    <span class="hljs-attr">value</span>: <span class="class_ hljs-title">Value</span>,
+    <span class="hljs-attr">context</span>: <span class="class_ hljs-title">ClassAccessorDecoratorContext</span>&lt;T, <span class="class_ hljs-title">Value</span>&gt;,
+    <span class="hljs-attr">isContentAttribute</span>: <span class="hljs-built_in">boolean</span>,
+  </span>) =&gt;</span> <span class="class_ hljs-title">Value</span>;
+  <span class="hljs-comment">// Turns content attribute values into IDL attribute values. Must never throw</span>
+  <span class="hljs-comment">// exceptions, and instead always just deal with its input. Must not cause any</span>
+  <span class="hljs-comment">// observable side effects. May return NO_VALUE in case the content attribute</span>
+  <span class="hljs-comment">// can&#x27;t be parsed, in which case the @attr() decorator must not change the</span>
+  <span class="hljs-comment">// IDL attribute value</span>
+  <span class="hljs-attr">parse</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">this</span>: T, <span class="hljs-attr">value</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span></span>) =&gt;</span> <span class="class_ hljs-title">Value</span> | <span class="hljs-keyword">typeof</span> <span class="constant_ hljs-variable">NO_VALUE</span>;
+  <span class="hljs-comment">// Decides if setter inputs, which may be of absolutely any type, should be</span>
+  <span class="hljs-comment">// accepted or rejected. Should throw for invalid values, just like setters on</span>
+  <span class="hljs-comment">// built-in elements may. Must not cause any observable side effects.</span>
+  <span class="hljs-attr">validate</span>: <span class="hljs-function">(<span class="hljs-params">
+    <span class="hljs-attr">this</span>: T,
+    <span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span>,
+    <span class="hljs-attr">isContentAttribute</span>: <span class="hljs-built_in">boolean</span>,
+  </span>) =&gt;</span> asserts value is <span class="class_ hljs-title">IntermediateValue</span>;
+  <span class="hljs-comment">// Transforms values that were accepted by validate() into the proper type by</span>
+  <span class="hljs-comment">// eg. clamping numbers, normalizing strings etc.</span>
+  <span class="hljs-attr">transform</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">this</span>: T, <span class="hljs-attr">value</span>: <span class="class_ hljs-title">IntermediateValue</span></span>) =&gt;</span> <span class="class_ hljs-title">Value</span>;
+  <span class="hljs-comment">// Turns IDL attribute values into content attribute values (strings), thereby</span>
+  <span class="hljs-comment">// controlling the attribute representation of an accessor together with</span>
+  <span class="hljs-comment">// updateContentAttr(). Must never throw, defaults to the String() function</span>
+  <span class="hljs-attr">stringify</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">this</span>: T, <span class="hljs-attr">value</span>: <span class="class_ hljs-title">Value</span></span>) =&gt;</span> <span class="hljs-built_in">string</span>;
+  <span class="hljs-comment">// Determines whether a new attribute value is equal to the old value. If this</span>
+  <span class="hljs-comment">// method returns true, reactive callbacks will not be triggered. Defaults to</span>
+  <span class="hljs-comment">// simple strict equality (===).</span>
+  <span class="hljs-attr">eql</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">this</span>: T, <span class="hljs-attr">a</span>: <span class="class_ hljs-title">Value</span>, <span class="hljs-attr">b</span>: <span class="class_ hljs-title">Value</span></span>) =&gt;</span> <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-comment">// Optionally run a side effect immediately before the accessor&#x27;s setter is</span>
+  <span class="hljs-comment">// invoked. Required by the event transformer.</span>
+  <span class="hljs-attr">beforeSet</span>: <span class="hljs-function">(<span class="hljs-params">
+    <span class="hljs-attr">this</span>: T,
+    <span class="hljs-attr">value</span>: <span class="class_ hljs-title">Value</span>,
+    <span class="hljs-attr">context</span>: <span class="class_ hljs-title">ClassAccessorDecoratorContext</span>&lt;T, <span class="class_ hljs-title">Value</span>&gt;,
+    <span class="hljs-attr">attributeRemoved</span>: <span class="hljs-built_in">boolean</span>,
+  </span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-comment">// Optionally transform the getter&#x27;s response. Required by the href</span>
+  <span class="hljs-comment">// transformer.</span>
+  <span class="hljs-attr">transformGet</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">this</span>: T, <span class="hljs-attr">value</span>: <span class="class_ hljs-title">Value</span></span>) =&gt;</span> <span class="class_ hljs-title">Value</span>;
+  <span class="hljs-comment">// Decides if, based on a new value, an attribute gets updated to match the</span>
+  <span class="hljs-comment">// new value (true/false) or removed (null). Only gets called when the</span>
+  <span class="hljs-comment">// transformer&#x27;s eql() method returns false. Defaults to a function that</span>
+  <span class="hljs-comment">// always returns true.</span>
+  <span class="hljs-attr">updateContentAttr</span>: <span class="hljs-function">(<span class="hljs-params">
+    <span class="hljs-attr">oldValue</span>: <span class="class_ hljs-title">Value</span> | <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">newValue</span>: <span class="class_ hljs-title">Value</span> | <span class="hljs-literal">null</span>,
+  </span>) =&gt;</span> <span class="hljs-built_in">boolean</span> | <span class="hljs-literal">null</span>;
+};
+</code></pre><p>Because transformers need to potentially do a lot of type juggling and bookkeeping, they are somewhat tricky to get right, but they are also always only a few self-contained lines of code. If you want to extend Ornament, you should simply clone one of the built-in transformers and modify it to your liking.</p> <h3 id="notes-for-all-transformers">Notes for all transformers</h3> <h4 id="for-use-with-both-prop-and-attr">For use with both <code>@prop()</code> and <code>@attr()</code></h4> <p>In principle all transformers can be used with both <code>@prop()</code> and <code>@attr()</code>. Very few transformers are limited to use with either decorator, such as <code>event()</code> (which makes very little sense outside of content attributes).</p> <p>The accessor&#39;s initial value serves as fallback value in case no other data is available (eg. when a content attribute gets removed). Transformers validate their initial value and most transformers contain reasonable default values (<code>&quot;&quot;</code> for <code>string()</code>, <code>0</code> for <code>number()</code> etc.).</p> <h4 id="for-use-with-attr">For use with <code>@attr()</code></h4> <p>A content attribute&#39;s IDL attribute value can be unset to the accessor&#39;s initial value by removing a previously set content attribute:</p> <p>As an example:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, string } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">string</span>()) accessor foo = <span class="hljs-string">&quot;default value&quot;</span>;
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">string</span>()) accessor bar = <span class="hljs-string">&quot;default value&quot;</span>;
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">string</span>()) accessor baz;
+}
+
+<span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">innerHTML</span> += <span class="hljs-string">`&lt;my-test foo=&quot;other value&quot;&gt;&lt;/my-test&gt;`</span>;
+</code></pre><p>The attributes <code>foo</code>, <code>bar</code> and <code>baz</code> behave as follows:</p> <ul> <li>The element initializes with a content attribute <strong><code>foo</code></strong> already set in HTML. The IDL attribute <code>foo</code> will therefore (because it uses the string type via the <code>string()</code> transformer) contain <code>&quot;other value&quot;</code>. Should the content attribute <code>foo</code> get removed, the IDL attribute will contain <code>&quot;default value&quot;</code>.</li> <li>The content attribute <strong><code>bar</code></strong> is not set in HTML, which will result in the IDL attribute <code>bar</code> containing the accessor&#39;s default value <code>&quot;default value&quot;</code>.</li> <li>The content attribute <strong><code>baz</code></strong> is also not set in HTML <em>and</em> the accessor has no initial value, so the <code>string()</code> transformer&#39;s built-in fallback value <code>&quot;&quot;</code> gets used.</li> </ul> <h3 id="transformer-string">Transformer <code>string()</code></h3> <p>Implements a string attribute or property. Modeled after built-in string attributes such as <code>id</code> and <code>lang</code>, it will always represent a string and stringify any and all non-string values.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, string } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">string</span>()) accessor foo = <span class="hljs-string">&quot;default value&quot;</span>;
+}
+</code></pre><h4 id="behavior-overview-for-transformer-string">Behavior overview for transformer <code>string()</code></h4> <table> <thead> <tr> <th>Operation</th> <th>IDL attribute value</th> <th>Content attribute (when used with <code>@attr()</code>)</th> </tr> </thead> <tbody><tr> <td>Set IDL attribute to <code>x</code></td> <td><code>String(x)</code></td> <td>IDL attribute value</td> </tr> <tr> <td>Set content attribute</td> <td>Content attribute value</td> <td>As set (equal to IDL attribute value)</td> </tr> <tr> <td>Remove content attribute</td> <td>Initial value or <code>&quot;&quot;</code></td> <td>Removed</td> </tr> </tbody></table> <h3 id="transformer-href">Transformer <code>href()</code></h3> <p>Implements a string attribute or property that works exactly like the <code>href</code> attribute on <code>&lt;a&gt;</code> in that it automatically turns relative URLs into absolute URLs.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, href } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">href</span>()) accessor foo = <span class="hljs-string">&quot;&quot;</span>;
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">Test</span>();
+
+<span class="hljs-comment">// Assuming that the page is served from localhost:</span>
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(testEl.<span class="hljs-property">foo</span>); <span class="hljs-comment">// &gt; &quot;&quot;</span>
+testEl.<span class="hljs-property">foo</span> = <span class="hljs-string">&quot;asdf&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(testEl.<span class="hljs-property">foo</span>); <span class="hljs-comment">// &gt; &quot;http://localhost/asdf&quot;</span>
+testEl.<span class="hljs-property">foo</span> = <span class="hljs-string">&quot;https://example.com/foo/bar/&quot;</span>;
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(testEl.<span class="hljs-property">foo</span>); <span class="hljs-comment">// &gt; &quot;https://example.com/foo/bar/&quot;</span>
+</code></pre><h4 id="behavior-overview-for-transformer-href">Behavior overview for transformer <code>href()</code></h4> <table> <thead> <tr> <th>Operation</th> <th>IDL attribute value</th> <th>Content attribute (when used with <code>@attr()</code>)</th> </tr> </thead> <tbody><tr> <td>Set IDL attribute to absolute URL (string)</td> <td>Absolute URL</td> <td>IDL attribute value</td> </tr> <tr> <td>Set IDL attribute to any other value <code>x</code></td> <td>Relative URL to <code>String(x)</code></td> <td>IDL attribute value</td> </tr> <tr> <td>Set content attribute to absolute URL (string)</td> <td>Absolute URL</td> <td>As set</td> </tr> <tr> <td>Set content attribute to any other string <code>x</code></td> <td>Relative URL to <code>x</code></td> <td>As set</td> </tr> <tr> <td>Remove content attribute</td> <td>Initial value or <code>&quot;&quot;</code></td> <td>Removed</td> </tr> </tbody></table> <h3 id="transformer-numberoptions">Transformer <code>number(options?)</code></h3> <p>Implements a number attribute with optional range constraints.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, number } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// With default options (see below)</span>
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">number</span>()) accessor foo = <span class="hljs-number">0</span>;
+
+  <span class="hljs-comment">// With all options set</span>
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">number</span>({ <span class="hljs-attr">min</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">10</span> })) accessor bar = <span class="hljs-number">0</span>;
+}
+</code></pre><p>Non-numbers get converted to numbers. The transformer allows <code>null</code> and <code>undefined</code> (with the latter converting to <code>null</code>) if the option <code>nullable</code> is set to <code>true</code>. If converting a non-number to a number results in <code>NaN</code> and the option <code>allowNaN</code> is not set to <code>true</code>, the property setter and the accessor&#39;s initializer throw exceptions.</p> <h4 id="options-for-transformer-number">Options for transformer <code>number()</code></h4> <ul> <li><strong><code>min</code> (number, optional)</strong>: Smallest possible value. Defaults to <code>-Infinity</code>. Content attribute values less than <code>min</code> get clamped, IDL attribute values get validated and (if too small) rejected with an exception. Can be omitted or set to <code>null</code> or <code>undefined</code> to signify no minimum value.</li> <li><strong><code>max</code> (number, optional)</strong>: Largest possible value. Defaults to <code>Infinity</code>. Content attribute values greater than <code>max</code> get clamped, IDL attribute values get validated and (if too large) rejected with an exception. Can be omitted or set to <code>null</code> or <code>undefined</code> to signify no maximum value.</li> <li><strong><code>allowNaN</code> (boolean, optional)</strong>: Whether or not <code>NaN</code> is allowed. Defaults to <code>false</code>.</li> <li><strong><code>nullable</code> (boolean, optional)</strong>: Whether or not <code>null</code> and <code>undefined</code> (with the latter converting to <code>null</code>) are allowed. Defaults to <code>false</code>.</li> </ul> <h4 id="behavior-overview-for-transformer-number">Behavior overview for transformer <code>number()</code></h4> <table> <thead> <tr> <th>Operation</th> <th>IDL attribute value</th> <th>Content attribute (when used with <code>@attr()</code>)</th> </tr> </thead> <tbody><tr> <td>Set IDL attribute to value <code>x</code></td> <td><code>minmax(opts.min, opts.max, toNumber(x, allowNaN))</code></td> <td>String(IDL attribute value)</td> </tr> <tr> <td>Set IDL attribute to out-of-range value</td> <td>RangeError</td> <td>String(IDL attribute value)</td> </tr> <tr> <td>Set IDL attribute to <code>null</code> or <code>undefined</code></td> <td><code>null</code> is <code>nullable</code> is true, otherwise <code>0</code></td> <td>Removed if <code>nullable</code> is true, otherwise String(IDL attribute value)</td> </tr> <tr> <td>Set content attribute to value <code>x</code></td> <td><code>minmax(opts.min, opts.max, toNumber(x, allowNaN))</code></td> <td>As set</td> </tr> <tr> <td>Set content attribute to non-numeric value</td> <td>No change, or NaN if option <code>allowNaN</code> is <code>true</code></td> <td>As set</td> </tr> <tr> <td>Set content attribute to out-of-range value</td> <td>No change</td> <td>As set</td> </tr> <tr> <td>Remove content attribute</td> <td><code>null</code> is <code>nullable</code> is true, otherwise initial value or <code>0</code></td> <td>Removed</td> </tr> </tbody></table> <h3 id="transformer-intoptions">Transformer <code>int(options?)</code></h3> <p>Implements a bigint attribute. Content attribute values are expressed as plain numeric strings without the tailing <code>n</code> used in JavaScript&#39;s BigInt.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, int } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// With default options (see below)</span>
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">int</span>()) accessor foo = <span class="hljs-number">0n</span>;
+
+  <span class="hljs-comment">// With all options set</span>
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">int</span>({ <span class="hljs-attr">min</span>: <span class="hljs-number">0n</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">10n</span>, <span class="hljs-attr">nullable</span>: <span class="hljs-literal">false</span> })) accessor bar = <span class="hljs-number">0n</span>;
+}
+</code></pre><p>The transformer allows <code>null</code> and <code>undefined</code> (with the latter converting to <code>null</code>) if the option <code>nullable</code> is set to <code>true</code>. In all other cases, the IDL attribute setter throws an exception when its input cannot be converted to BigInt.</p> <h4 id="options-for-transformer-int">Options for transformer <code>int()</code></h4> <ul> <li><strong><code>min</code> (bigint, optional)</strong>: Smallest possible value. Defaults to the minimum possible bigint value. Content attribute values less than <code>min</code> get clamped, IDL attribute values get validated and (if too small) rejected with an exception. Can be omitted or set to <code>null</code> or <code>undefined</code> to signify no minimum value.</li> <li><strong><code>max</code> (bigint, optional)</strong>: Largest possible value. Defaults to the maximum possible bigint value. Content attribute values greater than <code>max</code> get clamped, IDL attribute values get validated and (if too large) rejected with an exception. Can be omitted or set to <code>null</code> or <code>undefined</code> to signify no maximum value.</li> <li><strong><code>nullable</code> (boolean, optional)</strong>: Whether or not <code>null</code> and <code>undefined</code> (with the latter converting to <code>null</code>) are allowed. Defaults to <code>false</code>.</li> </ul> <h4 id="behavior-overview-for-transformer-int">Behavior overview for transformer <code>int()</code></h4> <table> <thead> <tr> <th>Operation</th> <th>IDL attribute value</th> <th>Content attribute (when used with <code>@attr()</code>)</th> </tr> </thead> <tbody><tr> <td>Set IDL attribute to value <code>x</code></td> <td><code>minmax(ops.min, opts.max, BigInt(x))</code></td> <td>String(IDL attribute value)</td> </tr> <tr> <td>Set IDL attribute to out-of-range value</td> <td>RangeError</td> <td>String(IDL attribute value)</td> </tr> <tr> <td>Set IDL attribute to <code>null</code> or <code>undefined</code></td> <td><code>null</code> is <code>nullable</code> is true, otherwise <code>0n</code></td> <td>Removed if <code>nullable</code> is true, otherwise String(IDL attribute value)</td> </tr> <tr> <td>Set IDL attribute to non-int value</td> <td><code>BigInt(x)</code></td> <td>String(IDL attribute value)</td> </tr> <tr> <td>Set content attribute to value <code>x</code></td> <td><code>minmax(opts.min, opts.max, BigInt(x))</code></td> <td>As set</td> </tr> <tr> <td>Set non-int content attribute</td> <td>Clamp to Int if float, otherwise no change</td> <td>As set</td> </tr> <tr> <td>Remove content attribute</td> <td><code>null</code> is <code>nullable</code> is true, otherwise initial value or <code>0</code></td> <td>Removed</td> </tr> </tbody></table> <h3 id="transformer-bool">Transformer <code>bool()</code></h3> <p>Implements a boolean attribute. Modeled after built-in boolean attributes such as <code>disabled</code>. Changes to the IDL attribute values <em>toggle</em> the content attribute and do not just change the content attribute&#39;s value.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, bool } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">DemoElement</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">bool</span>()) accessor foo = <span class="hljs-literal">false</span>;
+}
+</code></pre><p>In this case, the IDL attribute <code>foo</code> always represents a boolean. Any non-boolean value gets coerced to booleans. If the content attribute <code>foo</code> gets set to any value (including the empty string), <code>foo</code> returns <code>true</code> - only a missing content attribute counts as <code>false</code>. Conversely, the content attribute will be set to the empty string when the IDL attribute is <code>true</code> and the attribute will be removed when the IDL attribute is <code>false</code>.</p> <p>If you want your content attribute to represent <code>&quot;false&quot;</code> as a string value, you can use the <code>literal()</code> transformer with the strings <code>&quot;true&quot;</code> and <code>&quot;false&quot;</code>.</p> <h4 id="behavior-overview-for-transformer-bool">Behavior overview for transformer <code>bool()</code></h4> <table> <thead> <tr> <th>Operation</th> <th>IDL attribute value</th> <th>Content attribute (when used with <code>@attr()</code>)</th> </tr> </thead> <tbody><tr> <td>Set IDL attribute to value <code>x</code></td> <td><code>Boolean(x)</code></td> <td>Removed when IDL attribute is <code>false</code>, otherwise set to empty string</td> </tr> <tr> <td>Set content attribute to <code>x</code></td> <td><code>true</code></td> <td>As set</td> </tr> <tr> <td>Remove content attribute</td> <td><code>false</code></td> <td>Removed</td> </tr> </tbody></table> <h3 id="transformer-listoptions">Transformer <code>list(options?)</code></h3> <p>Implements an attribute with an array of values, defined by another transformer. The <code>list()</code> transformer passes individual items to the transformer passed in the options and deals with content attributes by splitting and/joining stringified array contents:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, list, number } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">list</span>({ <span class="hljs-attr">transform</span>: <span class="function_ hljs-title">number</span>(), <span class="hljs-attr">separator</span>: <span class="hljs-string">&quot;,&quot;</span> })) accessor numbers = [<span class="hljs-number">0</span>];
+}
+</code></pre><p>This parses the content attribute <code>numbers</code> as a comma-separated list of strings, which are in turn parsed into numbers by the <code>number()</code> transformer passed to the <code>list()</code> transformers options. If the content attribute gets set to something other than a comma-separated list of numeric strings, the attribute&#39;s value resets back to the initial value <code>[0]</code>. Any attempt at setting the IDL attribute to values other arrays of will result in an exception outright. Depending on the transformer the array&#39;s content may be subject to further validation and/or transformations.</p> <p>Note that when parsing a content attribute string, values are trimmed and empty strings are filtered out before they are passed on to the inner transformer:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, list, number } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">list</span>({ <span class="hljs-attr">transform</span>: <span class="function_ hljs-title">number</span>() })) accessor foo = [<span class="hljs-number">0</span>];
+}
+<span class="hljs-keyword">const</span> el = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">Test</span>();
+el.<span class="function_ hljs-title">setAttribute</span>(<span class="hljs-string">&quot;foo&quot;</span>, <span class="hljs-string">&quot;   1, , ,,2   ,3     &quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(el.<span class="hljs-property">foo</span>); <span class="hljs-comment">// &gt; [1, 2, 3]</span>
+</code></pre><h4 id="options-for-listoptions">Options for <code>list(options?)</code></h4> <ul> <li><strong><code>separator</code> (string, optional)</strong>: Separator string. Defaults to <code>&quot;,&quot;</code></li> <li><strong><code>transform</code> (Transformer)</strong>: Transformer to use, eg. <code>string()</code> for a list of strings, <code>number()</code> for numbers etc.</li> </ul> <h4 id="behavior-overview-for-transformer-list">Behavior overview for transformer <code>list()</code></h4> <table> <thead> <tr> <th>Operation</th> <th>IDL attribute value</th> <th>Content attribute (when used with <code>@attr()</code>)</th> </tr> </thead> <tbody><tr> <td>Set IDL attribute</td> <td>Exception is not an array, otherwise array with content guarded by <code>options.transformer.validate</code></td> <td>IDL attribute values joined with <code>options.separator</code></td> </tr> <tr> <td>Set content attribute</td> <td>Attribute value is split on the separator, then trimmed, then non-empty strings are passed into <code>options.transformer.parse</code></td> <td>As set</td> </tr> <tr> <td>Remove content attribute</td> <td>Initial value or empty array</td> <td>Removed</td> </tr> </tbody></table> <h3 id="transformer-literaloptions">Transformer <code>literal(options?)</code></h3> <p>Implements an attribute with a finite number of valid values. Should really be called &quot;enum&quot;, but that&#39;s a reserved word in JavaScript. It works by declaring the valid list of values and a matching transformer. If, for example, the list of valid values consists of strings, then the <code>string()</code> transformer is the right transformer to use:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, literal, string } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">literal</span>({ <span class="hljs-attr">values</span>: [<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-string">&quot;B&quot;</span>], <span class="hljs-attr">transform</span>: <span class="function_ hljs-title">string</span>() })) accessor foo =
+    <span class="hljs-string">&quot;A&quot;</span>;
+}
+</code></pre><p>In this case, the content attribute can be set to any value (as is usual in HTML), but if the content attribute gets set to a value other than <code>A</code> or <code>B</code>, the IDL attribute&#39;s value will remain unchanged. Any attempt at setting the IDL attribute to values other than <code>A</code> or <code>B</code> will result in an exception.</p> <p>The default value is either the value the accessor was initialized with or, if the accessor has no initial value, the first element in <code>values</code>.</p> <h4 id="options-for-literaloptions">Options for <code>literal(options?)</code></h4> <ul> <li><strong><code>values</code> (array)</strong>: List of valid values. Must contain at least one element.</li> <li><strong><code>transform</code> (Transformer)</strong>: Transformer to use, eg. <code>string()</code> for a list of strings, <code>number()</code> for numbers etc.</li> </ul> <h4 id="behavior-overview-for-transformer-literal">Behavior overview for transformer <code>literal()</code></h4> <table> <thead> <tr> <th>Operation</th> <th>IDL attribute value</th> <th>Content attribute (when used with <code>@attr()</code>)</th> </tr> </thead> <tbody><tr> <td>Set IDL attribute value to <code>x</code></td> <td>Exception if not in <code>options.values</code>, otherwise defined by <code>options.transformer.validate</code></td> <td>Defined by <code>options.transformer.stringify</code></td> </tr> <tr> <td>Set content attribute to <code>x</code></td> <td>Parsed by <code>options.transformer.parse</code>. If the result is in <code>options.values</code>, result, otherwise no change</td> <td>As set</td> </tr> <tr> <td>Remove attribute</td> <td>Initial value or first element in <code>options.values</code></td> <td>Removed</td> </tr> </tbody></table> <h3 id="transformer-json">Transformer <code>json()</code></h3> <p>Implements an attribute that can take any value. When used with <code>@attr()</code>, the value must be serializable with JSON in order to be reflected as a content attribute. When used with <code>@prop()</code>, no restrictions apply.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, prop, json } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// Must be valid JSON when used with @attr()</span>
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">json</span>()) accessor foo = { <span class="hljs-attr">user</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-attr">email</span>: <span class="hljs-string">&quot;&quot;</span> };
+  <span class="hljs-comment">// When used with prop, any value can be used</span>
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">json</span>()) accessor foo = { <span class="hljs-attr">value</span>: <span class="hljs-number">42n</span> };
+}
+</code></pre><p>Content attributes, defined with <code>@attr()</code>, are parsed with <code>JSON.parse()</code>. In this case, any invalid JSON is represented with the data used to initialize the accessor. Using the IDL attribute&#39;s setter with inputs than can&#39;t be serialized with JSON.<code>stringify()</code> throws errors. This transformer is really just a wrapper around <code>JSON.parse()</code> and <code>JSON.stringify()</code> without any object validation. Equality is checked with <code>===</code>.</p> <details> <summary>Notes for TypeScript</summary> Even though the transformer will accept literally any JSON-serializable value at runtime, TypeScript may infer a more restrictive type from the accessor's initial value. Decorators can't currently change the type of class members they are applied to, so you man need to provide a type annotation. </details> <h4 id="options-for-jsonoptions">Options for <code>json(options?)</code></h4> <ul> <li><strong><code>reviver</code> (function, optional)</strong>: The <code>reviver</code> argument to use with <code>JSON.parse()</code>, if any. Only of use when used with <code>@attr()</code></li> <li><strong><code>replacer</code> (function, optional)</strong>: The <code>replacer</code> argument to use with <code>JSON.stringify()</code>, if any. Only of use when used with <code>@attr()</code></li> </ul> <h4 id="behavior-overview-for-transformer-json-when-used-with-attr">Behavior overview for transformer <code>json()</code> (when used with <code>@attr()</code>)</h4> <table> <thead> <tr> <th>Operation</th> <th>IDL attribute value</th> <th>Content attribute</th> </tr> </thead> <tbody><tr> <td>Set IDL attribute value to <code>x</code></td> <td><code>JSON.parse(JSON.stringify(x))</code></td> <td><code>JSON.stringify(idlValue, null, options.reviver)</code></td> </tr> <tr> <td>Set content attribute to <code>x</code></td> <td>No change if invalid JSON, otherwise <code>JSON.parse(x, options.receiver)</code></td> <td>As set</td> </tr> <tr> <td>Remove content attribute</td> <td>Initial value or <code>undefined</code></td> <td>Removed</td> </tr> </tbody></table> <h4 id="behavior-overview-for-transformer-json-when-used-with-prop">Behavior overview for transformer <code>json()</code> (when used with <code>@prop()</code>)</h4> <table> <thead> <tr> <th>Operation</th> <th>IDL attribute value</th> <th>Content attribute</th> </tr> </thead> <tbody><tr> <td>Set IDL attribute value to <code>x</code></td> <td><code>x</code></td> <td>-</td> </tr> </tbody></table> <h3 id="transformer-any">Transformer <code>any()</code></h3> <p>Implements a transformer that does no type checking at all and falls back to the global <code>String</code> function for serializing to content attributes. Use this if you really don&#39;t care about types.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, prop, any } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">any</span>()) accessor <span class="hljs-attr">whatever</span>: any = <span class="hljs-number">42</span>;
+}
+</code></pre><p>Transformers returned from calling <code>any()</code> make for great prototypes for your own custom transformer. Just note that transformers are bags of functions and <em>not</em> classes, so you will need to use <code>Object.setPrototypeOf()</code> and friends to &quot;extend&quot; transformers.</p> <details> <summary>Notes for TypeScript</summary> Even though the transformer will accept literally any value at runtime, TS may infer a more restrictive type from the accessor's initial values. Decorators can't currently change the type of class members they are applied to, so you may need to provide an `any` type annotation. </details> <h3 id="transformer-event">Transformer <code>event()</code></h3> <p>Implements old-school inline event handler attributes in the style of <code>onclick=&quot;console.log(42)&quot;</code>. To work properly, this should only be used in conjunction with <code>@attr()</code> (with reflectivity enabled) and on a non-private, non-static accessor that has a name starting with <code>on</code>:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, eventHandler } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">event</span>()) accessor <span class="hljs-attr">onfoo</span>: (<span class="hljs-function">(<span class="hljs-params">evt: Event</span>) =&gt;</span> <span class="hljs-keyword">void</span>) | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>;
+}
+</code></pre><p>This can then be used in HTML:</p> <pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">my-test</span> <span class="hljs-attr">onfoo</span>=<span class="hljs-string">&quot;console.log(&#x27;Foo event:&#x27;, event)&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">my-test</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+  <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">querySelector</span>(<span class="hljs-string">&quot;my-test&quot;</span>).<span class="function_ hljs-title">dispatchEvent</span>(<span class="hljs-keyword">new</span> <span class="class_ hljs-title">Event</span>(<span class="hljs-string">&quot;foo&quot;</span>));
+  <span class="hljs-comment">// Logs &quot;&#x27;Foo event:&#x27;, Event{type: &quot;foo&quot;}&quot;</span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre><p>Or in JavaScript:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> testEl = <span class="hljs-variable language_">document</span>.<span class="function_ hljs-title">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+testEl.<span class="hljs-property">onfoo</span> = <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Foo event:&quot;</span>, event);
+testEl.<span class="function_ hljs-title">dispatchEvent</span>(<span class="hljs-keyword">new</span> <span class="class_ hljs-title">Event</span>(<span class="hljs-string">&quot;foo&quot;</span>));
+<span class="hljs-comment">// Logs &quot;&#x27;Foo event:&#x27;, Event{type: &quot;foo&quot;}&quot;</span>
+</code></pre><p>Regular &quot;proper&quot; <code>addEventListener()</code> is obviously also always available.</p> <p>It should be noted that for built-in events that bubble, inline event handlers can be added to <em>any</em> element in order to facilitate event delegation. These event handlers are considered global event handlers, and all custom inline event handlers are obviously not global - they can only be used on the components that explicitly implement them.</p> <h4 id="behavior-overview-for-transformer-event">Behavior overview for transformer <code>event()</code></h4> <p>The behavior of <code>event()</code> matches the behavior of built-in event handlers like <code>onclick</code>.</p> <h2 id="event-bus">Event Bus</h2> <p>Ornament runs intra-component communication over an internal event bus. You will almost certainly never need to access it directly, but there is is an API just in case.</p> <table> <thead> <tr> <th>Event</th> <th>Cause</th> <th>Event type</th> <th>Payload (<code>args</code> property on the event object)</th> </tr> </thead> <tbody><tr> <td><code>init</code></td> <td>Constructor ran to completion</td> <td><code>OrnamentEvent&lt;&quot;init&quot;&gt;</code></td> <td><code>[]</code></td> </tr> <tr> <td><code>connected</code></td> <td><code>connectedCallback()</code> fired</td> <td><code>OrnamentEvent&lt;&quot;connected&quot;&gt;</code></td> <td><code>[]</code></td> </tr> <tr> <td><code>disconnected</code></td> <td><code>disconnectedCallback()</code> fired</td> <td><code>OrnamentEvent&lt;&quot;disconnected&quot;&gt;</code></td> <td><code>[]</code></td> </tr> <tr> <td><code>adopted</code></td> <td><code>adoptedCallback()</code> fired</td> <td><code>OrnamentEvent&lt;&quot;adopted&quot;&gt;</code></td> <td><code>[]</code></td> </tr> <tr> <td><code>prop</code></td> <td>IDL attribute change (<code>@prop</code> or <code>@attr</code>)</td> <td><code>OrnamentEvent&lt;&quot;prop&quot;&gt;</code></td> <td><code>[Name: string | symbol, NewValue: any]</code></td> </tr> <tr> <td><code>attr</code></td> <td>Content attribute change (<code>@attr</code>)</td> <td><code>OrnamentEvent&lt;&quot;attr&quot;&gt;</code></td> <td><code>[Name: string, OldValue: string | null, NewValue: string | null]</code></td> </tr> <tr> <td><code>formAssociated</code></td> <td><code>formAssociatedCallback()</code> fired</td> <td><code>OrnamentEvent&lt;&quot;formAssociated&quot;&gt;</code></td> <td>`[Owner: HTMLFormElement | null]</td> </tr> <tr> <td><code>formReset</code></td> <td><code>formResetCallback()</code> fired</td> <td><code>OrnamentEvent&lt;&quot;formReset&quot;&gt;</code></td> <td><code>[]</code></td> </tr> <tr> <td><code>formDisabled</code></td> <td><code>formDisabledCallback()</code> fired</td> <td><code>OrnamentEvent&lt;&quot;formDisabled&quot;&gt;</code></td> <td><code>[Disabled: boolean]</code></td> </tr> <tr> <td><code>formStateRestore</code></td> <td><code>formStateRestoreCallback()</code> fired</td> <td><code>OrnamentEvent&lt;&quot;formStateRestore&quot;&gt;</code></td> <td><code>[Reason: &quot;autocomplete&quot; | &quot;restore&quot;]</code></td> </tr> </tbody></table> <details> <summary>Notes for TypeScript</summary> <p>You can declare additions to the global interface <code>OrnamentEventMap</code> to extend this list with your own events.</p> </details> <h3 id="triggerinstance-name-payload"><code>trigger(instance, name, ...payload)</code></h3> <p>Dispatches an event on the event bus for the component <code>instance</code>. The arguments <code>payload</code> must be all the for the <code>args</code> property on the event object on the event object (eg. a single boolean for for <code>formDisabled</code>).</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { trigger } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// Dispatches an &quot;connected&quot; event. This will run all methods on &quot;someElement&quot;</span>
+<span class="hljs-comment">// that were decorated with @connect().</span>
+<span class="function_ hljs-title">trigger</span>(someElement, <span class="hljs-string">&quot;connected&quot;</span>); <span class="hljs-comment">// note no args</span>
+
+<span class="hljs-comment">// Dispatches an &quot;prop&quot; event. This will run all methods on &quot;someElement&quot;</span>
+<span class="hljs-comment">// that were decorated with @reactive(), provided the &quot;foo&quot; key is not excluded</span>
+<span class="hljs-comment">// in the setup of the @reactive decorator</span>
+<span class="function_ hljs-title">trigger</span>(someElement, <span class="hljs-string">&quot;prop&quot;</span>, <span class="hljs-string">&quot;foo&quot;</span>, <span class="hljs-number">42</span>); <span class="hljs-comment">// note args for prop name and value</span>
+</code></pre><h3 id="listeninstance-name-callback-options"><code>listen(instance, name, callback, options?)</code></h3> <p>Listens to events on the event bus for the component <code>instance</code>. The event bus is an instance of <code>EventTarget</code>, which means that you can pass any and all <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#options">event listener options</a> as the last argument.</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { listen } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// Listen for &quot;prop&quot; event on the event bus for &quot;someElement&quot;</span>
+<span class="function_ hljs-title">listen</span>(someElement, <span class="hljs-string">&quot;prop&quot;</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [name, value] = event.<span class="hljs-property">args</span>;
+  <span class="hljs-variable language_">window</span>.<span class="function_ hljs-title">alert</span>(<span class="hljs-string">`Attribute <span class="hljs-subst">${name}</span> was changed to <span class="hljs-subst">${value}</span>!`</span>);
+});
+</code></pre><h3 id="class-ornamenteventk-extends-keyof-ornamenteventmap">class <code>OrnamentEvent&lt;K extends keyof OrnamentEventMap&gt;</code></h3> <p>Event type used on the internal event bus. Only really useful if you want to create your own events while using TypeScript.</p> <h2 id="symbols">Symbols</h2> <h3 id="no_value"><code>NO_VALUE</code></h3> <p>Transformers can return a special symbol to indicate that they were unable to parse an input. This symbol is exported by Ornament as <code>NO_VALUE</code> or available under the key <code>&quot;ORNAMENT_NO_VALUE&quot;</code> in the global symbol registry.</p> <h2 id="troubleshooting">Troubleshooting</h2> <h3 id="typeerror-cannot-read-private-member-from-an-object-whose-class-did-not-declare-it">TypeError: Cannot read private member from an object whose class did not declare it</h3> <p>This usually happens when methods decorated with <code>@init()</code> run at inopportune times. Consider the following example:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, init } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="function_ hljs-title">otherDecorator</span>(<span class="hljs-params">target</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">class</span> <span class="class_ hljs-title">OtherMixin</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">target</span> {
+    #secret = <span class="hljs-number">42</span>;
+    <span class="hljs-keyword">get</span> <span class="function_ hljs-title">foo</span>() {
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.#secret; <span class="hljs-comment">// &lt;- Fails because @init() runs too early</span>
+    }
+  };
+}
+
+@otherDecorator
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;foo-bar&quot;</span>) <span class="hljs-comment">// If this was before @otherDecorator it would work</span>
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">init</span>() <span class="hljs-comment">// Runs after the constructor of Test has run, does not wait for the mixin class</span>
+  <span class="function_ hljs-title">method</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">foo</span>);
+  }
+}
+
+<span class="hljs-keyword">new</span> <span class="class_ hljs-title">Test</span>();
+</code></pre><p>In this scenario, <code>@define()</code> sets up to trigger <code>@init()</code> once the constructor of <code>Test</code> has finished. Inside <code>Test</code>, the method <code>method()</code> accesses the getter <code>foo</code> which is provided by the decorator <code>@otherDecorator</code>. The getter in turn tries to accesses the private field <code>#secret</code>, but fails with an exception. This happens because <code>@define()</code> installs logic that triggers the init event on the constructor for class <code>Test</code>, but the resulting class gets extended in turn by <code>OtherMixin</code>.</p> <pre><code class="hljs language-pseudocode">OtherMixinConstructor(
+  DefineMixinConstructor(
+    TestConstructor(
+      HTMLElementConstructor()
+    )
+    // &lt;---- init event happens here, after TestConstructor has run
+  )
+  // &lt;---- finishes only after the init event has happened
+)
+</code></pre><p>This results in the event running before the private field <code>#secret</code> is fully initialized. The simplest way to remedy this situation is to apply <code>@otherDecorator</code> first. You might also want to consider using <code>@connected()</code> instead of <code>@init()</code>.</p> <p>This is not a bug in Ornament, but rather a simple effect of how mixin classes are subclasses of their targets. Because <code>@init()</code> is equivalent to calling the decorated method in the constructor, the effect can be reproduced <a href="https://babeljs.io/repl#?browsers=defaults&build=&builtIns=false&corejs=3.21&spec=false&loose=false&code_lz=GYVwdgxgLglg9mABAEwKYTgJwIZSwCim0wHNUoBKRAbwChFFNyRMkIAbbAZy8QBF0WXFgCyMAB4wkqcVFRhkvIqXI16DRAGIu6JlEQBeRABYATAG51DMvuCpcLVPip0NGvSyRQAFjC4A6bV1ySzcAX3UwywiGWgABNAwcPExaDm5eAEE1BgwwLihMEGgCFytEPK44dlR_djgSQl8AuwcmClDECIjaMFQAd0RM50sgA&debug=false&forceAllTransforms=false&modules=false&shippedProposals=false&circleciRepo=&evaluate=true&fileSize=false&timeTravel=false&sourceType=module&lineWrap=true&presets=env%2Creact%2Cstage-2&prettier=false&targets=&version=7.24.5&externalPlugins=%40babel%2Fplugin-proposal-decorators%407.23.9&assumptions=%7B%7D">without involving Ornament at all:</a></p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="function_ hljs-title">decorator</span>(<span class="hljs-params">target</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">class</span> <span class="class_ hljs-title">DecoratorMixin</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">target</span> {
+    #secret = <span class="hljs-number">42</span>;
+    <span class="hljs-keyword">get</span> <span class="function_ hljs-title">feature</span>() {
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.#secret;
+    }
+  };
+}
+
+@decorator
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">A</span> {
+  <span class="function_ hljs-title">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">feature</span>);
+  }
+}
+
+<span class="hljs-keyword">new</span> <span class="function_ hljs-title">A</span>();
+</code></pre><h2 id="cookbook">Cookbook</h2> <h3 id="debounced-reactive">Debounced reactive</h3> <p><code>@reactive()</code> causes its decorated method to get called for once for <em>every</em> attribute and property change. This is sometimes useful, but sometimes you will want to batch method calls for increased efficiency. This is easy if you combine <code>@reactive()</code> with <code>@debounce()</code>:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, prop, reactive, debounce int } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="class_ hljs-title">TestElement</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">int</span>()) accessor value = <span class="hljs-number">0</span>;
+
+  @<span class="function_ hljs-title">reactive</span>()
+  @<span class="function_ hljs-title">debounce</span>()
+  #<span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Value is now&quot;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> el = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">TestElement</span>();
+el.<span class="hljs-property">value</span> = <span class="hljs-number">1</span>;
+el.<span class="hljs-property">value</span> = <span class="hljs-number">2</span>;
+el.<span class="hljs-property">value</span> = <span class="hljs-number">2</span>;
+
+<span class="hljs-comment">// Only logs &quot;Value is now 3&quot;</span>
+</code></pre><h3 id="rendering-shadow-dom-with-uhtml">Rendering shadow DOM with uhtml</h3> <p>Ornament does not directly concern itself with rendering Shadow DOM, but you can combine Ornament with suitable libraries such as <a href="https://github.com/WebReflection/uhtml">uhtml</a>:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { render, html } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;uhtml&quot;</span>;
+<span class="hljs-keyword">import</span> { define, prop, reactive, debounce int } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;counter-element&quot;</span>)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="class_ hljs-title">CounterElement</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">int</span>()) accessor value = <span class="hljs-number">0</span>;
+
+  @<span class="function_ hljs-title">reactive</span>()
+  @<span class="function_ hljs-title">debounce</span>()
+  #<span class="function_ hljs-title">render</span>(<span class="hljs-params"></span>) {
+    <span class="function_ hljs-title">render</span>(
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">shadowRoot</span> ?? <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">attachShadow</span>({ <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;open&quot;</span> }),
+      html`<span class="language-xml">
+        Current value: </span><span class="hljs-subst">${<span class="hljs-variable language_">this</span>.value}</span><span class="language-xml">
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">.click</span>=<span class="hljs-string">{()</span> =&gt;</span> ++this.value}&gt;Add 1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      `</span>
+    );
+  }
+}
+</code></pre><p>This component uses an event handler to update the decorated accessor <code>value</code>, which in turn causes the <code>@reactive()</code> method <code>#render()</code> to update the UI accordingly - debounced with <code>@debounce()</code> for batched updates.</p> <h3 id="rendering-shadow-dom-with-preact">Rendering shadow DOM with Preact</h3> <p>You can also use <a href="https://preactjs.com/">Preact</a> to render shadow DOM:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, number, reactive, connected } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="class_ hljs-title">Fragment</span>, h, render } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;preact&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;click-counter&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">ClickCounter</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  #shadow = <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">attachShadow</span>({ <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;closed&quot;</span> });
+
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">number</span>({ <span class="hljs-attr">min</span>: <span class="hljs-number">0</span> }), { <span class="hljs-attr">reflective</span>: <span class="hljs-literal">false</span> }) accessor up = <span class="hljs-number">0</span>;
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">number</span>({ <span class="hljs-attr">min</span>: <span class="hljs-number">0</span> }), { <span class="hljs-attr">reflective</span>: <span class="hljs-literal">false</span> }) accessor down = <span class="hljs-number">0</span>;
+
+  @<span class="function_ hljs-title">connected</span>()
+  @<span class="function_ hljs-title">reactive</span>()
+  <span class="function_ hljs-title">render</span>(<span class="hljs-params"></span>) {
+    <span class="function_ hljs-title">render</span>(
+      <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> this.up++}&gt;+1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        Total: <span class="hljs-tag">&lt;<span class="hljs-name">b</span>&gt;</span>{this.up + this.down}<span class="hljs-tag">&lt;/<span class="hljs-name">b</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> this.down--}&gt;-1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/&gt;</span></span>,
+      <span class="hljs-variable language_">this</span>.#shadow,
+    );
+  }
+}
+</code></pre><p>In the case of Web Components and Ornament, it makes some sense to use class members for local state instead of hooks.</p> <h3 id="read-only-property">Read-only property</h3> <p>You can create a writable private accessor with <code>@prop()</code> and manually expose a public getter. This keeps reactive functions working, but only allows readonly access from outside the component:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, reactive, string } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// Writable, but private</span>
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">string</span>()) accessor #foo = <span class="hljs-string">&quot;Starting value&quot;</span>;
+
+  <span class="hljs-comment">// Provides public readonly access to #foo</span>
+  <span class="hljs-keyword">get</span> <span class="function_ hljs-title">foo</span>() {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.#foo;
+  }
+
+  <span class="function_ hljs-title">change</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">this</span>.#foo++;
+  }
+
+  <span class="hljs-comment">// Reacts to changes to #foo, which can only be caused by calling the method</span>
+  <span class="hljs-comment">// `change()`</span>
+  @<span class="function_ hljs-title">reactive</span>()
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-variable language_">this</span>.#foo);
+  }
+}
+</code></pre><h3 id="custom-logic-in-idl-attributes">Custom logic in IDL attributes</h3> <p>The point of the <code>accessor</code> keyword is to generate a getter, setter, and private property in a way that makes it easy to apply a decorator to everything at once. But because the getters and setters are auto-generated, there is no non-decorator way to attach custom logic to <code>accessor</code> members. To work around this for IDL attributes defined via <code>@attr()</code> or <code>@prop()</code>, you can build a and decorate a private or symbol accessor that you then expose with a custom facade:</p> <pre><code class="hljs language-javascript">@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  <span class="hljs-comment">// Implements a content attribute &quot;foo&quot; with getters and setters at #secret</span>
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">string</span>(), { <span class="hljs-attr">as</span>: <span class="hljs-string">&quot;foo&quot;</span> }) accessor #secret = <span class="hljs-string">&quot;A&quot;</span>;
+
+  <span class="hljs-comment">// To provide public IDL attributes, we just write a getter/setter pair with</span>
+  <span class="hljs-comment">// names matching the content attribute</span>
+  <span class="hljs-keyword">get</span> <span class="function_ hljs-title">foo</span>() {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Custom getter logic!&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.#secret; <span class="hljs-comment">// accesses the getter decorated with @attr()</span>
+  }
+
+  <span class="hljs-keyword">set</span> <span class="function_ hljs-title">foo</span>(<span class="hljs-params">value</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Custom seter logic!&quot;</span>);
+    <span class="hljs-variable language_">this</span>.#secret = value; <span class="hljs-comment">// accesses the setter decorated with @attr()</span>
+  }
+}
+</code></pre><p>Notes for <code>@attr()</code>:</p> <ol> <li>The option <code>as</code> is <em>mandatory</em> when you use <code>@attr()</code> on a private or symbol accessor</li> <li>Ornament throws exceptions if the class does not implement a public API for a content attribute defined with <code>@attr()</code> on a private or symbol accessor</li> </ol> <h3 id="event-delegation">Event delegation</h3> <p>The following example captures all <code>input</code> events fired by <code>&lt;input type=&quot;number&quot;&gt;</code> in the document:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">subscribe</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">documentElement</span>, <span class="hljs-string">&quot;input&quot;</span>, {
+    <span class="hljs-attr">predicate</span>: <span class="hljs-function">(<span class="hljs-params">evt</span>) =&gt;</span> evt.<span class="hljs-property">target</span>.<span class="function_ hljs-title">matches</span>(<span class="hljs-string">&quot;input[type-number]&quot;</span>),
+  })
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params">evt</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(evt); <span class="hljs-comment">// &quot;input&quot; events</span>
+  }
+}
+</code></pre><p>If you&#39;d rather catch event happening in the component&#39;s shadow dom, the syntax gets a bit more gnarly at first:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  root = <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">attachShadow</span>({ <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;open&quot;</span> });
+  @<span class="function_ hljs-title">subscribe</span>(<span class="hljs-function">(<span class="hljs-params">instance</span>) =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">root</span>, <span class="hljs-string">&quot;input&quot;</span>, {
+    <span class="hljs-attr">predicate</span>: <span class="hljs-function">(<span class="hljs-params">evt</span>) =&gt;</span> evt.<span class="hljs-property">target</span>.<span class="function_ hljs-title">matches</span>(<span class="hljs-string">&quot;input[type-number]&quot;</span>),
+  })
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params">evt</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(evt); <span class="hljs-comment">// &quot;input&quot; events</span>
+  }
+}
+</code></pre><p>Decorators like <code>@subscribe</code> run when the class definition initializes, and at that point, no class instances (and no shadow DOM to subscribe to) exist. We must therefore provide a function that can return the event target on initialization. To make this less of an eyesore, it makes sense to create a custom decorator for event delegation based on <code>@subscribe</code>:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="function_ hljs-title">handle</span> = (<span class="hljs-params">eventName, selector</span>) =&gt;
+  <span class="function_ hljs-title">subscribe</span>(<span class="hljs-function">(<span class="hljs-params">instance</span>) =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">root</span>, eventName, {
+    <span class="hljs-attr">predicate</span>: <span class="hljs-function">(<span class="hljs-params">evt</span>) =&gt;</span> evt.<span class="hljs-property">target</span>.<span class="function_ hljs-title">matches</span>(selector),
+  });
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  root = <span class="hljs-variable language_">this</span>.<span class="function_ hljs-title">attachShadow</span>({ <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;open&quot;</span> });
+
+  @<span class="function_ hljs-title">handle</span>(<span class="hljs-string">&quot;input&quot;</span>, <span class="hljs-string">&quot;input[type-number]&quot;</span>) <span class="hljs-comment">// Much better!</span>
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params">evt</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(evt); <span class="hljs-comment">// &quot;input&quot; events</span>
+  }
+}
+</code></pre><p>Note that the function that <code>@subscribe</code> takes to access event targets can <em>not</em> access a classes private fields. The shadow root has to be publicly accessible (unless you want to mess around with WeakMaps storing ShadowRoots indexed by element instances or something similar).</p> <p>Also note that not all events bubble, so you might want to use event capturing instead:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// This can now handle all events from the shadow root</span>
+<span class="hljs-keyword">const</span> <span class="function_ hljs-title">capture</span> = (<span class="hljs-params">eventName, selector</span>) =&gt;
+  <span class="function_ hljs-title">subscribe</span>(<span class="hljs-function">(<span class="hljs-params">instance</span>) =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">root</span>, eventName, {
+    <span class="hljs-attr">predicate</span>: <span class="hljs-function">(<span class="hljs-params">evt</span>) =&gt;</span> evt.<span class="hljs-property">target</span>.<span class="function_ hljs-title">matches</span>(selector),
+    <span class="hljs-attr">capture</span>: <span class="hljs-literal">true</span>,
+  });
+</code></pre><p>Also also note that only composed events propagate through shadow boundaries, which may become important if you want to nest components with shadow dom and also want to use event delegation.</p> <h3 id="custom-defaults">Custom defaults</h3> <p>If you don&#39;t like Ornament&#39;s defaults, remember that decorators and transformers are just functions. This means that you can use partial application to change the default options:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> {
+  define,
+  attr,
+  reactive <span class="hljs-keyword">as</span> baseReactive,
+  string,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// @reactive with &quot;keys&quot; always set to [&quot;foo&quot;]</span>
+<span class="hljs-keyword">const</span> <span class="function_ hljs-title">reactive</span> = (<span class="hljs-params">options</span>) =&gt; <span class="function_ hljs-title">baseReactive</span>({ ...options, <span class="hljs-attr">keys</span>: [<span class="hljs-string">&quot;foo&quot;</span>] });
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">string</span>()) accessor foo = <span class="hljs-string">&quot;A&quot;</span>; <span class="hljs-comment">// included in options.keys</span>
+  @<span class="function_ hljs-title">prop</span>(<span class="function_ hljs-title">string</span>()) accessor bar = <span class="hljs-string">&quot;A&quot;</span>; <span class="hljs-comment">// excluded from options.keys</span>
+
+  @<span class="function_ hljs-title">reactive</span>()
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(<span class="hljs-string">&quot;Hello&quot;</span>);
+  }
+}
+
+<span class="hljs-keyword">let</span> test = <span class="hljs-keyword">new</span> <span class="class_ hljs-title">Test</span>();
+test.<span class="hljs-property">foo</span> = <span class="hljs-string">&quot;B&quot;</span>; <span class="hljs-comment">//  logs &quot;Hello&quot;</span>
+test.<span class="hljs-property">bar</span> = <span class="hljs-string">&quot;B&quot;</span>; <span class="hljs-comment">//  does not log anything</span>
+</code></pre><p>The same approach works when you want to create specialized decorators from existing ones...</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// A more convenient decorator for event delegation</span>
+<span class="hljs-keyword">function</span> <span class="function_ hljs-title">listen</span>(<span class="hljs-params">event, selector = <span class="hljs-string">&quot;*&quot;</span></span>) {
+  <span class="hljs-keyword">return</span> <span class="function_ hljs-title">subscribe</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">documentElement</span>, <span class="hljs-string">&quot;input&quot;</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =&gt;</span>
+    evt.<span class="hljs-property">target</span>.<span class="function_ hljs-title">matches</span>(selector),
+  );
+}
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">listen</span>(<span class="hljs-string">&quot;input&quot;</span>, <span class="hljs-string">&quot;input[type-number]&quot;</span>)
+  <span class="function_ hljs-title">log</span>(<span class="hljs-params">evt</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="function_ hljs-title">log</span>(evt);
+  }
+}
+</code></pre><p>... or when you want to create your own transformers:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, number } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="function_ hljs-title">nonnegativeNumber</span>(<span class="hljs-params">otherOptions</span>) {
+  <span class="hljs-keyword">return</span> <span class="function_ hljs-title">number</span>({ ...otherOptions, <span class="hljs-attr">min</span>: <span class="hljs-number">0</span> });
+}
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">nonnegativeNumber</span>({ <span class="hljs-attr">max</span>: <span class="hljs-number">1337</span> }))
+  accessor foo = <span class="hljs-number">42</span>;
+}
+</code></pre><p>You can also compose decorators, since they are just functions over a target and a context object:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { reactive <span class="hljs-keyword">as</span> baseReactive, connected } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// Combines @reactive() and @connected() into one handy decorator that runs</span>
+<span class="hljs-comment">// methods when components connect AND when their attributes change</span>
+<span class="hljs-keyword">function</span> <span class="function_ hljs-title">reactive</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params">target, context</span>) {
+    <span class="hljs-keyword">return</span> <span class="function_ hljs-title">baseReactive</span>()(<span class="function_ hljs-title">connected</span>()(target, context), context);
+  };
+}
+</code></pre><p>And while we are at it, why not compose <em>and</em> partially apply decorators:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> {
+  reactive <span class="hljs-keyword">as</span> baseReactive,
+  connected,
+  debounce,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// Combines @reactive(), @connected() and @debounce():</span>
+<span class="hljs-comment">// - reacts to attribute updates (only while the component is connected)</span>
+<span class="hljs-comment">// - and runs its target method at most once per frame</span>
+<span class="hljs-comment">// - and also when the component connects</span>
+<span class="hljs-keyword">const</span> <span class="function_ hljs-title">reactive</span> = (<span class="hljs-params"></span>) =&gt; <span class="hljs-function">(<span class="hljs-params">target, context</span>) =&gt;</span>
+  <span class="function_ hljs-title">baseReactive</span>({ <span class="hljs-attr">predicate</span>: <span class="hljs-function">(<span class="hljs-params">{ isConnected }</span>) =&gt;</span> isConnected })(
+    <span class="function_ hljs-title">connected</span>()(<span class="function_ hljs-title">debounce</span>({ <span class="hljs-attr">fn</span>: debounce.<span class="function_ hljs-title">raf</span>() })(target, context), context),
+    context,
+  );
+</code></pre><p>Also remember that transformer functions return plain objects that you can modify for one-off custom transformers:</p> <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, attr, string } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+<span class="hljs-comment">// The built-in string transformer always represents strings, but we want to</span>
+<span class="hljs-comment">// allow `null` in this case</span>
+<span class="hljs-keyword">let</span> nullableString = {
+  ...<span class="function_ hljs-title">string</span>(),
+  <span class="function_ hljs-title">validate</span>(<span class="hljs-params">value</span>) {
+    <span class="hljs-keyword">if</span> (value === <span class="hljs-literal">null</span> || <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&quot;undefined&quot;</span>) {
+      <span class="hljs-keyword">return</span> value;
+    }
+    <span class="hljs-keyword">return</span> <span class="class_ hljs-title">String</span>(value);
+  },
+};
+
+@<span class="function_ hljs-title">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="class_ hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="class_ hljs-title inherited__">HTMLElement</span> {
+  @<span class="function_ hljs-title">attr</span>(<span class="function_ hljs-title">nullableString</span>())
+  accessor foo = <span class="hljs-string">&quot;Hello&quot;</span>;
+}
+</code></pre><p>Ornament&#39;s building blocks are extremely basic and you should hack, combine and extend them to get the most out of your components.</p> </main> <footer> <p>Made with markdown, <a href="https://parceljs.org/">Parcel</a> and <a href="https://highlightjs.org/">Highlight.js</a></p> </footer> </div> </body></html>
