@@ -285,7 +285,7 @@ a[href^="#"]:focus {
 a[href^="#"].ref,
 a[href^="#"].ref:link,
 a[href^="#"].ref:visited {
-  color: var(--text-color);
+  color: inherit;
   text-decoration-color: hsl(108, 60%, 50%);
 }
 a[href^="#"]:focus {
