@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/generate.js && parcel src/index.html",
-    "build": "rm -rf dist && node scripts/generate.js && parcel build --no-source-maps src/index.html"
+    "build": "rm -rf dist && mkdir dist && cp static/.htaccess dist/.htaccess && node scripts/generate.js && parcel build --no-source-maps src/index.html"
   },
   "author": "peter@peterkroener.de",
   "license": "MIT",
