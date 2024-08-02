@@ -4,7 +4,7 @@
   "description": "Website for @sirpepe/ornament",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/generate.js && parcel --dist-dir docs --public-url ./ src/index.html",
+    "dev": "node scripts/generate.js && parcel --dist-dir docs --public-url / src/index.html",
     "build": "rm -rf docs && mkdir docs && cp static/.htaccess docs/.htaccess && node scripts/generate.js && parcel build --dist-dir docs --public-url ./ --no-source-maps src/index.html"
   },
   "author": "peter@peterkroener.de",

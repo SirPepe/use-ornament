@@ -35,7 +35,7 @@ const template = (html) => {
 };
 
 const insert = `<aside>
-<h3>About the author</h3>
+<h2>About the author</h2>
 <img src="./peter.jpg" alt="">
 <div>
   <p>
