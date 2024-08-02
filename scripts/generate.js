@@ -36,7 +36,7 @@ const template = (html) => {
 
 const insert = `<aside>
 <h3>About the author</h3>
-<img src="./peter.jpg">
+<img src="./peter.jpg" alt="">
 <div>
   <p>
     Hi, I'm Peter! I made Ornament and do workshops, code reviews and consulting on web technologies. <strong><mark>Hire me</mark></strong> to level up your colleagues, review your TypeScript, or to solve your web component issues!
