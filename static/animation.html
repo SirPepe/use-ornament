@@ -1,0 +1,5285 @@
+<div class="cm-animation cwxqmrv frame11">
+  <div class="s">
+    <span class="iw ix">1</span><span class="iw iy">2</span
+    ><span class="iw iz">3</span><span class="iw ja">4</span
+    ><span class="iw jb">5</span><span class="iw jc">6</span
+    ><span class="iw jd">7</span><span class="iw je">8</span
+    ><span class="iw jf">9</span><span class="iw jg">10</span
+    ><span class="iw jh">11</span><span class="iw ji">12</span
+    ><span class="iw jj">13</span><span class="iw jk">14</span
+    ><span class="iw jl">15</span><span class="iw jm">16</span
+    ><span class="iw jn">17</span><span class="iw jo">18</span
+    ><span class="iw jp">19</span><span class="iw jq">20</span
+    ><span class="iw jr">21</span><span class="iw js">22</span
+    ><span class="iw jt">23</span><span class="iw ju">24</span
+    ><span class="iw jv">25</span>
+    <div class="r language-ecmascript">
+      <span class="o u">Regular</span><span class="o v">web</span
+      ><span class="o w">component</span><span class="o x">accessor</span
+      ><span class="o y">state</span><span class="c it">import</span
+      ><span class="q z">{</span><span class="kj ba">define</span
+      ><span class="q bb">,</span><span class="kj bc">attr</span
+      ><span class="q bd">,</span><span class="kj be">prop</span
+      ><span class="q bf">,</span><span class="kj bg">number</span
+      ><span class="c bh">import</span><span class="q bi">{</span
+      ><span class="kj bj">Fragment</span><span class="q bk">,</span
+      ><span class="kj bl">h</span><span class="q bm">,</span
+      ><span class="kj bn">render</span><span class="q bo">}</span
+      ><span class="c bp">from</span><span class="a bq">"</span
+      ><span class="a br">preact</span><span class="a bs">"</span
+      ><span class="q bt">;</span><span class="o bu">//</span
+      ><span class="o bv">Register</span><span class="o bw">the</span
+      ><span class="o bx">class</span><span class="o by">a</span
+      ><span class="o bz">a</span><span class="o ca">custom</span
+      ><span class="o cb">HTML</span><span class="o cc">tag</span
+      ><span class="l cd">@</span><span class="m ce">define</span
+      ><span class="q cf">(</span><span class="a cg">"</span
+      ><span class="a ch">click</span><span class="a ci">-</span
+      ><span class="a cj">counter</span><span class="a ck">"</span
+      ><span class="q cl">)</span><span class="c cm">class</span
+      ><span class="i cn">ClickCounter</span><span class="c co">extends</span
+      ><span class="i cp">HTMLElement</span><span class="q cq">{</span
+      ><span class="o cr">//</span><span class="o cs">Public</span
+      ><span class="o ct">content</span><span class="o cu">attribute</span
+      ><span class="o cv">for</span><span class="o cw">the</span
+      ><span class="o cx">initial</span><span class="o cy">value</span
+      ><span class="l cz">@</span><span class="m da">attr</span
+      ><span class="q db">(</span><span class="m dc">number</span
+      ><span class="q dd">(</span><span class="q de">{</span
+      ><span class="kj df">min</span><span class="l dg">:</span
+      ><span class="b dh">0</span><span class="q di">}</span
+      ><span class="q dj">)</span><span class="q dk">)</span
+      ><span class="c dl">accessor</span><span class="kj dm">value</span
+      ><span class="l dn">=</span><span class="b do">0</span
+      ><span class="q dp">;</span><span class="o dq">//</span
+      ><span class="o dr">Internal</span><span class="o ds">attribute</span
+      ><span class="o dt">for</span><span class="o du">the</span
+      ><span class="o dv">current</span><span class="o dw">click</span
+      ><span class="o dx">count</span><span class="l dy">@</span
+      ><span class="m dz">prop</span><span class="q ea">(</span
+      ><span class="m eb">number</span><span class="q ec">(</span
+      ><span class="q ed">{</span><span class="kj ee">min</span
+      ><span class="l ef">:</span><span class="b eg">0</span
+      ><span class="q eh">}</span><span class="q ei">)</span
+      ><span class="q ej">)</span><span class="c ek">accessor</span
+      ><span class="c el">#</span><span class="kj em">count</span
+      ><span class="l en">=</span><span class="c eo">this</span
+      ><span class="q ep">.</span><span class="kj eq">value</span
+      ><span class="q er">;</span><span class="o es">//</span
+      ><span class="o et">Component</span><span class="o eu">'</span
+      ><span class="o ev">s</span><span class="o ew">render</span
+      ><span class="o ex">logic</span><span class="o ey">,</span
+      ><span class="o ez">boilt</span><span class="o fa">with</span
+      ><span class="o fb">preact</span><span class="q fc">,</span
+      ><span class="l fd">@</span><span class="m fe">connected</span
+      ><span class="q ff">(</span><span class="q fg">)</span
+      ><span class="o fh">//</span><span class="o fi">run</span
+      ><span class="o fj">method</span><span class="o fk">when</span
+      ><span class="o fl">the</span><span class="o fm">component</span
+      ><span class="o fn">connects</span><span class="kj fo">reactive</span
+      ><span class="q fp">,</span><span class="l fq">@</span
+      ><span class="m fr">reactive</span><span class="q fs">(</span
+      ><span class="kj ft">connected</span><span class="q fu">}</span
+      ><span class="c fv">from</span><span class="a fw">"</span
+      ><span class="a fx">@</span><span class="a fy">sirpepe</span
+      ><span class="a fz">/</span><span class="a ga">ornament</span
+      ><span class="a gb">"</span><span class="q gc">;</span
+      ><span class="c gd">#</span><span class="i ge">render</span
+      ><span class="q gf">(</span><span class="q gg">)</span
+      ><span class="q gh">{</span><span class="m gi">render</span
+      ><span class="q gj">(</span><span class="kk gk">&lt;</span
+      ><span class="kk gl">&gt;</span><span class="g gm">&lt;</span
+      ><span class="e gn">button</span><span class="g go">onClick</span
+      ><span class="l gp">=</span><span class="l gq">{</span
+      ><span class="q gr">(</span><span class="q gs">)</span
+      ><span class="l gt">=&gt;</span><span class="c gu">this</span
+      ><span class="q gv">.</span><span class="kj gw">#count</span
+      ><span class="l gx">++</span><span class="l gy">}</span
+      ><span class="g gz">&gt;</span><span class="kl ha">+</span
+      ><span class="kl hb">1</span><span class="g hc">&lt;/</span
+      ><span class="e hd">button</span><span class="g he">&gt;</span
+      ><span class="kl hf">Total</span><span class="kl hg">:</span
+      ><span class="g hh">&lt;</span><span class="e hi">b</span
+      ><span class="g hj">&gt;</span><span class="l hk">{</span
+      ><span class="c hl">this</span><span class="q hm">.</span
+      ><span class="kj hn">#count</span><span class="l ho">}</span
+      ><span class="g hp">&lt;/</span><span class="e hq">b</span
+      ><span class="g hr">&gt;</span><span class="kk hs">&lt;/</span
+      ><span class="kk ht">&gt;</span><span class="q hu">,</span
+      ><span class="c hv">this</span><span class="q hw">,</span
+      ><span class="q hx">)</span><span class="q hy">;</span
+      ><span class="q hz">}</span><span class="q ia">}</span
+      ><span class="q ib">{</span><span class="kj ic">keys</span
+      ><span class="l id">:</span><span class="q ie">[</span
+      ><span class="a if">"</span><span class="a ig">#</span
+      ><span class="a ih">count</span><span class="a ii">"</span
+      ><span class="q ij">]</span><span class="q ik">}</span
+      ><span class="o il">#</span><span class="o im">count</span
+      ><span class="o in">changes</span><span class="q io">)</span
+      ><span class="o ip">//</span><span class="o iq">run</span
+      ><span class="o ir">method</span><span class="o is">when</span
+      ><span class="o iu">attributes</span><span class="o iv">change</span>
+    </div>
+    <pre class="jw jx">
+// Regular web component class
+class ClickCounter extends HTMLElement {
+}</pre
+    >
+    <pre class="jw jy">
+// Regular web component class
+class ClickCounter extends HTMLElement {
+  // Public accessor for the initial value
+  accessor value = 0;
+
+  // Internal state for the current click count
+  accessor #count = this.value;
+}</pre
+    >
+    <pre class="jw jz">
+import { define } from "@sirpepe/ornament";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public accessor for the initial value
+  accessor value = 0;
+
+  // Internal state for the current click count
+  accessor #count = this.value;
+}</pre
+    >
+    <pre class="jw ka">
+import { define, attr, prop, number } from "@sirpepe/ornament";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public content attribute for the initial value
+  @attr(number({ min: 0 })) accessor value = 0;
+
+  // Internal attribute for the current click count
+  @prop(number({ min: 0 })) accessor #count = this.value;
+}</pre
+    >
+    <pre class="jw kb">
+import { define, attr, prop, number } from "@sirpepe/ornament";
+import { Fragment, h, render } from "preact";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public content attribute for the initial value
+  @attr(number({ min: 0 })) accessor value = 0;
+
+  // Internal attribute for the current click count
+  @prop(number({ min: 0 })) accessor #count = this.value;
+}</pre
+    >
+    <pre class="jw kc">
+import { define, attr, prop, number } from "@sirpepe/ornament";
+import { Fragment, h, render } from "preact";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public content attribute for the initial value
+  @attr(number({ min: 0 })) accessor value = 0;
+
+  // Internal attribute for the current click count
+  @prop(number({ min: 0 })) accessor #count = this.value;
+
+  // Component's render logic, boilt with preact
+  #render() {}
+}</pre
+    >
+    <pre class="jw kd">
+import { define, attr, prop, number } from "@sirpepe/ornament";
+import { Fragment, h, render } from "preact";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public content attribute for the initial value
+  @attr(number({ min: 0 })) accessor value = 0;
+
+  // Internal attribute for the current click count
+  @prop(number({ min: 0 })) accessor #count = this.value;
+
+  // Component's render logic, boilt with preact
+  #render() {
+    render(&lt;&gt;&lt;/&gt;, this);
+  }
+}</pre
+    >
+    <pre class="jw ke">
+import { define, attr, prop, number } from "@sirpepe/ornament";
+import { Fragment, h, render } from "preact";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public content attribute for the initial value
+  @attr(number({ min: 0 })) accessor value = 0;
+
+  // Internal attribute for the current click count
+  @prop(number({ min: 0 })) accessor #count = this.value;
+
+  // Component's render logic, boilt with preact
+  #render() {
+    render(
+      &lt;&gt;
+        &lt;button onClick={() =&gt; this.#count++}&gt;+1&lt;/button&gt;
+      &lt;/&gt;,
+      this,
+    );
+  }
+}</pre
+    >
+    <pre class="jw kf">
+import { define, attr, prop, number } from "@sirpepe/ornament";
+import { Fragment, h, render } from "preact";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public content attribute for the initial value
+  @attr(number({ min: 0 })) accessor value = 0;
+
+  // Internal attribute for the current click count
+  @prop(number({ min: 0 })) accessor #count = this.value;
+
+  // Component's render logic, boilt with preact
+  #render() {
+    render(
+      &lt;&gt;
+        &lt;button onClick={() =&gt; this.#count++}&gt;+1&lt;/button&gt;
+        Total: &lt;b&gt;{this.#count}&lt;/b&gt;
+      &lt;/&gt;,
+      this,
+    );
+  }
+}</pre
+    >
+    <pre class="jw kg">
+import { define, attr, prop, number, connected } from "@sirpepe/ornament";
+import { Fragment, h, render } from "preact";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public content attribute for the initial value
+  @attr(number({ min: 0 })) accessor value = 0;
+
+  // Internal attribute for the current click count
+  @prop(number({ min: 0 })) accessor #count = this.value;
+
+  // Component's render logic, boilt with preact
+  @connected() // run method when the component connects
+  #render() {
+    render(
+      &lt;&gt;
+        &lt;button onClick={() =&gt; this.#count++}&gt;+1&lt;/button&gt;
+        Total: &lt;b&gt;{this.#count}&lt;/b&gt;
+      &lt;/&gt;,
+      this,
+    );
+  }
+}
+</pre
+    >
+    <pre class="jw kh">
+import { define, attr, prop, number, reactive, connected } from "@sirpepe/ornament";
+import { Fragment, h, render } from "preact";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public content attribute for the initial value
+  @attr(number({ min: 0 })) accessor value = 0;
+
+  // Internal attribute for the current click count
+  @prop(number({ min: 0 })) accessor #count = this.value;
+
+  // Component's render logic, boilt with preact
+  @connected() // run method when the component connects
+  @reactive() // run method when attributes change
+  #render() {
+    render(
+      &lt;&gt;
+        &lt;button onClick={() =&gt; this.#count++}&gt;+1&lt;/button&gt;
+        Total: &lt;b&gt;{this.#count}&lt;/b&gt;
+      &lt;/&gt;,
+      this,
+    );
+  }
+}</pre
+    >
+    <pre class="jw ki">
+import { define, attr, prop, number, reactive, connected } from "@sirpepe/ornament";
+import { Fragment, h, render } from "preact";
+
+// Register the class a a custom HTML tag
+@define("click-counter")
+class ClickCounter extends HTMLElement {
+  // Public content attribute for the initial value
+  @attr(number({ min: 0 })) accessor value = 0;
+
+  // Internal attribute for the current click count
+  @prop(number({ min: 0 })) accessor #count = this.value;
+
+  // Component's render logic, boilt with preact
+  @connected() // run method when the component connects
+  @reactive({ keys: ["#count"] }) // run method when #count changes
+  #render() {
+    render(
+      &lt;&gt;
+        &lt;button onClick={() =&gt; this.#count++}&gt;+1&lt;/button&gt;
+        Total: &lt;b&gt;{this.#count}&lt;/b&gt;
+      &lt;/&gt;,
+      this,
+    );
+  }
+}</pre
+    >
+  </div>
+</div>
+<style>
+  .cwxqmrv {
+    --a: var(--cm-align-middle, 0);
+    --b: calc(var(--cm-line-height, 2.5) * 1ch);
+    --c: var(--cm-animation-duration, 500ms);
+    --d: var(--cm-animation-timing-function, ease);
+    --e: var(--c) var(--d);
+    color: var(--cm-color, #222222);
+    font-style: var(--cm-style, normal);
+    font-weight: var(--cm-weight, normal);
+    font-size: inherit;
+    line-height: var(--b);
+    font-family: var(--cm-font-family, monospace);
+    --f: var(--cm-content-margin-top, 0ch);
+    --g: var(--cm-content-margin-right, 0ch);
+    --h: var(--cm-content-margin-bottom, 0ch);
+    --i: var(--cm-content-margin-left, 0ch);
+    --j: var(
+      --cm-line-number-font,
+      normal normal 1em / var(--b) var(--cm-font-family, monospace)
+    );
+    --k: var(--cm-line-number-color, #cccccc);
+    --l: var(--cm-line-numbers-enabled, 0);
+    --m: calc((var(--i) + var(--l) * var(--cm-line-numbers-margin-left, 0ch)));
+    --n: calc(var(--l) * var(--cm-line-numbers-margin-right, 2ch));
+    --o: var(--f);
+    --p: var(--m);
+    --q: calc(var(--l) * 2);
+    --r: var(--f);
+    --s: calc(var(--p) + var(--n) + var(--q) * 1ch);
+    --t: calc(var(--s) + var(--g) + 84ch + 1px);
+    --u: calc(var(--f) + var(--h) + var(--b) * 25);
+    filter: var(--cm-scene-filter, none);
+    background: var(--cm-scene-background, #ffffff);
+    --vertical-align: var(--a);
+    --total-rows: 25;
+    --total-cols: 84;
+    --total-width: var(--t);
+    --total-height: var(--u);
+    transition-duration: var(--c);
+    --z: var(--cm-decoration-text-highlight-foreground-background, #00000000);
+    --ba: var(--cm-decoration-text-highlight-background-background, #ffff00);
+    --bb: var(--cm-decoration-text-highlight-foreground-filter, none);
+    --bc: var(--cm-decoration-text-highlight-background-filter, none);
+    --bd: var(--cm-decoration-text-highlight-foreground-z-index, 40);
+    --be: var(--cm-decoration-text-highlight-background-z-index, 10);
+    --bf: var(--cm-decoration-text-highlight-foreground-underline-filter, none);
+    --bg: var(--cm-decoration-text-highlight-background-underline-filter, none);
+    --bh: var(
+      --cm-decoration-text-highlight-foreground-underline-color,
+      #000000
+    );
+    --bi: var(--cm-decoration-text-highlight-foreground-underline-width, 1);
+    --bj: var(--cm-decoration-text-highlight-foreground-underline-scale, 1);
+    --bk: var(--cm-decoration-text-highlight-foreground-underline-offset-y, 0);
+    --bl: var(
+      --cm-decoration-text-highlight-background-underline-color,
+      #000000
+    );
+    --bm: var(--cm-decoration-text-highlight-background-underline-width, 1);
+    --bn: var(--cm-decoration-text-highlight-background-underline-scale, 1);
+    --bo: var(--cm-decoration-text-highlight-background-underline-offset-y, 0);
+    --bp: var(--cm-decoration-text-error-foreground-background, #00000000);
+    --bq: var(--cm-decoration-text-error-background-background, #ff8b8333);
+    --br: var(--cm-decoration-text-error-foreground-filter, none);
+    --bs: var(--cm-decoration-text-error-background-filter, none);
+    --bt: var(--cm-decoration-text-error-foreground-z-index, 40);
+    --bu: var(--cm-decoration-text-error-background-z-index, 10);
+    --bv: var(--cm-decoration-text-error-foreground-underline-filter, none);
+    --bw: var(--cm-decoration-text-error-background-underline-filter, none);
+    --bx: var(--cm-decoration-text-error-foreground-underline-color, #cc0000);
+    --by: var(--cm-decoration-text-error-foreground-underline-width, 10);
+    --bz: var(--cm-decoration-text-error-foreground-underline-scale, 0.15);
+    --ca: var(--cm-decoration-text-error-foreground-underline-offset-y, -0.5);
+    --cb: visible;
+    --cc: var(--cm-decoration-text-error-background-underline-color, #000000);
+    --cd: var(--cm-decoration-text-error-background-underline-width, 1);
+    --ce: var(--cm-decoration-text-error-background-underline-scale, 1);
+    --cf: var(--cm-decoration-text-error-background-underline-offset-y, 0);
+    --cg: var(--cm-decoration-text-ok-foreground-background, #00000000);
+    --ch: var(--cm-decoration-text-ok-background-background, #ceffb8);
+    --ci: var(--cm-decoration-text-ok-foreground-filter, none);
+    --cj: var(--cm-decoration-text-ok-background-filter, none);
+    --ck: var(--cm-decoration-text-ok-foreground-z-index, 40);
+    --cl: var(--cm-decoration-text-ok-background-z-index, 10);
+    --cm: var(--cm-decoration-text-ok-foreground-underline-filter, none);
+    --cn: var(--cm-decoration-text-ok-background-underline-filter, none);
+    --co: var(--cm-decoration-text-ok-foreground-underline-color, #000000);
+    --cp: var(--cm-decoration-text-ok-foreground-underline-width, 1);
+    --cq: var(--cm-decoration-text-ok-foreground-underline-scale, 1);
+    --cr: var(--cm-decoration-text-ok-foreground-underline-offset-y, 0);
+    --cs: var(--cm-decoration-text-ok-background-underline-color, #000000);
+    --ct: var(--cm-decoration-text-ok-background-underline-width, 1);
+    --cu: var(--cm-decoration-text-ok-background-underline-scale, 1);
+    --cv: var(--cm-decoration-text-ok-background-underline-offset-y, 0);
+    --cw: var(--cm-decoration-text-custom1-foreground-background, #00000000);
+    --cx: var(--cm-decoration-text-custom1-background-background, #00000000);
+    --cy: var(--cm-decoration-text-custom1-foreground-filter, none);
+    --cz: var(--cm-decoration-text-custom1-background-filter, none);
+    --da: var(--cm-decoration-text-custom1-foreground-z-index, 40);
+    --db: var(--cm-decoration-text-custom1-background-z-index, 10);
+    --dc: var(--cm-decoration-text-custom1-foreground-underline-filter, none);
+    --dd: var(--cm-decoration-text-custom1-background-underline-filter, none);
+    --de: var(--cm-decoration-text-custom1-foreground-underline-color, #000000);
+    --df: var(--cm-decoration-text-custom1-foreground-underline-width, 1);
+    --dg: var(--cm-decoration-text-custom1-foreground-underline-scale, 1);
+    --dh: var(--cm-decoration-text-custom1-foreground-underline-offset-y, 0);
+    --di: var(--cm-decoration-text-custom1-background-underline-color, #000000);
+    --dj: var(--cm-decoration-text-custom1-background-underline-width, 1);
+    --dk: var(--cm-decoration-text-custom1-background-underline-scale, 1);
+    --dl: var(--cm-decoration-text-custom1-background-underline-offset-y, 0);
+    --dm: var(--cm-decoration-text-custom2-foreground-background, #00000000);
+    --dn: var(--cm-decoration-text-custom2-background-background, #00000000);
+    --do: var(--cm-decoration-text-custom2-foreground-filter, none);
+    --dp: var(--cm-decoration-text-custom2-background-filter, none);
+    --dq: var(--cm-decoration-text-custom2-foreground-z-index, 40);
+    --dr: var(--cm-decoration-text-custom2-background-z-index, 10);
+    --ds: var(--cm-decoration-text-custom2-foreground-underline-filter, none);
+    --dt: var(--cm-decoration-text-custom2-background-underline-filter, none);
+    --du: var(--cm-decoration-text-custom2-foreground-underline-color, #000000);
+    --dv: var(--cm-decoration-text-custom2-foreground-underline-width, 1);
+    --dw: var(--cm-decoration-text-custom2-foreground-underline-scale, 1);
+    --dx: var(--cm-decoration-text-custom2-foreground-underline-offset-y, 0);
+    --dy: var(--cm-decoration-text-custom2-background-underline-color, #000000);
+    --dz: var(--cm-decoration-text-custom2-background-underline-width, 1);
+    --ea: var(--cm-decoration-text-custom2-background-underline-scale, 1);
+    --eb: var(--cm-decoration-text-custom2-background-underline-offset-y, 0);
+    --ec: var(--cm-decoration-text-custom3-foreground-background, #00000000);
+    --ed: var(--cm-decoration-text-custom3-background-background, #00000000);
+    --ee: var(--cm-decoration-text-custom3-foreground-filter, none);
+    --ef: var(--cm-decoration-text-custom3-background-filter, none);
+    --eg: var(--cm-decoration-text-custom3-foreground-z-index, 40);
+    --eh: var(--cm-decoration-text-custom3-background-z-index, 10);
+    --ei: var(--cm-decoration-text-custom3-foreground-underline-filter, none);
+    --ej: var(--cm-decoration-text-custom3-background-underline-filter, none);
+    --ek: var(--cm-decoration-text-custom3-foreground-underline-color, #000000);
+    --el: var(--cm-decoration-text-custom3-foreground-underline-width, 1);
+    --em: var(--cm-decoration-text-custom3-foreground-underline-scale, 1);
+    --en: var(--cm-decoration-text-custom3-foreground-underline-offset-y, 0);
+    --eo: var(--cm-decoration-text-custom3-background-underline-color, #000000);
+    --ep: var(--cm-decoration-text-custom3-background-underline-width, 1);
+    --eq: var(--cm-decoration-text-custom3-background-underline-scale, 1);
+    --er: var(--cm-decoration-text-custom3-background-underline-offset-y, 0);
+    position: relative;
+    width: var(--t);
+    height: var(--u);
+    .a {
+      color: var(--cm-string-color, #b60c0c);
+      font-style: var(--cm-string-style, normal);
+      font-weight: var(--cm-string-weight, normal);
+    }
+    .b {
+      color: var(--cm-number-color, #00806a);
+      font-style: var(--cm-number-style, normal);
+      font-weight: var(--cm-number-weight, normal);
+    }
+    .c {
+      color: var(--cm-keyword-color, #000000);
+      font-style: var(--cm-keyword-style, normal);
+      font-weight: var(--cm-keyword-weight, bold);
+    }
+    .d {
+      color: var(--cm-alternativeKeyword-color, #072f59);
+      font-style: var(--cm-alternativeKeyword-style, normal);
+      font-weight: var(--cm-alternativeKeyword-weight, bold);
+    }
+    .e {
+      color: var(--cm-tag-color, #004b52);
+      font-style: var(--cm-tag-style, normal);
+      font-weight: var(--cm-tag-weight, bold);
+    }
+    .f {
+      color: var(--cm-alternativeTag-color, #06315e);
+      font-style: var(--cm-alternativeTag-style, normal);
+      font-weight: var(--cm-alternativeTag-weight, bold);
+    }
+    .g {
+      color: var(--cm-attribute-color, #10535a);
+      font-style: var(--cm-attribute-style, normal);
+      font-weight: var(--cm-attribute-weight, normal);
+    }
+    .h {
+      color: var(--cm-alternativeAttribute-color, #103e6d);
+      font-style: var(--cm-alternativeAttribute-style, normal);
+      font-weight: var(--cm-alternativeAttribute-weight, normal);
+    }
+    .i {
+      color: var(--cm-declaration-color, #bd0561);
+      font-style: var(--cm-declaration-style, normal);
+      font-weight: var(--cm-declaration-weight, bold);
+    }
+    .j {
+      color: var(--cm-literal-color, #9d26d9);
+      font-style: var(--cm-literal-style, normal);
+      font-weight: var(--cm-literal-weight, normal);
+    }
+    .k {
+      color: var(--cm-value-color, #03381a);
+      font-style: var(--cm-value-style, italic);
+      font-weight: var(--cm-value-weight, normal);
+    }
+    .l {
+      color: var(--cm-operator-color, #990022);
+      font-style: var(--cm-operator-style, normal);
+      font-weight: var(--cm-operator-weight, normal);
+    }
+    .m {
+      color: var(--cm-invocation-color, #0055cc);
+      font-style: var(--cm-invocation-style, normal);
+      font-weight: var(--cm-invocation-weight, normal);
+    }
+    .n {
+      color: var(--cm-type-color, #036578);
+      font-style: var(--cm-type-style, normal);
+      font-weight: var(--cm-type-weight, normal);
+    }
+    .o {
+      color: var(--cm-comment-color, #808080);
+      font-style: var(--cm-comment-style, italic);
+      font-weight: var(--cm-comment-weight, normal);
+    }
+    .p {
+      color: var(--cm-alternativeComment-color, #808080);
+      font-style: var(--cm-alternativeComment-style, italic);
+      font-weight: var(--cm-alternativeComment-weight, bold);
+    }
+    .q {
+      color: var(--cm-punctuation-color, #404040);
+      font-style: var(--cm-punctuation-style, normal);
+      font-weight: var(--cm-punctuation-weight, normal);
+    }
+    svg[preserveAspectRatio] {
+      transform: translateY(calc(var(--v) * 1ch));
+      width: 6ch;
+      height: 6ch;
+    }
+    path {
+      stroke: var(--w);
+      stroke-width: var(--x);
+      fill: none;
+      stroke-linejoin: round;
+    }
+    rect {
+      transform-origin: 50% 50%;
+      transform: scale(var(--y));
+    }
+    .r {
+      position: relative;
+      z-index: 20;
+      user-select: none;
+    }
+    .s {
+      position: absolute;
+      width: 100%;
+      transition: transform var(--e);
+    }
+    &.frame0 .s,
+    &.frame1 .s,
+    &.frame2 .s,
+    &.frame3 .s,
+    &.frame4 .s,
+    &.frame5 .s,
+    &.frame6 .s,
+    &.frame7 .s,
+    &.frame8 .s,
+    &.frame9 .s,
+    &.frame10 .s,
+    &.frame11 .s {
+      transform: translateY(
+        calc(var(--a) * (var(--total-height) / 2 - var(--current-height) / 2))
+      );
+    }
+    &.frame0 {
+      --current-rows: 3;
+      --current-cols: 40;
+      --current-width: calc(var(--i) + var(--g) + 40ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 3);
+    }
+    &.frame1 {
+      --current-rows: 8;
+      --current-cols: 47;
+      --current-width: calc(var(--i) + var(--g) + 47ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 8);
+    }
+    &.frame2 {
+      --current-rows: 11;
+      --current-cols: 47;
+      --current-width: calc(var(--i) + var(--g) + 47ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 11);
+    }
+    &.frame3 {
+      --current-rows: 11;
+      --current-cols: 63;
+      --current-width: calc(var(--i) + var(--g) + 63ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 11);
+    }
+    &.frame4 {
+      --current-rows: 12;
+      --current-cols: 63;
+      --current-width: calc(var(--i) + var(--g) + 63ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 12);
+    }
+    &.frame5 {
+      --current-rows: 15;
+      --current-cols: 63;
+      --current-width: calc(var(--i) + var(--g) + 63ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 15);
+    }
+    &.frame6 {
+      --current-rows: 17;
+      --current-cols: 63;
+      --current-width: calc(var(--i) + var(--g) + 63ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 17);
+    }
+    &.frame7 {
+      --current-rows: 22;
+      --current-cols: 63;
+      --current-width: calc(var(--i) + var(--g) + 63ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 22);
+    }
+    &.frame8 {
+      --current-rows: 23;
+      --current-cols: 63;
+      --current-width: calc(var(--i) + var(--g) + 63ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 23);
+    }
+    &.frame9 {
+      --current-rows: 25;
+      --current-cols: 74;
+      --current-width: calc(var(--i) + var(--g) + 74ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 25);
+    }
+    &.frame10,
+    &.frame11 {
+      --current-rows: 25;
+      --current-cols: 84;
+      --current-width: calc(var(--i) + var(--g) + 84ch);
+      --current-height: calc(var(--f) + var(--h) + var(--b) * 25);
+    }
+    .t {
+      filter: var(--cm-code-filter, none);
+    }
+    .r span {
+      position: absolute;
+      top: var(--r);
+      left: var(--s);
+      opacity: var(--es, 0);
+      transform: translate(
+        calc(1ch * var(--et, 0)),
+        calc(var(--b) * var(--eu, 0))
+      );
+      transition: transform var(--e), opacity var(--e);
+    }
+    &.frame0 .u,
+    &.frame1 .u {
+      --es: 1;
+      --et: 3;
+    }
+    &.frame0 .v,
+    &.frame1 .v {
+      --es: 1;
+      --et: 11;
+    }
+    &.frame0 .w,
+    &.frame1 .w,
+    &.frame3 .bb,
+    &.frame4 .bb,
+    &.frame5 .bb,
+    &.frame6 .bb,
+    &.frame7 .bb,
+    &.frame8 .bb,
+    &.frame9 .bb,
+    &.frame10 .bb,
+    &.frame11 .bb {
+      --es: 1;
+      --et: 15;
+    }
+    &.frame0 .x,
+    &.frame1 .bw {
+      --eu: 2;
+      --et: 12;
+    }
+    &.frame0 .y {
+      --eu: 5;
+      --et: 14;
+    }
+    &.frame0 .z,
+    &.frame1 .z {
+      --et: 7;
+    }
+    &.frame0 .ba,
+    &.frame1 .ba {
+      --et: 9;
+    }
+    &.frame0 .bb,
+    &.frame2 .w,
+    &.frame2 .bb,
+    &.frame11 .w {
+      --et: 15;
+    }
+    &.frame0 .bc,
+    &.frame2 .bc {
+      --et: 17;
+    }
+    &.frame0 .bd,
+    &.frame2 .bd {
+      --et: 21;
+    }
+    &.frame0 .be,
+    &.frame1 .fw,
+    &.frame2 .be {
+      --et: 23;
+    }
+    &.frame0 .bf,
+    &.frame2 .bf {
+      --et: 27;
+    }
+    &.frame0 .bg,
+    &.frame2 .bg {
+      --et: 29;
+    }
+    &.frame0 .bh,
+    &.frame3 .bh {
+      --eu: 1;
+    }
+    &.frame0 .bi,
+    &.frame3 .bi {
+      --eu: 1;
+      --et: 7;
+    }
+    &.frame0 .bj,
+    &.frame3 .bj {
+      --eu: 1;
+      --et: 9;
+    }
+    &.frame0 .bk,
+    &.frame3 .bk {
+      --eu: 1;
+      --et: 17;
+    }
+    &.frame0 .bl,
+    &.frame3 .bl {
+      --eu: 1;
+      --et: 19;
+    }
+    &.frame0 .bm,
+    &.frame3 .bm {
+      --eu: 1;
+      --et: 20;
+    }
+    &.frame0 .bn,
+    &.frame3 .bn {
+      --eu: 1;
+      --et: 22;
+    }
+    &.frame0 .bo,
+    &.frame3 .bo {
+      --eu: 1;
+      --et: 29;
+    }
+    &.frame0 .bp,
+    &.frame3 .bp {
+      --eu: 1;
+      --et: 31;
+    }
+    &.frame0 .bq,
+    &.frame3 .bq {
+      --eu: 1;
+      --et: 36;
+    }
+    &.frame0 .br,
+    &.frame3 .br {
+      --eu: 1;
+      --et: 37;
+    }
+    &.frame0 .bs,
+    &.frame3 .bs {
+      --eu: 1;
+      --et: 43;
+    }
+    &.frame0 .bt,
+    &.frame3 .bt {
+      --eu: 1;
+      --et: 44;
+    }
+    &.frame0 .bu,
+    &.frame1 .bu,
+    &.frame2 .it,
+    &.frame3 .it,
+    &.frame4 .it,
+    &.frame5 .it,
+    &.frame6 .it,
+    &.frame7 .it,
+    &.frame8 .it,
+    &.frame9 .it,
+    &.frame10 .it,
+    &.frame11 .it,
+    &.frame0 .ix,
+    &.frame0 .iy,
+    &.frame0 .iz,
+    &.frame1 .ix,
+    &.frame1 .iy,
+    &.frame1 .iz,
+    &.frame1 .ja,
+    &.frame1 .jb,
+    &.frame1 .jc,
+    &.frame1 .jd,
+    &.frame1 .je,
+    &.frame2 .ix,
+    &.frame2 .iy,
+    &.frame2 .iz,
+    &.frame2 .ja,
+    &.frame2 .jb,
+    &.frame2 .jc,
+    &.frame2 .jd,
+    &.frame2 .je,
+    &.frame2 .jf,
+    &.frame2 .jg,
+    &.frame2 .jh,
+    &.frame3 .ix,
+    &.frame3 .iy,
+    &.frame3 .iz,
+    &.frame3 .ja,
+    &.frame3 .jb,
+    &.frame3 .jc,
+    &.frame3 .jd,
+    &.frame3 .je,
+    &.frame3 .jf,
+    &.frame3 .jg,
+    &.frame3 .jh,
+    &.frame4 .ix,
+    &.frame4 .iy,
+    &.frame4 .iz,
+    &.frame4 .ja,
+    &.frame4 .jb,
+    &.frame4 .jc,
+    &.frame4 .jd,
+    &.frame4 .je,
+    &.frame4 .jf,
+    &.frame4 .jg,
+    &.frame4 .jh,
+    &.frame4 .ji,
+    &.frame5 .ix,
+    &.frame5 .iy,
+    &.frame5 .iz,
+    &.frame5 .ja,
+    &.frame5 .jb,
+    &.frame5 .jc,
+    &.frame5 .jd,
+    &.frame5 .je,
+    &.frame5 .jf,
+    &.frame5 .jg,
+    &.frame5 .jh,
+    &.frame5 .ji,
+    &.frame5 .jj,
+    &.frame5 .jk,
+    &.frame5 .jl,
+    &.frame6 .ix,
+    &.frame6 .iy,
+    &.frame6 .iz,
+    &.frame6 .ja,
+    &.frame6 .jb,
+    &.frame6 .jc,
+    &.frame6 .jd,
+    &.frame6 .je,
+    &.frame6 .jf,
+    &.frame6 .jg,
+    &.frame6 .jh,
+    &.frame6 .ji,
+    &.frame6 .jj,
+    &.frame6 .jk,
+    &.frame6 .jl,
+    &.frame6 .jm,
+    &.frame6 .jn,
+    &.frame7 .ix,
+    &.frame7 .iy,
+    &.frame7 .iz,
+    &.frame7 .ja,
+    &.frame7 .jb,
+    &.frame7 .jc,
+    &.frame7 .jd,
+    &.frame7 .je,
+    &.frame7 .jf,
+    &.frame7 .jg,
+    &.frame7 .jh {
+      --es: 1;
+    }
+    &.frame7 .ji,
+    &.frame7 .jj,
+    &.frame7 .jk,
+    &.frame7 .jl,
+    &.frame7 .jm,
+    &.frame7 .jn,
+    &.frame7 .jo,
+    &.frame7 .jp,
+    &.frame7 .jq,
+    &.frame7 .jr,
+    &.frame7 .js,
+    &.frame8 .ix,
+    &.frame8 .iy,
+    &.frame8 .iz,
+    &.frame8 .ja,
+    &.frame8 .jb,
+    &.frame8 .jc,
+    &.frame8 .jd,
+    &.frame8 .je,
+    &.frame8 .jf,
+    &.frame8 .jg,
+    &.frame8 .jh,
+    &.frame8 .ji,
+    &.frame8 .jj,
+    &.frame8 .jk,
+    &.frame8 .jl,
+    &.frame8 .jm,
+    &.frame8 .jn,
+    &.frame8 .jo,
+    &.frame8 .jp,
+    &.frame8 .jq,
+    &.frame8 .jr,
+    &.frame8 .js,
+    &.frame8 .jt,
+    &.frame9 .ix,
+    &.frame9 .iy,
+    &.frame9 .iz,
+    &.frame9 .ja,
+    &.frame9 .jb,
+    &.frame9 .jc,
+    &.frame9 .jd,
+    &.frame9 .je,
+    &.frame9 .jf,
+    &.frame9 .jg,
+    &.frame9 .jh,
+    &.frame9 .ji,
+    &.frame9 .jj,
+    &.frame9 .jk,
+    &.frame9 .jl,
+    &.frame9 .jm,
+    &.frame9 .jn,
+    &.frame9 .jo,
+    &.frame9 .jp,
+    &.frame9 .jq,
+    &.frame9 .jr,
+    &.frame9 .js,
+    &.frame9 .jt,
+    &.frame9 .ju,
+    &.frame9 .jv,
+    &.frame10 .ix,
+    &.frame10 .iy,
+    &.frame10 .iz,
+    &.frame10 .ja,
+    &.frame10 .jb,
+    &.frame10 .jc,
+    &.frame10 .jd,
+    &.frame10 .je,
+    &.frame10 .jf,
+    &.frame10 .jg,
+    &.frame10 .jh,
+    &.frame10 .ji,
+    &.frame10 .jj,
+    &.frame10 .jk,
+    &.frame10 .jl,
+    &.frame10 .jm,
+    &.frame10 .jn,
+    &.frame10 .jo,
+    &.frame10 .jp,
+    &.frame10 .jq,
+    &.frame10 .jr,
+    &.frame10 .js,
+    &.frame10 .jt,
+    &.frame10 .ju,
+    &.frame10 .jv,
+    &.frame11 .ix,
+    &.frame11 .iy,
+    &.frame11 .iz,
+    &.frame11 .ja,
+    &.frame11 .jb,
+    &.frame11 .jc,
+    &.frame11 .jd,
+    &.frame11 .je,
+    &.frame11 .jf,
+    &.frame11 .jg,
+    &.frame11 .jh,
+    &.frame11 .ji,
+    &.frame11 .jj,
+    &.frame11 .jk,
+    &.frame11 .jl,
+    &.frame11 .jm {
+      --es: 1;
+    }
+    &.frame11 .jn,
+    &.frame11 .jo,
+    &.frame11 .jp,
+    &.frame11 .jq,
+    &.frame11 .jr,
+    &.frame11 .js,
+    &.frame11 .jt,
+    &.frame11 .ju,
+    &.frame11 .jv {
+      --es: 1;
+    }
+    &.frame0 .bv {
+      --eu: 3;
+      --et: 3;
+    }
+    &.frame0 .bw {
+      --eu: 3;
+      --et: 12;
+    }
+    &.frame0 .bx,
+    &.frame1 .bx,
+    &.frame2 .fy {
+      --es: 1;
+      --et: 25;
+    }
+    &.frame0 .by,
+    &.frame1 .ck {
+      --eu: 3;
+      --et: 22;
+    }
+    &.frame0 .bz {
+      --eu: 3;
+      --et: 24;
+    }
+    &.frame0 .ca {
+      --eu: 3;
+      --et: 26;
+    }
+    &.frame0 .cb {
+      --eu: 3;
+      --et: 33;
+    }
+    &.frame0 .cc {
+      --eu: 3;
+      --et: 38;
+    }
+    &.frame0 .cd {
+      --eu: 4;
+    }
+    &.frame0 .ce {
+      --eu: 4;
+      --et: 1;
+    }
+    &.frame0 .cf {
+      --eu: 4;
+      --et: 7;
+    }
+    &.frame0 .cg {
+      --eu: 4;
+      --et: 8;
+    }
+    &.frame0 .ch {
+      --eu: 4;
+      --et: 9;
+    }
+    &.frame0 .ci {
+      --eu: 4;
+      --et: 14;
+    }
+    &.frame0 .cj {
+      --eu: 4;
+      --et: 15;
+    }
+    &.frame0 .ck {
+      --eu: 4;
+      --et: 22;
+    }
+    &.frame0 .cl {
+      --eu: 4;
+      --et: 23;
+    }
+    &.frame0 .cm,
+    &.frame1 .cm,
+    &.frame4 .bh,
+    &.frame5 .bh,
+    &.frame6 .bh,
+    &.frame7 .bh,
+    &.frame8 .bh,
+    &.frame9 .bh,
+    &.frame10 .bh,
+    &.frame11 .bh {
+      --es: 1;
+      --eu: 1;
+    }
+    &.frame0 .cn,
+    &.frame1 .cn {
+      --es: 1;
+      --eu: 1;
+      --et: 6;
+    }
+    &.frame0 .co,
+    &.frame1 .co,
+    &.frame4 .bl,
+    &.frame5 .bl,
+    &.frame6 .bl,
+    &.frame7 .bl,
+    &.frame8 .bl,
+    &.frame9 .bl,
+    &.frame10 .bl,
+    &.frame11 .bl {
+      --es: 1;
+      --eu: 1;
+      --et: 19;
+    }
+    &.frame0 .cp,
+    &.frame1 .cp {
+      --es: 1;
+      --eu: 1;
+      --et: 27;
+    }
+    &.frame0 .cq,
+    &.frame1 .cq {
+      --es: 1;
+      --eu: 1;
+      --et: 39;
+    }
+    &.frame0 .cr {
+      --eu: 2;
+      --et: 2;
+    }
+    &.frame0 .cs {
+      --eu: 2;
+      --et: 5;
+    }
+    &.frame0 .ct,
+    &.frame0 .em {
+      --eu: 6;
+      --et: 12;
+    }
+    &.frame0 .cu,
+    &.frame0 .eo,
+    &.frame2 .dg {
+      --eu: 6;
+      --et: 20;
+    }
+    &.frame0 .cv {
+      --eu: 2;
+      --et: 21;
+    }
+    &.frame0 .cw {
+      --eu: 2;
+      --et: 25;
+    }
+    &.frame0 .cx {
+      --eu: 2;
+      --et: 29;
+    }
+    &.frame0 .cy {
+      --eu: 2;
+      --et: 37;
+    }
+    &.frame0 .cz {
+      --eu: 7;
+      --et: 2;
+    }
+    &.frame0 .da {
+      --eu: 7;
+      --et: 3;
+    }
+    &.frame0 .db {
+      --eu: 7;
+      --et: 7;
+    }
+    &.frame0 .dc {
+      --eu: 7;
+      --et: 8;
+    }
+    &.frame0 .dd {
+      --eu: 7;
+      --et: 14;
+    }
+    &.frame0 .de {
+      --eu: 7;
+      --et: 15;
+    }
+    &.frame0 .df {
+      --eu: 7;
+      --et: 17;
+    }
+    &.frame0 .dg {
+      --eu: 7;
+      --et: 20;
+    }
+    &.frame0 .dh {
+      --eu: 7;
+      --et: 22;
+    }
+    &.frame0 .di {
+      --eu: 7;
+      --et: 24;
+    }
+    &.frame0 .dj {
+      --eu: 7;
+      --et: 25;
+    }
+    &.frame0 .dk {
+      --eu: 7;
+      --et: 26;
+    }
+    &.frame0 .dl {
+      --eu: 3;
+      --et: 2;
+    }
+    &.frame0 .dm {
+      --eu: 3;
+      --et: 11;
+    }
+    &.frame0 .dn {
+      --eu: 3;
+      --et: 17;
+    }
+    &.frame0 .do {
+      --eu: 3;
+      --et: 19;
+    }
+    &.frame0 .dp {
+      --eu: 3;
+      --et: 20;
+    }
+    &.frame0 .dq {
+      --eu: 5;
+      --et: 2;
+    }
+    &.frame0 .dr {
+      --eu: 5;
+      --et: 5;
+    }
+    &.frame0 .ds,
+    &.frame2 .ec {
+      --eu: 9;
+      --et: 14;
+    }
+    &.frame0 .dt,
+    &.frame2 .cu {
+      --eu: 5;
+      --et: 20;
+    }
+    &.frame0 .du {
+      --eu: 5;
+      --et: 24;
+    }
+    &.frame0 .dv {
+      --eu: 5;
+      --et: 28;
+    }
+    &.frame0 .dw {
+      --eu: 5;
+      --et: 36;
+    }
+    &.frame0 .dx {
+      --eu: 5;
+      --et: 42;
+    }
+    &.frame0 .dy {
+      --eu: 10;
+      --et: 2;
+    }
+    &.frame0 .dz {
+      --eu: 10;
+      --et: 3;
+    }
+    &.frame0 .ea {
+      --eu: 10;
+      --et: 7;
+    }
+    &.frame0 .eb {
+      --eu: 10;
+      --et: 8;
+    }
+    &.frame0 .ec {
+      --eu: 10;
+      --et: 14;
+    }
+    &.frame0 .ed {
+      --eu: 10;
+      --et: 15;
+    }
+    &.frame0 .ee {
+      --eu: 10;
+      --et: 17;
+    }
+    &.frame0 .ef {
+      --eu: 10;
+      --et: 20;
+    }
+    &.frame0 .eg {
+      --eu: 10;
+      --et: 22;
+    }
+    &.frame0 .eh {
+      --eu: 10;
+      --et: 24;
+    }
+    &.frame0 .ei {
+      --eu: 10;
+      --et: 25;
+    }
+    &.frame0 .ej {
+      --eu: 10;
+      --et: 26;
+    }
+    &.frame0 .ek,
+    &.frame2 .cz {
+      --eu: 6;
+      --et: 2;
+    }
+    &.frame0 .el {
+      --eu: 6;
+      --et: 11;
+    }
+    &.frame0 .en {
+      --eu: 6;
+      --et: 18;
+    }
+    &.frame0 .ep,
+    &.frame2 .di {
+      --eu: 6;
+      --et: 24;
+    }
+    &.frame0 .eq,
+    &.frame2 .dj {
+      --eu: 6;
+      --et: 25;
+    }
+    &.frame0 .er {
+      --eu: 6;
+      --et: 30;
+    }
+    &.frame0 .es,
+    &.frame4 .es {
+      --eu: 12;
+      --et: 2;
+    }
+    &.frame0 .et,
+    &.frame4 .et {
+      --eu: 12;
+      --et: 5;
+    }
+    &.frame0 .eu,
+    &.frame4 .eu {
+      --eu: 12;
+      --et: 14;
+    }
+    &.frame0 .ev,
+    &.frame4 .ev {
+      --eu: 12;
+      --et: 15;
+    }
+    &.frame0 .ew,
+    &.frame4 .ew {
+      --eu: 12;
+      --et: 17;
+    }
+    &.frame0 .ex,
+    &.frame4 .ex {
+      --eu: 12;
+      --et: 24;
+    }
+    &.frame0 .ey,
+    &.frame4 .ey {
+      --eu: 12;
+      --et: 29;
+    }
+    &.frame0 .ez,
+    &.frame4 .ez {
+      --eu: 12;
+      --et: 31;
+    }
+    &.frame0 .fa,
+    &.frame4 .fa {
+      --eu: 12;
+      --et: 37;
+    }
+    &.frame0 .fb,
+    &.frame4 .fb {
+      --eu: 12;
+      --et: 42;
+    }
+    &.frame0 .fc,
+    &.frame8 .fc {
+      --et: 35;
+    }
+    &.frame0 .fd,
+    &.frame4 .gd,
+    &.frame8 .fd {
+      --eu: 13;
+      --et: 2;
+    }
+    &.frame0 .fe,
+    &.frame4 .ge,
+    &.frame8 .fe {
+      --eu: 13;
+      --et: 3;
+    }
+    &.frame0 .ff,
+    &.frame4 .gh,
+    &.frame8 .ff {
+      --eu: 13;
+      --et: 12;
+    }
+    &.frame0 .fg,
+    &.frame4 .hz,
+    &.frame8 .fg {
+      --eu: 13;
+      --et: 13;
+    }
+    &.frame0 .fh,
+    &.frame8 .fh {
+      --eu: 13;
+      --et: 15;
+    }
+    &.frame0 .fi,
+    &.frame8 .fi {
+      --eu: 13;
+      --et: 18;
+    }
+    &.frame0 .fj,
+    &.frame8 .fj {
+      --eu: 13;
+      --et: 22;
+    }
+    &.frame0 .fk,
+    &.frame8 .fk {
+      --eu: 13;
+      --et: 29;
+    }
+    &.frame0 .fl,
+    &.frame8 .fl {
+      --eu: 13;
+      --et: 34;
+    }
+    &.frame0 .fm,
+    &.frame8 .fm {
+      --eu: 13;
+      --et: 38;
+    }
+    &.frame0 .fn,
+    &.frame8 .fn {
+      --eu: 13;
+      --et: 48;
+    }
+    &.frame0 .fo,
+    &.frame8 .ft,
+    &.frame9 .fo {
+      --et: 37;
+    }
+    &.frame0 .fp,
+    &.frame9 .fp {
+      --et: 45;
+    }
+    &.frame0 .fq,
+    &.frame9 .fq {
+      --eu: 14;
+      --et: 2;
+    }
+    &.frame0 .fr,
+    &.frame9 .fr {
+      --eu: 14;
+      --et: 3;
+    }
+    &.frame0 .fs,
+    &.frame5 .gk,
+    &.frame9 .fs {
+      --eu: 14;
+      --et: 11;
+    }
+    &.frame0 .ft {
+      --et: 47;
+    }
+    &.frame0 .fu {
+      --et: 57;
+    }
+    &.frame0 .fv {
+      --et: 59;
+    }
+    &.frame0 .fw {
+      --et: 64;
+    }
+    &.frame0 .fx {
+      --et: 65;
+    }
+    &.frame0 .fy {
+      --et: 66;
+    }
+    &.frame0 .fz {
+      --et: 73;
+    }
+    &.frame0 .ga {
+      --et: 74;
+    }
+    &.frame0 .gb {
+      --et: 82;
+    }
+    &.frame0 .gc {
+      --et: 83;
+    }
+    &.frame0 .gd {
+      --eu: 15;
+      --et: 2;
+    }
+    &.frame0 .ge {
+      --eu: 15;
+      --et: 3;
+    }
+    &.frame0 .gf {
+      --eu: 15;
+      --et: 9;
+    }
+    &.frame0 .gg {
+      --eu: 15;
+      --et: 10;
+    }
+    &.frame0 .gh {
+      --eu: 15;
+      --et: 12;
+    }
+    &.frame0 .gi {
+      --eu: 16;
+      --et: 4;
+    }
+    &.frame0 .gj {
+      --eu: 16;
+      --et: 10;
+    }
+    &.frame0 .gk {
+      --eu: 17;
+      --et: 6;
+    }
+    &.frame0 .gl {
+      --eu: 17;
+      --et: 7;
+    }
+    &.frame0 .gm {
+      --eu: 18;
+      --et: 8;
+    }
+    &.frame0 .gn {
+      --eu: 18;
+      --et: 9;
+    }
+    &.frame0 .go {
+      --eu: 18;
+      --et: 16;
+    }
+    &.frame0 .gp {
+      --eu: 18;
+      --et: 23;
+    }
+    &.frame0 .gq {
+      --eu: 18;
+      --et: 24;
+    }
+    &.frame0 .gr {
+      --eu: 18;
+      --et: 25;
+    }
+    &.frame0 .gs {
+      --eu: 18;
+      --et: 26;
+    }
+    &.frame0 .gt {
+      --eu: 18;
+      --et: 28;
+    }
+    &.frame0 .gu {
+      --eu: 18;
+      --et: 31;
+    }
+    &.frame0 .gv {
+      --eu: 18;
+      --et: 35;
+    }
+    &.frame0 .gw {
+      --eu: 18;
+      --et: 36;
+    }
+    &.frame0 .gx {
+      --eu: 18;
+      --et: 42;
+    }
+    &.frame0 .gy {
+      --eu: 18;
+      --et: 44;
+    }
+    &.frame0 .gz {
+      --eu: 18;
+      --et: 45;
+    }
+    &.frame0 .ha {
+      --eu: 18;
+      --et: 46;
+    }
+    &.frame0 .hb {
+      --eu: 18;
+      --et: 47;
+    }
+    &.frame0 .hc {
+      --eu: 18;
+      --et: 48;
+    }
+    &.frame0 .hd {
+      --eu: 18;
+      --et: 50;
+    }
+    &.frame0 .he {
+      --eu: 18;
+      --et: 56;
+    }
+    &.frame0 .hf {
+      --eu: 19;
+      --et: 8;
+    }
+    &.frame0 .hg {
+      --eu: 19;
+      --et: 13;
+    }
+    &.frame0 .hh {
+      --eu: 19;
+      --et: 15;
+    }
+    &.frame0 .hi {
+      --eu: 19;
+      --et: 16;
+    }
+    &.frame0 .hj {
+      --eu: 19;
+      --et: 17;
+    }
+    &.frame0 .hk {
+      --eu: 19;
+      --et: 18;
+    }
+    &.frame0 .hl {
+      --eu: 19;
+      --et: 19;
+    }
+    &.frame0 .hm {
+      --eu: 19;
+      --et: 23;
+    }
+    &.frame0 .hn {
+      --eu: 19;
+      --et: 24;
+    }
+    &.frame0 .ho {
+      --eu: 19;
+      --et: 30;
+    }
+    &.frame0 .hp {
+      --eu: 19;
+      --et: 31;
+    }
+    &.frame0 .hq {
+      --eu: 19;
+      --et: 33;
+    }
+    &.frame0 .hr {
+      --eu: 19;
+      --et: 34;
+    }
+    &.frame0 .hs {
+      --eu: 20;
+      --et: 6;
+    }
+    &.frame0 .ht {
+      --eu: 20;
+      --et: 8;
+    }
+    &.frame0 .hu {
+      --eu: 20;
+      --et: 9;
+    }
+    &.frame0 .hv {
+      --eu: 21;
+      --et: 6;
+    }
+    &.frame0 .hw {
+      --eu: 21;
+      --et: 10;
+    }
+    &.frame0 .hx {
+      --eu: 22;
+      --et: 4;
+    }
+    &.frame0 .hy {
+      --eu: 22;
+      --et: 5;
+    }
+    &.frame0 .hz {
+      --eu: 23;
+      --et: 2;
+    }
+    &.frame0 .ia,
+    &.frame2 .bu,
+    &.frame3 .bu {
+      --es: 1;
+      --eu: 2;
+    }
+    &.frame0 .ib,
+    &.frame5 .gl,
+    &.frame9 .io,
+    &.frame10 .ib {
+      --eu: 14;
+      --et: 12;
+    }
+    &.frame0 .ic,
+    &.frame9 .ip,
+    &.frame10 .ic {
+      --eu: 14;
+      --et: 14;
+    }
+    &.frame0 .id,
+    &.frame5 .hv,
+    &.frame10 .id {
+      --eu: 14;
+      --et: 18;
+    }
+    &.frame0 .ie,
+    &.frame10 .ie {
+      --eu: 14;
+      --et: 20;
+    }
+    &.frame0 .if,
+    &.frame9 .ir,
+    &.frame10 .if {
+      --eu: 14;
+      --et: 21;
+    }
+    &.frame0 .ig,
+    &.frame5 .hx,
+    &.frame10 .ig {
+      --eu: 14;
+      --et: 22;
+    }
+    &.frame0 .ih,
+    &.frame5 .hy,
+    &.frame10 .ih {
+      --eu: 14;
+      --et: 23;
+    }
+    &.frame0 .ii,
+    &.frame9 .is,
+    &.frame10 .ii {
+      --eu: 14;
+      --et: 28;
+    }
+    &.frame0 .ij,
+    &.frame10 .ij {
+      --eu: 14;
+      --et: 29;
+    }
+    &.frame0 .ik,
+    &.frame10 .ik {
+      --eu: 14;
+      --et: 31;
+    }
+    &.frame0 .il,
+    &.frame10 .il {
+      --eu: 14;
+      --et: 53;
+    }
+    &.frame0 .im,
+    &.frame10 .im {
+      --eu: 14;
+      --et: 54;
+    }
+    &.frame0 .in,
+    &.frame10 .in {
+      --eu: 14;
+      --et: 60;
+    }
+    &.frame0 .io {
+      --eu: 14;
+      --et: 32;
+    }
+    &.frame0 .ip {
+      --eu: 14;
+      --et: 34;
+    }
+    &.frame0 .iq {
+      --eu: 14;
+      --et: 37;
+    }
+    &.frame0 .ir {
+      --eu: 14;
+      --et: 41;
+    }
+    &.frame0 .is {
+      --eu: 14;
+      --et: 48;
+    }
+    &.frame1 .x,
+    &.frame2 .bw,
+    &.frame3 .bw {
+      --es: 1;
+      --eu: 2;
+      --et: 12;
+    }
+    &.frame1 .y {
+      --es: 1;
+      --eu: 5;
+      --et: 14;
+    }
+    &.frame1 .bv {
+      --eu: 2;
+      --et: 3;
+    }
+    &.frame1 .by {
+      --eu: 2;
+      --et: 22;
+    }
+    &.frame1 .bz {
+      --eu: 2;
+      --et: 24;
+    }
+    &.frame1 .ca {
+      --eu: 2;
+      --et: 26;
+    }
+    &.frame1 .cb {
+      --eu: 2;
+      --et: 33;
+    }
+    &.frame1 .cc {
+      --eu: 2;
+      --et: 38;
+    }
+    &.frame1 .cd {
+      --eu: 3;
+    }
+    &.frame1 .ce {
+      --eu: 3;
+      --et: 1;
+    }
+    &.frame1 .cf {
+      --eu: 3;
+      --et: 7;
+    }
+    &.frame1 .cg {
+      --eu: 3;
+      --et: 8;
+    }
+    &.frame1 .ch {
+      --eu: 3;
+      --et: 9;
+    }
+    &.frame1 .ci {
+      --eu: 3;
+      --et: 14;
+    }
+    &.frame1 .cj {
+      --eu: 3;
+      --et: 15;
+    }
+    &.frame1 .cl {
+      --eu: 3;
+      --et: 23;
+    }
+    &.frame1 .cr {
+      --es: 1;
+      --eu: 2;
+      --et: 2;
+    }
+    &.frame1 .cs {
+      --es: 1;
+      --eu: 2;
+      --et: 5;
+    }
+    &.frame1 .cv {
+      --es: 1;
+      --eu: 2;
+      --et: 21;
+    }
+    &.frame1 .cw {
+      --es: 1;
+      --eu: 2;
+      --et: 25;
+    }
+    &.frame1 .cx {
+      --es: 1;
+      --eu: 2;
+      --et: 29;
+    }
+    &.frame1 .cy {
+      --es: 1;
+      --eu: 2;
+      --et: 37;
+    }
+    &.frame1 .dl {
+      --es: 1;
+      --eu: 3;
+      --et: 2;
+    }
+    &.frame1 .dm {
+      --es: 1;
+      --eu: 3;
+      --et: 11;
+    }
+    &.frame1 .dn {
+      --es: 1;
+      --eu: 3;
+      --et: 17;
+    }
+    &.frame1 .do {
+      --es: 1;
+      --eu: 3;
+      --et: 19;
+    }
+    &.frame1 .dp {
+      --es: 1;
+      --eu: 3;
+      --et: 20;
+    }
+    &.frame1 .dq,
+    &.frame2 .cr,
+    &.frame3 .cr {
+      --es: 1;
+      --eu: 5;
+      --et: 2;
+    }
+    &.frame1 .dr,
+    &.frame2 .cs,
+    &.frame3 .cs {
+      --es: 1;
+      --eu: 5;
+      --et: 5;
+    }
+    &.frame1 .dt,
+    &.frame3 .cu {
+      --es: 1;
+      --eu: 5;
+      --et: 20;
+    }
+    &.frame1 .du {
+      --es: 1;
+      --eu: 5;
+      --et: 24;
+    }
+    &.frame1 .dv {
+      --es: 1;
+      --eu: 5;
+      --et: 28;
+    }
+    &.frame1 .dw {
+      --es: 1;
+      --eu: 5;
+      --et: 36;
+    }
+    &.frame1 .dx {
+      --es: 1;
+      --eu: 5;
+      --et: 42;
+    }
+    &.frame1 .ek,
+    &.frame2 .dl,
+    &.frame3 .cz,
+    &.frame4 .cr,
+    &.frame5 .cr,
+    &.frame6 .cr,
+    &.frame7 .cr,
+    &.frame8 .cr,
+    &.frame9 .cr,
+    &.frame10 .cr,
+    &.frame11 .cr {
+      --es: 1;
+      --eu: 6;
+      --et: 2;
+    }
+    &.frame1 .el,
+    &.frame2 .dm {
+      --es: 1;
+      --eu: 6;
+      --et: 11;
+    }
+    &.frame1 .em,
+    &.frame4 .ct,
+    &.frame5 .ct,
+    &.frame6 .ct,
+    &.frame7 .ct,
+    &.frame8 .ct,
+    &.frame9 .ct,
+    &.frame10 .ct,
+    &.frame11 .ct {
+      --es: 1;
+      --eu: 6;
+      --et: 12;
+    }
+    &.frame1 .en {
+      --es: 1;
+      --eu: 6;
+      --et: 18;
+    }
+    &.frame1 .eo,
+    &.frame2 .dp,
+    &.frame3 .dg,
+    &.frame4 .cu,
+    &.frame5 .cu,
+    &.frame6 .cu,
+    &.frame7 .cu,
+    &.frame8 .cu,
+    &.frame9 .cu,
+    &.frame10 .cu,
+    &.frame11 .cu {
+      --es: 1;
+      --eu: 6;
+      --et: 20;
+    }
+    &.frame1 .ep,
+    &.frame3 .di {
+      --es: 1;
+      --eu: 6;
+      --et: 24;
+    }
+    &.frame1 .eq,
+    &.frame3 .dj {
+      --es: 1;
+      --eu: 6;
+      --et: 25;
+    }
+    &.frame1 .er,
+    &.frame4 .cv,
+    &.frame5 .cv,
+    &.frame6 .cv,
+    &.frame7 .cv,
+    &.frame8 .cv,
+    &.frame9 .cv,
+    &.frame10 .cv,
+    &.frame11 .cv {
+      --es: 1;
+      --eu: 6;
+      --et: 30;
+    }
+    &.frame1 .fu {
+      --et: 16;
+    }
+    &.frame1 .fv {
+      --et: 18;
+    }
+    &.frame1 .fx {
+      --et: 24;
+    }
+    &.frame1 .fy {
+      --et: 25;
+    }
+    &.frame1 .fz {
+      --et: 32;
+    }
+    &.frame1 .ga {
+      --et: 33;
+    }
+    &.frame1 .gb {
+      --et: 41;
+    }
+    &.frame1 .gc {
+      --et: 42;
+    }
+    &.frame1 .ia {
+      --es: 1;
+      --eu: 7;
+    }
+    &.frame2 .u,
+    &.frame11 .u {
+      --et: 3;
+    }
+    &.frame2 .v,
+    &.frame11 .v {
+      --et: 11;
+    }
+    &.frame2 .x,
+    &.frame3 .ct {
+      --es: 1;
+      --eu: 5;
+      --et: 12;
+    }
+    &.frame2 .y,
+    &.frame3 .ds {
+      --es: 1;
+      --eu: 8;
+      --et: 14;
+    }
+    &.frame2 .z,
+    &.frame3 .z,
+    &.frame4 .z,
+    &.frame5 .z,
+    &.frame6 .z,
+    &.frame7 .z,
+    &.frame8 .z,
+    &.frame9 .z,
+    &.frame10 .z,
+    &.frame11 .z {
+      --es: 1;
+      --et: 7;
+    }
+    &.frame2 .ba,
+    &.frame3 .ba,
+    &.frame4 .ba,
+    &.frame5 .ba,
+    &.frame6 .ba,
+    &.frame7 .ba,
+    &.frame8 .ba,
+    &.frame9 .ba,
+    &.frame10 .ba,
+    &.frame11 .ba {
+      --es: 1;
+      --et: 9;
+    }
+    &.frame2 .bv,
+    &.frame3 .bv {
+      --es: 1;
+      --eu: 2;
+      --et: 3;
+    }
+    &.frame2 .bx,
+    &.frame3 .bx {
+      --es: 1;
+      --eu: 2;
+      --et: 16;
+    }
+    &.frame2 .by,
+    &.frame3 .by {
+      --es: 1;
+      --eu: 2;
+      --et: 22;
+    }
+    &.frame2 .bz,
+    &.frame3 .bz {
+      --es: 1;
+      --eu: 2;
+      --et: 24;
+    }
+    &.frame2 .ca,
+    &.frame3 .ca {
+      --es: 1;
+      --eu: 2;
+      --et: 26;
+    }
+    &.frame2 .cb,
+    &.frame3 .cb {
+      --es: 1;
+      --eu: 2;
+      --et: 33;
+    }
+    &.frame2 .cc,
+    &.frame3 .cc {
+      --es: 1;
+      --eu: 2;
+      --et: 38;
+    }
+    &.frame2 .cd,
+    &.frame3 .cd,
+    &.frame4 .bu,
+    &.frame5 .bu,
+    &.frame6 .bu,
+    &.frame7 .bu,
+    &.frame8 .bu,
+    &.frame9 .bu,
+    &.frame10 .bu,
+    &.frame11 .bu {
+      --es: 1;
+      --eu: 3;
+    }
+    &.frame2 .ce,
+    &.frame3 .ce {
+      --es: 1;
+      --eu: 3;
+      --et: 1;
+    }
+    &.frame2 .cf,
+    &.frame3 .cf {
+      --es: 1;
+      --eu: 3;
+      --et: 7;
+    }
+    &.frame2 .cg,
+    &.frame3 .cg {
+      --es: 1;
+      --eu: 3;
+      --et: 8;
+    }
+    &.frame2 .ch,
+    &.frame3 .ch {
+      --es: 1;
+      --eu: 3;
+      --et: 9;
+    }
+    &.frame2 .ci,
+    &.frame3 .ci {
+      --es: 1;
+      --eu: 3;
+      --et: 14;
+    }
+    &.frame2 .cj,
+    &.frame3 .cj {
+      --es: 1;
+      --eu: 3;
+      --et: 15;
+    }
+    &.frame2 .ck,
+    &.frame3 .ck,
+    &.frame4 .by,
+    &.frame5 .by,
+    &.frame6 .by,
+    &.frame7 .by,
+    &.frame8 .by,
+    &.frame9 .by,
+    &.frame10 .by,
+    &.frame11 .by {
+      --es: 1;
+      --eu: 3;
+      --et: 22;
+    }
+    &.frame2 .cl,
+    &.frame3 .cl {
+      --es: 1;
+      --eu: 3;
+      --et: 23;
+    }
+    &.frame2 .cm,
+    &.frame3 .cm,
+    &.frame4 .cd,
+    &.frame5 .cd,
+    &.frame6 .cd,
+    &.frame7 .cd,
+    &.frame8 .cd,
+    &.frame9 .cd,
+    &.frame10 .cd,
+    &.frame11 .cd {
+      --es: 1;
+      --eu: 4;
+    }
+    &.frame2 .cn,
+    &.frame3 .cn {
+      --es: 1;
+      --eu: 4;
+      --et: 6;
+    }
+    &.frame2 .co,
+    &.frame3 .co {
+      --es: 1;
+      --eu: 4;
+      --et: 19;
+    }
+    &.frame2 .cp,
+    &.frame3 .cp {
+      --es: 1;
+      --eu: 4;
+      --et: 27;
+    }
+    &.frame2 .cq,
+    &.frame3 .cq {
+      --es: 1;
+      --eu: 4;
+      --et: 39;
+    }
+    &.frame2 .ct,
+    &.frame3 .x {
+      --eu: 5;
+      --et: 12;
+    }
+    &.frame2 .cv {
+      --es: 1;
+      --eu: 5;
+      --et: 21;
+    }
+    &.frame2 .cw {
+      --es: 1;
+      --eu: 5;
+      --et: 25;
+    }
+    &.frame2 .cx {
+      --es: 1;
+      --eu: 5;
+      --et: 29;
+    }
+    &.frame2 .cy {
+      --es: 1;
+      --eu: 5;
+      --et: 37;
+    }
+    &.frame2 .da {
+      --eu: 6;
+      --et: 3;
+    }
+    &.frame2 .db {
+      --eu: 6;
+      --et: 7;
+    }
+    &.frame2 .dc {
+      --eu: 6;
+      --et: 8;
+    }
+    &.frame2 .dd {
+      --eu: 6;
+      --et: 14;
+    }
+    &.frame2 .de {
+      --eu: 6;
+      --et: 15;
+    }
+    &.frame2 .df {
+      --eu: 6;
+      --et: 17;
+    }
+    &.frame2 .dh {
+      --eu: 6;
+      --et: 22;
+    }
+    &.frame2 .dk {
+      --eu: 6;
+      --et: 26;
+    }
+    &.frame2 .dn,
+    &.frame3 .df {
+      --es: 1;
+      --eu: 6;
+      --et: 17;
+    }
+    &.frame2 .do {
+      --es: 1;
+      --eu: 6;
+      --et: 19;
+    }
+    &.frame2 .dq,
+    &.frame3 .dq {
+      --es: 1;
+      --eu: 8;
+      --et: 2;
+    }
+    &.frame2 .dr,
+    &.frame3 .dr {
+      --es: 1;
+      --eu: 8;
+      --et: 5;
+    }
+    &.frame2 .ds,
+    &.frame3 .y {
+      --eu: 8;
+      --et: 14;
+    }
+    &.frame2 .dt {
+      --es: 1;
+      --eu: 8;
+      --et: 20;
+    }
+    &.frame2 .du,
+    &.frame3 .dt {
+      --es: 1;
+      --eu: 8;
+      --et: 24;
+    }
+    &.frame2 .dv,
+    &.frame3 .du {
+      --es: 1;
+      --eu: 8;
+      --et: 28;
+    }
+    &.frame2 .dw {
+      --es: 1;
+      --eu: 8;
+      --et: 36;
+    }
+    &.frame2 .dx {
+      --es: 1;
+      --eu: 8;
+      --et: 42;
+    }
+    &.frame2 .dy {
+      --eu: 9;
+      --et: 2;
+    }
+    &.frame2 .dz {
+      --eu: 9;
+      --et: 3;
+    }
+    &.frame2 .ea {
+      --eu: 9;
+      --et: 7;
+    }
+    &.frame2 .eb {
+      --eu: 9;
+      --et: 8;
+    }
+    &.frame2 .ed {
+      --eu: 9;
+      --et: 15;
+    }
+    &.frame2 .ee {
+      --eu: 9;
+      --et: 17;
+    }
+    &.frame2 .ef {
+      --eu: 9;
+      --et: 20;
+    }
+    &.frame2 .eg {
+      --eu: 9;
+      --et: 22;
+    }
+    &.frame2 .eh {
+      --eu: 9;
+      --et: 24;
+    }
+    &.frame2 .ei {
+      --eu: 9;
+      --et: 25;
+    }
+    &.frame2 .ej {
+      --eu: 9;
+      --et: 26;
+    }
+    &.frame2 .ek,
+    &.frame3 .dy,
+    &.frame4 .dq,
+    &.frame5 .dq,
+    &.frame6 .dq,
+    &.frame7 .dq,
+    &.frame8 .dq,
+    &.frame9 .dq,
+    &.frame10 .dq,
+    &.frame11 .dq {
+      --es: 1;
+      --eu: 9;
+      --et: 2;
+    }
+    &.frame2 .el {
+      --es: 1;
+      --eu: 9;
+      --et: 11;
+    }
+    &.frame2 .em {
+      --es: 1;
+      --eu: 9;
+      --et: 12;
+    }
+    &.frame2 .en {
+      --es: 1;
+      --eu: 9;
+      --et: 18;
+    }
+    &.frame2 .eo,
+    &.frame3 .ef {
+      --es: 1;
+      --eu: 9;
+      --et: 20;
+    }
+    &.frame2 .ep,
+    &.frame3 .eh,
+    &.frame4 .dt,
+    &.frame5 .dt,
+    &.frame6 .dt,
+    &.frame7 .dt,
+    &.frame8 .dt,
+    &.frame9 .dt,
+    &.frame10 .dt,
+    &.frame11 .dt {
+      --es: 1;
+      --eu: 9;
+      --et: 24;
+    }
+    &.frame2 .eq,
+    &.frame3 .ei {
+      --es: 1;
+      --eu: 9;
+      --et: 25;
+    }
+    &.frame2 .er {
+      --es: 1;
+      --eu: 9;
+      --et: 30;
+    }
+    &.frame2 .fu {
+      --es: 1;
+      --et: 16;
+    }
+    &.frame2 .fv {
+      --es: 1;
+      --et: 18;
+    }
+    &.frame2 .fw,
+    &.frame3 .be,
+    &.frame4 .be,
+    &.frame5 .be,
+    &.frame6 .be,
+    &.frame7 .be,
+    &.frame8 .be,
+    &.frame9 .be,
+    &.frame10 .be,
+    &.frame11 .be {
+      --es: 1;
+      --et: 23;
+    }
+    &.frame2 .fx {
+      --es: 1;
+      --et: 24;
+    }
+    &.frame2 .fz {
+      --es: 1;
+      --et: 32;
+    }
+    &.frame2 .ga {
+      --es: 1;
+      --et: 33;
+    }
+    &.frame2 .gb {
+      --es: 1;
+      --et: 41;
+    }
+    &.frame2 .gc {
+      --es: 1;
+      --et: 42;
+    }
+    &.frame2 .ia,
+    &.frame3 .ia {
+      --es: 1;
+      --eu: 10;
+    }
+    &.frame3 .bc,
+    &.frame4 .bc,
+    &.frame5 .bc,
+    &.frame6 .bc,
+    &.frame7 .bc,
+    &.frame8 .bc,
+    &.frame9 .bc,
+    &.frame10 .bc,
+    &.frame11 .bc {
+      --es: 1;
+      --et: 17;
+    }
+    &.frame3 .bd,
+    &.frame4 .bd,
+    &.frame5 .bd,
+    &.frame6 .bd,
+    &.frame7 .bd,
+    &.frame8 .bd,
+    &.frame9 .bd,
+    &.frame10 .bd,
+    &.frame11 .bd {
+      --es: 1;
+      --et: 21;
+    }
+    &.frame3 .bf,
+    &.frame4 .bf,
+    &.frame5 .bf,
+    &.frame6 .bf,
+    &.frame7 .bf,
+    &.frame8 .bf,
+    &.frame9 .bf,
+    &.frame10 .bf,
+    &.frame11 .bf {
+      --es: 1;
+      --et: 27;
+    }
+    &.frame3 .bg,
+    &.frame4 .bg,
+    &.frame5 .bg,
+    &.frame6 .bg,
+    &.frame7 .bg,
+    &.frame8 .bg,
+    &.frame9 .bg,
+    &.frame10 .bg,
+    &.frame11 .bg {
+      --es: 1;
+      --et: 29;
+    }
+    &.frame3 .cv {
+      --es: 1;
+      --eu: 5;
+      --et: 30;
+    }
+    &.frame3 .cw {
+      --es: 1;
+      --eu: 5;
+      --et: 34;
+    }
+    &.frame3 .cx {
+      --es: 1;
+      --eu: 5;
+      --et: 38;
+    }
+    &.frame3 .cy {
+      --es: 1;
+      --eu: 5;
+      --et: 46;
+    }
+    &.frame3 .da {
+      --es: 1;
+      --eu: 6;
+      --et: 3;
+    }
+    &.frame3 .db {
+      --es: 1;
+      --eu: 6;
+      --et: 7;
+    }
+    &.frame3 .dc {
+      --es: 1;
+      --eu: 6;
+      --et: 8;
+    }
+    &.frame3 .dd {
+      --es: 1;
+      --eu: 6;
+      --et: 14;
+    }
+    &.frame3 .de {
+      --es: 1;
+      --eu: 6;
+      --et: 15;
+    }
+    &.frame3 .dh {
+      --es: 1;
+      --eu: 6;
+      --et: 22;
+    }
+    &.frame3 .dk {
+      --es: 1;
+      --eu: 6;
+      --et: 26;
+    }
+    &.frame3 .dl {
+      --es: 1;
+      --eu: 6;
+      --et: 28;
+    }
+    &.frame3 .dm {
+      --es: 1;
+      --eu: 6;
+      --et: 37;
+    }
+    &.frame3 .dn {
+      --es: 1;
+      --eu: 6;
+      --et: 43;
+    }
+    &.frame3 .do {
+      --es: 1;
+      --eu: 6;
+      --et: 45;
+    }
+    &.frame3 .dp,
+    &.frame4 .cy,
+    &.frame5 .cy,
+    &.frame6 .cy,
+    &.frame7 .cy,
+    &.frame8 .cy,
+    &.frame9 .cy,
+    &.frame10 .cy,
+    &.frame11 .cy {
+      --es: 1;
+      --eu: 6;
+      --et: 46;
+    }
+    &.frame3 .dv {
+      --es: 1;
+      --eu: 8;
+      --et: 32;
+    }
+    &.frame3 .dw {
+      --es: 1;
+      --eu: 8;
+      --et: 40;
+    }
+    &.frame3 .dx {
+      --es: 1;
+      --eu: 8;
+      --et: 46;
+    }
+    &.frame3 .dz {
+      --es: 1;
+      --eu: 9;
+      --et: 3;
+    }
+    &.frame3 .ea {
+      --es: 1;
+      --eu: 9;
+      --et: 7;
+    }
+    &.frame3 .eb {
+      --es: 1;
+      --eu: 9;
+      --et: 8;
+    }
+    &.frame3 .ec,
+    &.frame4 .ds,
+    &.frame5 .ds,
+    &.frame6 .ds,
+    &.frame7 .ds,
+    &.frame8 .ds,
+    &.frame9 .ds,
+    &.frame10 .ds,
+    &.frame11 .ds {
+      --es: 1;
+      --eu: 9;
+      --et: 14;
+    }
+    &.frame3 .ed {
+      --es: 1;
+      --eu: 9;
+      --et: 15;
+    }
+    &.frame3 .ee {
+      --es: 1;
+      --eu: 9;
+      --et: 17;
+    }
+    &.frame3 .eg {
+      --es: 1;
+      --eu: 9;
+      --et: 22;
+    }
+    &.frame3 .ej {
+      --es: 1;
+      --eu: 9;
+      --et: 26;
+    }
+    &.frame3 .ek,
+    &.frame4 .du,
+    &.frame5 .du,
+    &.frame6 .du,
+    &.frame7 .du,
+    &.frame8 .du,
+    &.frame9 .du,
+    &.frame10 .du,
+    &.frame11 .du {
+      --es: 1;
+      --eu: 9;
+      --et: 28;
+    }
+    &.frame3 .el {
+      --es: 1;
+      --eu: 9;
+      --et: 37;
+    }
+    &.frame3 .em {
+      --es: 1;
+      --eu: 9;
+      --et: 38;
+    }
+    &.frame3 .en {
+      --es: 1;
+      --eu: 9;
+      --et: 44;
+    }
+    &.frame3 .eo,
+    &.frame4 .dx,
+    &.frame5 .dx,
+    &.frame6 .dx,
+    &.frame7 .dx,
+    &.frame8 .dx,
+    &.frame9 .dx,
+    &.frame10 .dx,
+    &.frame11 .dx {
+      --es: 1;
+      --eu: 9;
+      --et: 46;
+    }
+    &.frame3 .ep {
+      --es: 1;
+      --eu: 9;
+      --et: 50;
+    }
+    &.frame3 .eq {
+      --es: 1;
+      --eu: 9;
+      --et: 51;
+    }
+    &.frame3 .er {
+      --es: 1;
+      --eu: 9;
+      --et: 56;
+    }
+    &.frame3 .fu,
+    &.frame4 .fu,
+    &.frame5 .fu,
+    &.frame6 .fu,
+    &.frame7 .fu,
+    &.frame8 .fu {
+      --es: 1;
+      --et: 36;
+    }
+    &.frame3 .fv,
+    &.frame4 .fv,
+    &.frame5 .fv,
+    &.frame6 .fv,
+    &.frame7 .fv,
+    &.frame8 .fv {
+      --es: 1;
+      --et: 38;
+    }
+    &.frame3 .fw,
+    &.frame4 .fw,
+    &.frame5 .fw,
+    &.frame6 .fw,
+    &.frame7 .fw,
+    &.frame8 .fw {
+      --es: 1;
+      --et: 43;
+    }
+    &.frame3 .fx,
+    &.frame4 .fx,
+    &.frame5 .fx,
+    &.frame6 .fx,
+    &.frame7 .fx,
+    &.frame8 .fx {
+      --es: 1;
+      --et: 44;
+    }
+    &.frame3 .fy,
+    &.frame4 .fy,
+    &.frame5 .fy,
+    &.frame6 .fy,
+    &.frame7 .fy,
+    &.frame8 .fy,
+    &.frame10 .fp,
+    &.frame11 .fp {
+      --es: 1;
+      --et: 45;
+    }
+    &.frame3 .fz,
+    &.frame4 .fz,
+    &.frame5 .fz,
+    &.frame6 .fz,
+    &.frame7 .fz,
+    &.frame8 .fz {
+      --es: 1;
+      --et: 52;
+    }
+    &.frame3 .ga,
+    &.frame4 .ga,
+    &.frame5 .ga,
+    &.frame6 .ga,
+    &.frame7 .ga,
+    &.frame8 .ga {
+      --es: 1;
+      --et: 53;
+    }
+    &.frame3 .gb,
+    &.frame4 .gb,
+    &.frame5 .gb,
+    &.frame6 .gb,
+    &.frame7 .gb,
+    &.frame8 .gb {
+      --es: 1;
+      --et: 61;
+    }
+    &.frame3 .gc,
+    &.frame4 .gc,
+    &.frame5 .gc,
+    &.frame6 .gc,
+    &.frame7 .gc,
+    &.frame8 .gc {
+      --es: 1;
+      --et: 62;
+    }
+    &.frame4 .bi,
+    &.frame5 .bi,
+    &.frame6 .bi,
+    &.frame7 .bi,
+    &.frame8 .bi,
+    &.frame9 .bi,
+    &.frame10 .bi,
+    &.frame11 .bi {
+      --es: 1;
+      --eu: 1;
+      --et: 7;
+    }
+    &.frame4 .bj,
+    &.frame5 .bj,
+    &.frame6 .bj,
+    &.frame7 .bj,
+    &.frame8 .bj,
+    &.frame9 .bj,
+    &.frame10 .bj,
+    &.frame11 .bj {
+      --es: 1;
+      --eu: 1;
+      --et: 9;
+    }
+    &.frame4 .bk,
+    &.frame5 .bk,
+    &.frame6 .bk,
+    &.frame7 .bk,
+    &.frame8 .bk,
+    &.frame9 .bk,
+    &.frame10 .bk,
+    &.frame11 .bk {
+      --es: 1;
+      --eu: 1;
+      --et: 17;
+    }
+    &.frame4 .bm,
+    &.frame5 .bm,
+    &.frame6 .bm,
+    &.frame7 .bm,
+    &.frame8 .bm,
+    &.frame9 .bm,
+    &.frame10 .bm,
+    &.frame11 .bm {
+      --es: 1;
+      --eu: 1;
+      --et: 20;
+    }
+    &.frame4 .bn,
+    &.frame5 .bn,
+    &.frame6 .bn,
+    &.frame7 .bn,
+    &.frame8 .bn,
+    &.frame9 .bn,
+    &.frame10 .bn,
+    &.frame11 .bn {
+      --es: 1;
+      --eu: 1;
+      --et: 22;
+    }
+    &.frame4 .bo,
+    &.frame5 .bo,
+    &.frame6 .bo,
+    &.frame7 .bo,
+    &.frame8 .bo,
+    &.frame9 .bo,
+    &.frame10 .bo,
+    &.frame11 .bo {
+      --es: 1;
+      --eu: 1;
+      --et: 29;
+    }
+    &.frame4 .bp,
+    &.frame5 .bp,
+    &.frame6 .bp,
+    &.frame7 .bp,
+    &.frame8 .bp,
+    &.frame9 .bp,
+    &.frame10 .bp,
+    &.frame11 .bp {
+      --es: 1;
+      --eu: 1;
+      --et: 31;
+    }
+    &.frame4 .bq,
+    &.frame5 .bq,
+    &.frame6 .bq,
+    &.frame7 .bq,
+    &.frame8 .bq,
+    &.frame9 .bq,
+    &.frame10 .bq,
+    &.frame11 .bq {
+      --es: 1;
+      --eu: 1;
+      --et: 36;
+    }
+    &.frame4 .br,
+    &.frame5 .br,
+    &.frame6 .br,
+    &.frame7 .br,
+    &.frame8 .br,
+    &.frame9 .br,
+    &.frame10 .br,
+    &.frame11 .br {
+      --es: 1;
+      --eu: 1;
+      --et: 37;
+    }
+    &.frame4 .bs,
+    &.frame5 .bs,
+    &.frame6 .bs,
+    &.frame7 .bs,
+    &.frame8 .bs,
+    &.frame9 .bs,
+    &.frame10 .bs,
+    &.frame11 .bs {
+      --es: 1;
+      --eu: 1;
+      --et: 43;
+    }
+    &.frame4 .bt,
+    &.frame5 .bt,
+    &.frame6 .bt,
+    &.frame7 .bt,
+    &.frame8 .bt,
+    &.frame9 .bt,
+    &.frame10 .bt,
+    &.frame11 .bt {
+      --es: 1;
+      --eu: 1;
+      --et: 44;
+    }
+    &.frame4 .bv,
+    &.frame5 .bv,
+    &.frame6 .bv,
+    &.frame7 .bv,
+    &.frame8 .bv,
+    &.frame9 .bv,
+    &.frame10 .bv,
+    &.frame11 .bv {
+      --es: 1;
+      --eu: 3;
+      --et: 3;
+    }
+    &.frame4 .bw,
+    &.frame5 .bw,
+    &.frame6 .bw,
+    &.frame7 .bw,
+    &.frame8 .bw,
+    &.frame9 .bw,
+    &.frame10 .bw,
+    &.frame11 .bw {
+      --es: 1;
+      --eu: 3;
+      --et: 12;
+    }
+    &.frame4 .bx,
+    &.frame5 .bx,
+    &.frame6 .bx,
+    &.frame7 .bx,
+    &.frame8 .bx,
+    &.frame9 .bx,
+    &.frame10 .bx,
+    &.frame11 .bx {
+      --es: 1;
+      --eu: 3;
+      --et: 16;
+    }
+    &.frame4 .bz,
+    &.frame5 .bz,
+    &.frame6 .bz,
+    &.frame7 .bz,
+    &.frame8 .bz,
+    &.frame9 .bz,
+    &.frame10 .bz,
+    &.frame11 .bz {
+      --es: 1;
+      --eu: 3;
+      --et: 24;
+    }
+    &.frame4 .ca,
+    &.frame5 .ca,
+    &.frame6 .ca,
+    &.frame7 .ca,
+    &.frame8 .ca,
+    &.frame9 .ca,
+    &.frame10 .ca,
+    &.frame11 .ca {
+      --es: 1;
+      --eu: 3;
+      --et: 26;
+    }
+    &.frame4 .cb,
+    &.frame5 .cb,
+    &.frame6 .cb,
+    &.frame7 .cb,
+    &.frame8 .cb,
+    &.frame9 .cb,
+    &.frame10 .cb,
+    &.frame11 .cb {
+      --es: 1;
+      --eu: 3;
+      --et: 33;
+    }
+    &.frame4 .cc,
+    &.frame5 .cc,
+    &.frame6 .cc,
+    &.frame7 .cc,
+    &.frame8 .cc,
+    &.frame9 .cc,
+    &.frame10 .cc,
+    &.frame11 .cc {
+      --es: 1;
+      --eu: 3;
+      --et: 38;
+    }
+    &.frame4 .ce,
+    &.frame5 .ce,
+    &.frame6 .ce,
+    &.frame7 .ce,
+    &.frame8 .ce,
+    &.frame9 .ce,
+    &.frame10 .ce,
+    &.frame11 .ce {
+      --es: 1;
+      --eu: 4;
+      --et: 1;
+    }
+    &.frame4 .cf,
+    &.frame5 .cf,
+    &.frame6 .cf,
+    &.frame7 .cf,
+    &.frame8 .cf,
+    &.frame9 .cf,
+    &.frame10 .cf,
+    &.frame11 .cf {
+      --es: 1;
+      --eu: 4;
+      --et: 7;
+    }
+    &.frame4 .cg,
+    &.frame5 .cg,
+    &.frame6 .cg,
+    &.frame7 .cg,
+    &.frame8 .cg,
+    &.frame9 .cg,
+    &.frame10 .cg,
+    &.frame11 .cg {
+      --es: 1;
+      --eu: 4;
+      --et: 8;
+    }
+    &.frame4 .ch,
+    &.frame5 .ch,
+    &.frame6 .ch,
+    &.frame7 .ch,
+    &.frame8 .ch,
+    &.frame9 .ch,
+    &.frame10 .ch,
+    &.frame11 .ch {
+      --es: 1;
+      --eu: 4;
+      --et: 9;
+    }
+    &.frame4 .ci,
+    &.frame5 .ci,
+    &.frame6 .ci,
+    &.frame7 .ci,
+    &.frame8 .ci,
+    &.frame9 .ci,
+    &.frame10 .ci,
+    &.frame11 .ci {
+      --es: 1;
+      --eu: 4;
+      --et: 14;
+    }
+    &.frame4 .cj,
+    &.frame5 .cj,
+    &.frame6 .cj,
+    &.frame7 .cj,
+    &.frame8 .cj,
+    &.frame9 .cj,
+    &.frame10 .cj,
+    &.frame11 .cj {
+      --es: 1;
+      --eu: 4;
+      --et: 15;
+    }
+    &.frame4 .ck,
+    &.frame5 .ck,
+    &.frame6 .ck,
+    &.frame7 .ck,
+    &.frame8 .ck,
+    &.frame9 .ck,
+    &.frame10 .ck,
+    &.frame11 .ck {
+      --es: 1;
+      --eu: 4;
+      --et: 22;
+    }
+    &.frame4 .cl,
+    &.frame5 .cl,
+    &.frame6 .cl,
+    &.frame7 .cl,
+    &.frame8 .cl,
+    &.frame9 .cl,
+    &.frame10 .cl,
+    &.frame11 .cl {
+      --es: 1;
+      --eu: 4;
+      --et: 23;
+    }
+    &.frame4 .cm,
+    &.frame5 .cm,
+    &.frame6 .cm,
+    &.frame7 .cm,
+    &.frame8 .cm,
+    &.frame9 .cm,
+    &.frame10 .cm,
+    &.frame11 .cm {
+      --es: 1;
+      --eu: 5;
+    }
+    &.frame4 .cn,
+    &.frame5 .cn,
+    &.frame6 .cn,
+    &.frame7 .cn,
+    &.frame8 .cn,
+    &.frame9 .cn,
+    &.frame10 .cn,
+    &.frame11 .cn {
+      --es: 1;
+      --eu: 5;
+      --et: 6;
+    }
+    &.frame4 .co,
+    &.frame5 .co,
+    &.frame6 .co,
+    &.frame7 .co,
+    &.frame8 .co,
+    &.frame9 .co,
+    &.frame10 .co,
+    &.frame11 .co {
+      --es: 1;
+      --eu: 5;
+      --et: 19;
+    }
+    &.frame4 .cp,
+    &.frame5 .cp,
+    &.frame6 .cp,
+    &.frame7 .cp,
+    &.frame8 .cp,
+    &.frame9 .cp,
+    &.frame10 .cp,
+    &.frame11 .cp {
+      --es: 1;
+      --eu: 5;
+      --et: 27;
+    }
+    &.frame4 .cq,
+    &.frame5 .cq,
+    &.frame6 .cq,
+    &.frame7 .cq,
+    &.frame8 .cq,
+    &.frame9 .cq,
+    &.frame10 .cq,
+    &.frame11 .cq {
+      --es: 1;
+      --eu: 5;
+      --et: 39;
+    }
+    &.frame4 .cs,
+    &.frame5 .cs,
+    &.frame6 .cs,
+    &.frame7 .cs,
+    &.frame8 .cs,
+    &.frame9 .cs,
+    &.frame10 .cs,
+    &.frame11 .cs {
+      --es: 1;
+      --eu: 6;
+      --et: 5;
+    }
+    &.frame4 .cw,
+    &.frame5 .cw,
+    &.frame6 .cw,
+    &.frame7 .cw,
+    &.frame8 .cw,
+    &.frame9 .cw,
+    &.frame10 .cw,
+    &.frame11 .cw {
+      --es: 1;
+      --eu: 6;
+      --et: 34;
+    }
+    &.frame4 .cx,
+    &.frame5 .cx,
+    &.frame6 .cx,
+    &.frame7 .cx,
+    &.frame8 .cx,
+    &.frame9 .cx,
+    &.frame10 .cx,
+    &.frame11 .cx {
+      --es: 1;
+      --eu: 6;
+      --et: 38;
+    }
+    &.frame4 .cz,
+    &.frame5 .cz,
+    &.frame6 .cz,
+    &.frame7 .cz,
+    &.frame8 .cz,
+    &.frame9 .cz,
+    &.frame10 .cz,
+    &.frame11 .cz {
+      --es: 1;
+      --eu: 7;
+      --et: 2;
+    }
+    &.frame4 .da,
+    &.frame5 .da,
+    &.frame6 .da,
+    &.frame7 .da,
+    &.frame8 .da,
+    &.frame9 .da,
+    &.frame10 .da,
+    &.frame11 .da {
+      --es: 1;
+      --eu: 7;
+      --et: 3;
+    }
+    &.frame4 .db,
+    &.frame5 .db,
+    &.frame6 .db,
+    &.frame7 .db,
+    &.frame8 .db,
+    &.frame9 .db,
+    &.frame10 .db,
+    &.frame11 .db {
+      --es: 1;
+      --eu: 7;
+      --et: 7;
+    }
+    &.frame4 .dc,
+    &.frame5 .dc,
+    &.frame6 .dc,
+    &.frame7 .dc,
+    &.frame8 .dc,
+    &.frame9 .dc,
+    &.frame10 .dc,
+    &.frame11 .dc {
+      --es: 1;
+      --eu: 7;
+      --et: 8;
+    }
+    &.frame4 .dd,
+    &.frame5 .dd,
+    &.frame6 .dd,
+    &.frame7 .dd,
+    &.frame8 .dd,
+    &.frame9 .dd,
+    &.frame10 .dd,
+    &.frame11 .dd {
+      --es: 1;
+      --eu: 7;
+      --et: 14;
+    }
+    &.frame4 .de,
+    &.frame5 .de,
+    &.frame6 .de,
+    &.frame7 .de,
+    &.frame8 .de,
+    &.frame9 .de,
+    &.frame10 .de,
+    &.frame11 .de {
+      --es: 1;
+      --eu: 7;
+      --et: 15;
+    }
+    &.frame4 .df,
+    &.frame5 .df,
+    &.frame6 .df,
+    &.frame7 .df,
+    &.frame8 .df,
+    &.frame9 .df,
+    &.frame10 .df,
+    &.frame11 .df {
+      --es: 1;
+      --eu: 7;
+      --et: 17;
+    }
+    &.frame4 .dg,
+    &.frame5 .dg,
+    &.frame6 .dg,
+    &.frame7 .dg,
+    &.frame8 .dg,
+    &.frame9 .dg,
+    &.frame10 .dg,
+    &.frame11 .dg {
+      --es: 1;
+      --eu: 7;
+      --et: 20;
+    }
+    &.frame4 .dh,
+    &.frame5 .dh,
+    &.frame6 .dh,
+    &.frame7 .dh,
+    &.frame8 .dh,
+    &.frame9 .dh,
+    &.frame10 .dh,
+    &.frame11 .dh {
+      --es: 1;
+      --eu: 7;
+      --et: 22;
+    }
+    &.frame4 .di,
+    &.frame5 .di,
+    &.frame6 .di,
+    &.frame7 .di,
+    &.frame8 .di,
+    &.frame9 .di,
+    &.frame10 .di,
+    &.frame11 .di {
+      --es: 1;
+      --eu: 7;
+      --et: 24;
+    }
+    &.frame4 .dj,
+    &.frame5 .dj,
+    &.frame6 .dj,
+    &.frame7 .dj,
+    &.frame8 .dj,
+    &.frame9 .dj,
+    &.frame10 .dj,
+    &.frame11 .dj {
+      --es: 1;
+      --eu: 7;
+      --et: 25;
+    }
+    &.frame4 .dk,
+    &.frame5 .dk,
+    &.frame6 .dk,
+    &.frame7 .dk,
+    &.frame8 .dk,
+    &.frame9 .dk,
+    &.frame10 .dk,
+    &.frame11 .dk {
+      --es: 1;
+      --eu: 7;
+      --et: 26;
+    }
+    &.frame4 .dl,
+    &.frame5 .dl,
+    &.frame6 .dl,
+    &.frame7 .dl,
+    &.frame8 .dl,
+    &.frame9 .dl,
+    &.frame10 .dl,
+    &.frame11 .dl {
+      --es: 1;
+      --eu: 7;
+      --et: 28;
+    }
+    &.frame4 .dm,
+    &.frame5 .dm,
+    &.frame6 .dm,
+    &.frame7 .dm,
+    &.frame8 .dm,
+    &.frame9 .dm,
+    &.frame10 .dm,
+    &.frame11 .dm {
+      --es: 1;
+      --eu: 7;
+      --et: 37;
+    }
+    &.frame4 .dn,
+    &.frame5 .dn,
+    &.frame6 .dn,
+    &.frame7 .dn,
+    &.frame8 .dn,
+    &.frame9 .dn,
+    &.frame10 .dn,
+    &.frame11 .dn {
+      --es: 1;
+      --eu: 7;
+      --et: 43;
+    }
+    &.frame4 .do,
+    &.frame5 .do,
+    &.frame6 .do,
+    &.frame7 .do,
+    &.frame8 .do,
+    &.frame9 .do,
+    &.frame10 .do,
+    &.frame11 .do {
+      --es: 1;
+      --eu: 7;
+      --et: 45;
+    }
+    &.frame4 .dp,
+    &.frame5 .dp,
+    &.frame6 .dp,
+    &.frame7 .dp,
+    &.frame8 .dp,
+    &.frame9 .dp,
+    &.frame10 .dp,
+    &.frame11 .dp {
+      --es: 1;
+      --eu: 7;
+      --et: 46;
+    }
+    &.frame4 .dr,
+    &.frame5 .dr,
+    &.frame6 .dr,
+    &.frame7 .dr,
+    &.frame8 .dr,
+    &.frame9 .dr,
+    &.frame10 .dr,
+    &.frame11 .dr {
+      --es: 1;
+      --eu: 9;
+      --et: 5;
+    }
+    &.frame4 .dv,
+    &.frame5 .dv,
+    &.frame6 .dv,
+    &.frame7 .dv,
+    &.frame8 .dv,
+    &.frame9 .dv,
+    &.frame10 .dv,
+    &.frame11 .dv {
+      --es: 1;
+      --eu: 9;
+      --et: 32;
+    }
+    &.frame4 .dw,
+    &.frame5 .dw,
+    &.frame6 .dw,
+    &.frame7 .dw,
+    &.frame8 .dw,
+    &.frame9 .dw,
+    &.frame10 .dw,
+    &.frame11 .dw {
+      --es: 1;
+      --eu: 9;
+      --et: 40;
+    }
+    &.frame4 .dy,
+    &.frame5 .dy,
+    &.frame6 .dy,
+    &.frame7 .dy,
+    &.frame8 .dy,
+    &.frame9 .dy,
+    &.frame10 .dy,
+    &.frame11 .dy {
+      --es: 1;
+      --eu: 10;
+      --et: 2;
+    }
+    &.frame4 .dz,
+    &.frame5 .dz,
+    &.frame6 .dz,
+    &.frame7 .dz,
+    &.frame8 .dz,
+    &.frame9 .dz,
+    &.frame10 .dz,
+    &.frame11 .dz {
+      --es: 1;
+      --eu: 10;
+      --et: 3;
+    }
+    &.frame4 .ea,
+    &.frame5 .ea,
+    &.frame6 .ea,
+    &.frame7 .ea,
+    &.frame8 .ea,
+    &.frame9 .ea,
+    &.frame10 .ea,
+    &.frame11 .ea {
+      --es: 1;
+      --eu: 10;
+      --et: 7;
+    }
+    &.frame4 .eb,
+    &.frame5 .eb,
+    &.frame6 .eb,
+    &.frame7 .eb,
+    &.frame8 .eb,
+    &.frame9 .eb,
+    &.frame10 .eb,
+    &.frame11 .eb {
+      --es: 1;
+      --eu: 10;
+      --et: 8;
+    }
+    &.frame4 .ec,
+    &.frame5 .ec,
+    &.frame6 .ec,
+    &.frame7 .ec,
+    &.frame8 .ec,
+    &.frame9 .ec,
+    &.frame10 .ec,
+    &.frame11 .ec {
+      --es: 1;
+      --eu: 10;
+      --et: 14;
+    }
+    &.frame4 .ed,
+    &.frame5 .ed,
+    &.frame6 .ed,
+    &.frame7 .ed,
+    &.frame8 .ed,
+    &.frame9 .ed,
+    &.frame10 .ed,
+    &.frame11 .ed {
+      --es: 1;
+      --eu: 10;
+      --et: 15;
+    }
+    &.frame4 .ee,
+    &.frame5 .ee,
+    &.frame6 .ee,
+    &.frame7 .ee,
+    &.frame8 .ee,
+    &.frame9 .ee,
+    &.frame10 .ee,
+    &.frame11 .ee {
+      --es: 1;
+      --eu: 10;
+      --et: 17;
+    }
+    &.frame4 .ef,
+    &.frame5 .ef,
+    &.frame6 .ef,
+    &.frame7 .ef,
+    &.frame8 .ef,
+    &.frame9 .ef,
+    &.frame10 .ef,
+    &.frame11 .ef {
+      --es: 1;
+      --eu: 10;
+      --et: 20;
+    }
+    &.frame4 .eg,
+    &.frame5 .eg,
+    &.frame6 .eg,
+    &.frame7 .eg,
+    &.frame8 .eg,
+    &.frame9 .eg,
+    &.frame10 .eg,
+    &.frame11 .eg {
+      --es: 1;
+      --eu: 10;
+      --et: 22;
+    }
+    &.frame4 .eh,
+    &.frame5 .eh,
+    &.frame6 .eh,
+    &.frame7 .eh,
+    &.frame8 .eh,
+    &.frame9 .eh,
+    &.frame10 .eh,
+    &.frame11 .eh {
+      --es: 1;
+      --eu: 10;
+      --et: 24;
+    }
+    &.frame4 .ei,
+    &.frame5 .ei,
+    &.frame6 .ei,
+    &.frame7 .ei,
+    &.frame8 .ei,
+    &.frame9 .ei,
+    &.frame10 .ei,
+    &.frame11 .ei {
+      --es: 1;
+      --eu: 10;
+      --et: 25;
+    }
+    &.frame4 .ej,
+    &.frame5 .ej,
+    &.frame6 .ej,
+    &.frame7 .ej,
+    &.frame8 .ej,
+    &.frame9 .ej,
+    &.frame10 .ej,
+    &.frame11 .ej {
+      --es: 1;
+      --eu: 10;
+      --et: 26;
+    }
+    &.frame4 .ek,
+    &.frame5 .ek,
+    &.frame6 .ek,
+    &.frame7 .ek,
+    &.frame8 .ek,
+    &.frame9 .ek,
+    &.frame10 .ek,
+    &.frame11 .ek {
+      --es: 1;
+      --eu: 10;
+      --et: 28;
+    }
+    &.frame4 .el,
+    &.frame5 .el,
+    &.frame6 .el,
+    &.frame7 .el,
+    &.frame8 .el,
+    &.frame9 .el,
+    &.frame10 .el,
+    &.frame11 .el {
+      --es: 1;
+      --eu: 10;
+      --et: 37;
+    }
+    &.frame4 .em,
+    &.frame5 .em,
+    &.frame6 .em,
+    &.frame7 .em,
+    &.frame8 .em,
+    &.frame9 .em,
+    &.frame10 .em,
+    &.frame11 .em {
+      --es: 1;
+      --eu: 10;
+      --et: 38;
+    }
+    &.frame4 .en,
+    &.frame5 .en,
+    &.frame6 .en,
+    &.frame7 .en,
+    &.frame8 .en,
+    &.frame9 .en,
+    &.frame10 .en,
+    &.frame11 .en {
+      --es: 1;
+      --eu: 10;
+      --et: 44;
+    }
+    &.frame4 .eo,
+    &.frame5 .eo,
+    &.frame6 .eo,
+    &.frame7 .eo,
+    &.frame8 .eo,
+    &.frame9 .eo,
+    &.frame10 .eo,
+    &.frame11 .eo {
+      --es: 1;
+      --eu: 10;
+      --et: 46;
+    }
+    &.frame4 .ep,
+    &.frame5 .ep,
+    &.frame6 .ep,
+    &.frame7 .ep,
+    &.frame8 .ep,
+    &.frame9 .ep,
+    &.frame10 .ep,
+    &.frame11 .ep {
+      --es: 1;
+      --eu: 10;
+      --et: 50;
+    }
+    &.frame4 .eq,
+    &.frame5 .eq,
+    &.frame6 .eq,
+    &.frame7 .eq,
+    &.frame8 .eq,
+    &.frame9 .eq,
+    &.frame10 .eq,
+    &.frame11 .eq {
+      --es: 1;
+      --eu: 10;
+      --et: 51;
+    }
+    &.frame4 .er,
+    &.frame5 .er,
+    &.frame6 .er,
+    &.frame7 .er,
+    &.frame8 .er,
+    &.frame9 .er,
+    &.frame10 .er,
+    &.frame11 .er {
+      --es: 1;
+      --eu: 10;
+      --et: 56;
+    }
+    &.frame4 .gf {
+      --eu: 13;
+      --et: 9;
+    }
+    &.frame4 .gg {
+      --eu: 13;
+      --et: 10;
+    }
+    &.frame4 .ia {
+      --es: 1;
+      --eu: 11;
+    }
+    &.frame5 .es,
+    &.frame6 .es,
+    &.frame7 .es,
+    &.frame8 .es,
+    &.frame9 .es,
+    &.frame10 .es,
+    &.frame11 .es {
+      --es: 1;
+      --eu: 12;
+      --et: 2;
+    }
+    &.frame5 .et,
+    &.frame6 .et,
+    &.frame7 .et,
+    &.frame8 .et,
+    &.frame9 .et,
+    &.frame10 .et,
+    &.frame11 .et {
+      --es: 1;
+      --eu: 12;
+      --et: 5;
+    }
+    &.frame5 .eu,
+    &.frame6 .eu,
+    &.frame7 .eu,
+    &.frame8 .eu,
+    &.frame9 .eu,
+    &.frame10 .eu,
+    &.frame11 .eu {
+      --es: 1;
+      --eu: 12;
+      --et: 14;
+    }
+    &.frame5 .ev,
+    &.frame6 .ev,
+    &.frame7 .ev,
+    &.frame8 .ev,
+    &.frame9 .ev,
+    &.frame10 .ev,
+    &.frame11 .ev {
+      --es: 1;
+      --eu: 12;
+      --et: 15;
+    }
+    &.frame5 .ew,
+    &.frame6 .ew,
+    &.frame7 .ew,
+    &.frame8 .ew,
+    &.frame9 .ew,
+    &.frame10 .ew,
+    &.frame11 .ew {
+      --es: 1;
+      --eu: 12;
+      --et: 17;
+    }
+    &.frame5 .ex,
+    &.frame6 .ex,
+    &.frame7 .ex,
+    &.frame8 .ex,
+    &.frame9 .ex,
+    &.frame10 .ex,
+    &.frame11 .ex {
+      --es: 1;
+      --eu: 12;
+      --et: 24;
+    }
+    &.frame5 .ey,
+    &.frame6 .ey,
+    &.frame7 .ey,
+    &.frame8 .ey,
+    &.frame9 .ey,
+    &.frame10 .ey,
+    &.frame11 .ey {
+      --es: 1;
+      --eu: 12;
+      --et: 29;
+    }
+    &.frame5 .ez,
+    &.frame6 .ez,
+    &.frame7 .ez,
+    &.frame8 .ez,
+    &.frame9 .ez,
+    &.frame10 .ez,
+    &.frame11 .ez {
+      --es: 1;
+      --eu: 12;
+      --et: 31;
+    }
+    &.frame5 .fa,
+    &.frame6 .fa,
+    &.frame7 .fa,
+    &.frame8 .fa,
+    &.frame9 .fa,
+    &.frame10 .fa,
+    &.frame11 .fa {
+      --es: 1;
+      --eu: 12;
+      --et: 37;
+    }
+    &.frame5 .fb,
+    &.frame6 .fb,
+    &.frame7 .fb,
+    &.frame8 .fb,
+    &.frame9 .fb,
+    &.frame10 .fb,
+    &.frame11 .fb {
+      --es: 1;
+      --eu: 12;
+      --et: 42;
+    }
+    &.frame5 .gd,
+    &.frame6 .gd,
+    &.frame7 .gd,
+    &.frame8 .gd,
+    &.frame9 .fd,
+    &.frame10 .fd,
+    &.frame11 .fd {
+      --es: 1;
+      --eu: 13;
+      --et: 2;
+    }
+    &.frame5 .ge,
+    &.frame6 .ge,
+    &.frame7 .ge,
+    &.frame8 .ge,
+    &.frame9 .fe,
+    &.frame10 .fe,
+    &.frame11 .fe {
+      --es: 1;
+      --eu: 13;
+      --et: 3;
+    }
+    &.frame5 .gf,
+    &.frame6 .gf,
+    &.frame7 .gf,
+    &.frame8 .gf {
+      --es: 1;
+      --eu: 13;
+      --et: 9;
+    }
+    &.frame5 .gg,
+    &.frame6 .gg,
+    &.frame7 .gg,
+    &.frame8 .gg {
+      --es: 1;
+      --eu: 13;
+      --et: 10;
+    }
+    &.frame5 .gh,
+    &.frame6 .gh,
+    &.frame7 .gh,
+    &.frame8 .gh,
+    &.frame9 .ff,
+    &.frame10 .ff,
+    &.frame11 .ff {
+      --es: 1;
+      --eu: 13;
+      --et: 12;
+    }
+    &.frame5 .gi {
+      --eu: 14;
+      --et: 4;
+    }
+    &.frame5 .gj {
+      --eu: 14;
+      --et: 10;
+    }
+    &.frame5 .hs {
+      --eu: 14;
+      --et: 13;
+    }
+    &.frame5 .ht {
+      --eu: 14;
+      --et: 15;
+    }
+    &.frame5 .hu {
+      --eu: 14;
+      --et: 16;
+    }
+    &.frame5 .hz,
+    &.frame9 .fg,
+    &.frame10 .fg,
+    &.frame11 .fg {
+      --es: 1;
+      --eu: 13;
+      --et: 13;
+    }
+    &.frame5 .ia {
+      --es: 1;
+      --eu: 14;
+    }
+    &.frame6 .gi,
+    &.frame7 .gi,
+    &.frame8 .gi {
+      --es: 1;
+      --eu: 14;
+      --et: 4;
+    }
+    &.frame6 .gj,
+    &.frame7 .gj,
+    &.frame8 .gj,
+    &.frame9 .gg {
+      --es: 1;
+      --eu: 14;
+      --et: 10;
+    }
+    &.frame6 .gk,
+    &.frame10 .fs,
+    &.frame11 .fs {
+      --es: 1;
+      --eu: 14;
+      --et: 11;
+    }
+    &.frame6 .gl,
+    &.frame9 .gh,
+    &.frame10 .io,
+    &.frame11 .ib {
+      --es: 1;
+      --eu: 14;
+      --et: 12;
+    }
+    &.frame6 .gm {
+      --eu: 16;
+      --et: 8;
+    }
+    &.frame6 .gn {
+      --eu: 16;
+      --et: 9;
+    }
+    &.frame6 .go {
+      --eu: 16;
+      --et: 16;
+    }
+    &.frame6 .gp {
+      --eu: 16;
+      --et: 23;
+    }
+    &.frame6 .gq {
+      --eu: 16;
+      --et: 24;
+    }
+    &.frame6 .gr {
+      --eu: 16;
+      --et: 25;
+    }
+    &.frame6 .gs {
+      --eu: 16;
+      --et: 26;
+    }
+    &.frame6 .gt {
+      --eu: 16;
+      --et: 28;
+    }
+    &.frame6 .gu {
+      --eu: 16;
+      --et: 31;
+    }
+    &.frame6 .gv {
+      --eu: 16;
+      --et: 35;
+    }
+    &.frame6 .gw {
+      --eu: 16;
+      --et: 36;
+    }
+    &.frame6 .gx {
+      --eu: 16;
+      --et: 42;
+    }
+    &.frame6 .gy {
+      --eu: 16;
+      --et: 44;
+    }
+    &.frame6 .gz {
+      --eu: 16;
+      --et: 45;
+    }
+    &.frame6 .ha {
+      --eu: 16;
+      --et: 46;
+    }
+    &.frame6 .hb {
+      --eu: 16;
+      --et: 47;
+    }
+    &.frame6 .hc {
+      --eu: 16;
+      --et: 48;
+    }
+    &.frame6 .hd {
+      --eu: 16;
+      --et: 50;
+    }
+    &.frame6 .he {
+      --eu: 16;
+      --et: 56;
+    }
+    &.frame6 .hs {
+      --es: 1;
+      --eu: 14;
+      --et: 13;
+    }
+    &.frame6 .ht {
+      --es: 1;
+      --eu: 14;
+      --et: 15;
+    }
+    &.frame6 .hu {
+      --es: 1;
+      --eu: 14;
+      --et: 16;
+    }
+    &.frame6 .hv,
+    &.frame11 .id {
+      --es: 1;
+      --eu: 14;
+      --et: 18;
+    }
+    &.frame6 .hw {
+      --eu: 18;
+      --et: 10;
+    }
+    &.frame6 .hx,
+    &.frame11 .ig {
+      --es: 1;
+      --eu: 14;
+      --et: 22;
+    }
+    &.frame6 .hy,
+    &.frame11 .ih {
+      --es: 1;
+      --eu: 14;
+      --et: 23;
+    }
+    &.frame6 .hz,
+    &.frame10 .gd,
+    &.frame11 .gd {
+      --es: 1;
+      --eu: 15;
+      --et: 2;
+    }
+    &.frame6 .ia {
+      --es: 1;
+      --eu: 16;
+    }
+    &.frame7 .gk,
+    &.frame8 .gk {
+      --es: 1;
+      --eu: 15;
+      --et: 6;
+    }
+    &.frame7 .gl,
+    &.frame8 .gl {
+      --es: 1;
+      --eu: 15;
+      --et: 7;
+    }
+    &.frame7 .gm,
+    &.frame8 .gm {
+      --es: 1;
+      --eu: 16;
+      --et: 8;
+    }
+    &.frame7 .gn,
+    &.frame8 .gn {
+      --es: 1;
+      --eu: 16;
+      --et: 9;
+    }
+    &.frame7 .go,
+    &.frame8 .go {
+      --es: 1;
+      --eu: 16;
+      --et: 16;
+    }
+    &.frame7 .gp,
+    &.frame8 .gp {
+      --es: 1;
+      --eu: 16;
+      --et: 23;
+    }
+    &.frame7 .gq,
+    &.frame8 .gq {
+      --es: 1;
+      --eu: 16;
+      --et: 24;
+    }
+    &.frame7 .gr,
+    &.frame8 .gr {
+      --es: 1;
+      --eu: 16;
+      --et: 25;
+    }
+    &.frame7 .gs,
+    &.frame8 .gs {
+      --es: 1;
+      --eu: 16;
+      --et: 26;
+    }
+    &.frame7 .gt,
+    &.frame8 .gt {
+      --es: 1;
+      --eu: 16;
+      --et: 28;
+    }
+    &.frame7 .gu,
+    &.frame8 .gu {
+      --es: 1;
+      --eu: 16;
+      --et: 31;
+    }
+    &.frame7 .gv,
+    &.frame8 .gv {
+      --es: 1;
+      --eu: 16;
+      --et: 35;
+    }
+    &.frame7 .gw,
+    &.frame8 .gw {
+      --es: 1;
+      --eu: 16;
+      --et: 36;
+    }
+    &.frame7 .gx,
+    &.frame8 .gx {
+      --es: 1;
+      --eu: 16;
+      --et: 42;
+    }
+    &.frame7 .gy,
+    &.frame8 .gy {
+      --es: 1;
+      --eu: 16;
+      --et: 44;
+    }
+    &.frame7 .gz,
+    &.frame8 .gz {
+      --es: 1;
+      --eu: 16;
+      --et: 45;
+    }
+    &.frame7 .ha,
+    &.frame8 .ha {
+      --es: 1;
+      --eu: 16;
+      --et: 46;
+    }
+    &.frame7 .hb,
+    &.frame8 .hb {
+      --es: 1;
+      --eu: 16;
+      --et: 47;
+    }
+    &.frame7 .hc,
+    &.frame8 .hc {
+      --es: 1;
+      --eu: 16;
+      --et: 48;
+    }
+    &.frame7 .hd,
+    &.frame8 .hd {
+      --es: 1;
+      --eu: 16;
+      --et: 50;
+    }
+    &.frame7 .he,
+    &.frame8 .he {
+      --es: 1;
+      --eu: 16;
+      --et: 56;
+    }
+    &.frame7 .hf {
+      --eu: 17;
+      --et: 8;
+    }
+    &.frame7 .hg {
+      --eu: 17;
+      --et: 13;
+    }
+    &.frame7 .hh {
+      --eu: 17;
+      --et: 15;
+    }
+    &.frame7 .hi {
+      --eu: 17;
+      --et: 16;
+    }
+    &.frame7 .hj {
+      --eu: 17;
+      --et: 17;
+    }
+    &.frame7 .hk {
+      --eu: 17;
+      --et: 18;
+    }
+    &.frame7 .hl {
+      --eu: 17;
+      --et: 19;
+    }
+    &.frame7 .hm {
+      --eu: 17;
+      --et: 23;
+    }
+    &.frame7 .hn {
+      --eu: 17;
+      --et: 24;
+    }
+    &.frame7 .ho {
+      --eu: 17;
+      --et: 30;
+    }
+    &.frame7 .hp {
+      --eu: 17;
+      --et: 31;
+    }
+    &.frame7 .hq {
+      --eu: 17;
+      --et: 33;
+    }
+    &.frame7 .hr {
+      --eu: 17;
+      --et: 34;
+    }
+    &.frame7 .hs,
+    &.frame10 .gk,
+    &.frame11 .gk {
+      --es: 1;
+      --eu: 17;
+      --et: 6;
+    }
+    &.frame7 .ht,
+    &.frame8 .hf,
+    &.frame9 .gm {
+      --es: 1;
+      --eu: 17;
+      --et: 8;
+    }
+    &.frame7 .hu,
+    &.frame9 .gn {
+      --es: 1;
+      --eu: 17;
+      --et: 9;
+    }
+    &.frame7 .hv,
+    &.frame8 .hs {
+      --es: 1;
+      --eu: 18;
+      --et: 6;
+    }
+    &.frame7 .hw {
+      --es: 1;
+      --eu: 18;
+      --et: 10;
+    }
+    &.frame7 .hx {
+      --es: 1;
+      --eu: 19;
+      --et: 4;
+    }
+    &.frame7 .hy {
+      --es: 1;
+      --eu: 19;
+      --et: 5;
+    }
+    &.frame7 .hz {
+      --es: 1;
+      --eu: 20;
+      --et: 2;
+    }
+    &.frame7 .ia {
+      --es: 1;
+      --eu: 21;
+    }
+    &.frame8 .hg {
+      --es: 1;
+      --eu: 17;
+      --et: 13;
+    }
+    &.frame8 .hh {
+      --es: 1;
+      --eu: 17;
+      --et: 15;
+    }
+    &.frame8 .hi,
+    &.frame9 .go {
+      --es: 1;
+      --eu: 17;
+      --et: 16;
+    }
+    &.frame8 .hj {
+      --es: 1;
+      --eu: 17;
+      --et: 17;
+    }
+    &.frame8 .hk {
+      --es: 1;
+      --eu: 17;
+      --et: 18;
+    }
+    &.frame8 .hl {
+      --es: 1;
+      --eu: 17;
+      --et: 19;
+    }
+    &.frame8 .hm,
+    &.frame9 .gp {
+      --es: 1;
+      --eu: 17;
+      --et: 23;
+    }
+    &.frame8 .hn,
+    &.frame9 .gq {
+      --es: 1;
+      --eu: 17;
+      --et: 24;
+    }
+    &.frame8 .ho {
+      --es: 1;
+      --eu: 17;
+      --et: 30;
+    }
+    &.frame8 .hp,
+    &.frame9 .gu {
+      --es: 1;
+      --eu: 17;
+      --et: 31;
+    }
+    &.frame8 .hq {
+      --es: 1;
+      --eu: 17;
+      --et: 33;
+    }
+    &.frame8 .hr {
+      --es: 1;
+      --eu: 17;
+      --et: 34;
+    }
+    &.frame8 .ht,
+    &.frame9 .hf,
+    &.frame10 .gm,
+    &.frame11 .gm {
+      --es: 1;
+      --eu: 18;
+      --et: 8;
+    }
+    &.frame8 .hu,
+    &.frame10 .gn,
+    &.frame11 .gn {
+      --es: 1;
+      --eu: 18;
+      --et: 9;
+    }
+    &.frame8 .hv,
+    &.frame9 .hs {
+      --es: 1;
+      --eu: 19;
+      --et: 6;
+    }
+    &.frame8 .hw {
+      --es: 1;
+      --eu: 19;
+      --et: 10;
+    }
+    &.frame8 .hx {
+      --es: 1;
+      --eu: 20;
+      --et: 4;
+    }
+    &.frame8 .hy {
+      --es: 1;
+      --eu: 20;
+      --et: 5;
+    }
+    &.frame8 .hz {
+      --es: 1;
+      --eu: 21;
+      --et: 2;
+    }
+    &.frame8 .ia {
+      --es: 1;
+      --eu: 22;
+    }
+    &.frame9 .iu,
+    &.frame11 .iu {
+      --eu: 14;
+      --et: 33;
+    }
+    &.frame9 .iv,
+    &.frame11 .iv {
+      --eu: 14;
+      --et: 44;
+    }
+    &.frame9 .fc,
+    &.frame10 .fc,
+    &.frame11 .fc {
+      --es: 1;
+      --et: 35;
+    }
+    &.frame9 .fh,
+    &.frame10 .fh,
+    &.frame11 .fh {
+      --es: 1;
+      --eu: 13;
+      --et: 15;
+    }
+    &.frame9 .fi,
+    &.frame10 .fi,
+    &.frame11 .fi {
+      --es: 1;
+      --eu: 13;
+      --et: 18;
+    }
+    &.frame9 .fj,
+    &.frame10 .fj,
+    &.frame11 .fj {
+      --es: 1;
+      --eu: 13;
+      --et: 22;
+    }
+    &.frame9 .fk,
+    &.frame10 .fk,
+    &.frame11 .fk {
+      --es: 1;
+      --eu: 13;
+      --et: 29;
+    }
+    &.frame9 .fl,
+    &.frame10 .fl,
+    &.frame11 .fl {
+      --es: 1;
+      --eu: 13;
+      --et: 34;
+    }
+    &.frame9 .fm,
+    &.frame10 .fm,
+    &.frame11 .fm {
+      --es: 1;
+      --eu: 13;
+      --et: 38;
+    }
+    &.frame9 .fn,
+    &.frame10 .fn,
+    &.frame11 .fn {
+      --es: 1;
+      --eu: 13;
+      --et: 48;
+    }
+    &.frame9 .ft,
+    &.frame10 .fo,
+    &.frame11 .fo {
+      --es: 1;
+      --et: 37;
+    }
+    &.frame9 .fu,
+    &.frame10 .ft,
+    &.frame11 .ft {
+      --es: 1;
+      --et: 47;
+    }
+    &.frame9 .fv {
+      --es: 1;
+      --et: 49;
+    }
+    &.frame9 .fw {
+      --es: 1;
+      --et: 54;
+    }
+    &.frame9 .fx {
+      --es: 1;
+      --et: 55;
+    }
+    &.frame9 .fy {
+      --es: 1;
+      --et: 56;
+    }
+    &.frame9 .fz {
+      --es: 1;
+      --et: 63;
+    }
+    &.frame9 .ga,
+    &.frame10 .fw,
+    &.frame11 .fw {
+      --es: 1;
+      --et: 64;
+    }
+    &.frame9 .gb {
+      --es: 1;
+      --et: 72;
+    }
+    &.frame9 .gc,
+    &.frame10 .fz,
+    &.frame11 .fz {
+      --es: 1;
+      --et: 73;
+    }
+    &.frame9 .gd,
+    &.frame10 .fq,
+    &.frame11 .fq {
+      --es: 1;
+      --eu: 14;
+      --et: 2;
+    }
+    &.frame9 .ge,
+    &.frame10 .fr,
+    &.frame11 .fr {
+      --es: 1;
+      --eu: 14;
+      --et: 3;
+    }
+    &.frame9 .gf {
+      --es: 1;
+      --eu: 14;
+      --et: 9;
+    }
+    &.frame9 .gi {
+      --es: 1;
+      --eu: 15;
+      --et: 4;
+    }
+    &.frame9 .gj,
+    &.frame10 .gg,
+    &.frame11 .gg {
+      --es: 1;
+      --eu: 15;
+      --et: 10;
+    }
+    &.frame9 .gk {
+      --es: 1;
+      --eu: 16;
+      --et: 6;
+    }
+    &.frame9 .gl {
+      --es: 1;
+      --eu: 16;
+      --et: 7;
+    }
+    &.frame9 .gr {
+      --es: 1;
+      --eu: 17;
+      --et: 25;
+    }
+    &.frame9 .gs {
+      --es: 1;
+      --eu: 17;
+      --et: 26;
+    }
+    &.frame9 .gt {
+      --es: 1;
+      --eu: 17;
+      --et: 28;
+    }
+    &.frame9 .gv {
+      --es: 1;
+      --eu: 17;
+      --et: 35;
+    }
+    &.frame9 .gw {
+      --es: 1;
+      --eu: 17;
+      --et: 36;
+    }
+    &.frame9 .gx {
+      --es: 1;
+      --eu: 17;
+      --et: 42;
+    }
+    &.frame9 .gy {
+      --es: 1;
+      --eu: 17;
+      --et: 44;
+    }
+    &.frame9 .gz {
+      --es: 1;
+      --eu: 17;
+      --et: 45;
+    }
+    &.frame9 .ha {
+      --es: 1;
+      --eu: 17;
+      --et: 46;
+    }
+    &.frame9 .hb {
+      --es: 1;
+      --eu: 17;
+      --et: 47;
+    }
+    &.frame9 .hc {
+      --es: 1;
+      --eu: 17;
+      --et: 48;
+    }
+    &.frame9 .hd {
+      --es: 1;
+      --eu: 17;
+      --et: 50;
+    }
+    &.frame9 .he {
+      --es: 1;
+      --eu: 17;
+      --et: 56;
+    }
+    &.frame9 .hg {
+      --es: 1;
+      --eu: 18;
+      --et: 13;
+    }
+    &.frame9 .hh {
+      --es: 1;
+      --eu: 18;
+      --et: 15;
+    }
+    &.frame9 .hi,
+    &.frame10 .go,
+    &.frame11 .go {
+      --es: 1;
+      --eu: 18;
+      --et: 16;
+    }
+    &.frame9 .hj {
+      --es: 1;
+      --eu: 18;
+      --et: 17;
+    }
+    &.frame9 .hk {
+      --es: 1;
+      --eu: 18;
+      --et: 18;
+    }
+    &.frame9 .hl {
+      --es: 1;
+      --eu: 18;
+      --et: 19;
+    }
+    &.frame9 .hm,
+    &.frame10 .gp,
+    &.frame11 .gp {
+      --es: 1;
+      --eu: 18;
+      --et: 23;
+    }
+    &.frame9 .hn,
+    &.frame10 .gq,
+    &.frame11 .gq {
+      --es: 1;
+      --eu: 18;
+      --et: 24;
+    }
+    &.frame9 .ho {
+      --es: 1;
+      --eu: 18;
+      --et: 30;
+    }
+    &.frame9 .hp,
+    &.frame10 .gu,
+    &.frame11 .gu {
+      --es: 1;
+      --eu: 18;
+      --et: 31;
+    }
+    &.frame9 .hq {
+      --es: 1;
+      --eu: 18;
+      --et: 33;
+    }
+    &.frame9 .hr {
+      --es: 1;
+      --eu: 18;
+      --et: 34;
+    }
+    &.frame9 .ht,
+    &.frame10 .hf,
+    &.frame11 .hf {
+      --es: 1;
+      --eu: 19;
+      --et: 8;
+    }
+    &.frame9 .hu {
+      --es: 1;
+      --eu: 19;
+      --et: 9;
+    }
+    &.frame9 .hv,
+    &.frame10 .hs,
+    &.frame11 .hs {
+      --es: 1;
+      --eu: 20;
+      --et: 6;
+    }
+    &.frame9 .hw {
+      --es: 1;
+      --eu: 20;
+      --et: 10;
+    }
+    &.frame9 .hx {
+      --es: 1;
+      --eu: 21;
+      --et: 4;
+    }
+    &.frame9 .hy {
+      --es: 1;
+      --eu: 21;
+      --et: 5;
+    }
+    &.frame9 .hz {
+      --es: 1;
+      --eu: 22;
+      --et: 2;
+    }
+    &.frame9 .ia {
+      --es: 1;
+      --eu: 23;
+    }
+    &.frame9 .iq {
+      --eu: 14;
+      --et: 17;
+    }
+    &.frame10 .iu {
+      --es: 1;
+      --eu: 14;
+      --et: 33;
+    }
+    &.frame10 .iv {
+      --es: 1;
+      --eu: 14;
+      --et: 44;
+    }
+    &.frame10 .fu,
+    &.frame11 .fu {
+      --es: 1;
+      --et: 57;
+    }
+    &.frame10 .fv,
+    &.frame11 .fv {
+      --es: 1;
+      --et: 59;
+    }
+    &.frame10 .fx,
+    &.frame11 .fx {
+      --es: 1;
+      --et: 65;
+    }
+    &.frame10 .fy,
+    &.frame11 .fy {
+      --es: 1;
+      --et: 66;
+    }
+    &.frame10 .ga,
+    &.frame11 .ga {
+      --es: 1;
+      --et: 74;
+    }
+    &.frame10 .gb,
+    &.frame11 .gb {
+      --es: 1;
+      --et: 82;
+    }
+    &.frame10 .gc,
+    &.frame11 .gc {
+      --es: 1;
+      --et: 83;
+    }
+    &.frame10 .ge,
+    &.frame11 .ge {
+      --es: 1;
+      --eu: 15;
+      --et: 3;
+    }
+    &.frame10 .gf,
+    &.frame11 .gf {
+      --es: 1;
+      --eu: 15;
+      --et: 9;
+    }
+    &.frame10 .gh,
+    &.frame11 .gh {
+      --es: 1;
+      --eu: 15;
+      --et: 12;
+    }
+    &.frame10 .gi,
+    &.frame11 .gi {
+      --es: 1;
+      --eu: 16;
+      --et: 4;
+    }
+    &.frame10 .gj,
+    &.frame11 .gj {
+      --es: 1;
+      --eu: 16;
+      --et: 10;
+    }
+    &.frame10 .gl,
+    &.frame11 .gl {
+      --es: 1;
+      --eu: 17;
+      --et: 7;
+    }
+    &.frame10 .gr,
+    &.frame11 .gr {
+      --es: 1;
+      --eu: 18;
+      --et: 25;
+    }
+    &.frame10 .gs,
+    &.frame11 .gs {
+      --es: 1;
+      --eu: 18;
+      --et: 26;
+    }
+    &.frame10 .gt,
+    &.frame11 .gt {
+      --es: 1;
+      --eu: 18;
+      --et: 28;
+    }
+    &.frame10 .gv,
+    &.frame11 .gv {
+      --es: 1;
+      --eu: 18;
+      --et: 35;
+    }
+    &.frame10 .gw,
+    &.frame11 .gw {
+      --es: 1;
+      --eu: 18;
+      --et: 36;
+    }
+    &.frame10 .gx,
+    &.frame11 .gx {
+      --es: 1;
+      --eu: 18;
+      --et: 42;
+    }
+    &.frame10 .gy,
+    &.frame11 .gy {
+      --es: 1;
+      --eu: 18;
+      --et: 44;
+    }
+    &.frame10 .gz,
+    &.frame11 .gz {
+      --es: 1;
+      --eu: 18;
+      --et: 45;
+    }
+    &.frame10 .ha,
+    &.frame11 .ha {
+      --es: 1;
+      --eu: 18;
+      --et: 46;
+    }
+    &.frame10 .hb,
+    &.frame11 .hb {
+      --es: 1;
+      --eu: 18;
+      --et: 47;
+    }
+    &.frame10 .hc,
+    &.frame11 .hc {
+      --es: 1;
+      --eu: 18;
+      --et: 48;
+    }
+    &.frame10 .hd,
+    &.frame11 .hd {
+      --es: 1;
+      --eu: 18;
+      --et: 50;
+    }
+    &.frame10 .he,
+    &.frame11 .he {
+      --es: 1;
+      --eu: 18;
+      --et: 56;
+    }
+    &.frame10 .hg,
+    &.frame11 .hg {
+      --es: 1;
+      --eu: 19;
+      --et: 13;
+    }
+    &.frame10 .hh,
+    &.frame11 .hh {
+      --es: 1;
+      --eu: 19;
+      --et: 15;
+    }
+    &.frame10 .hi,
+    &.frame11 .hi {
+      --es: 1;
+      --eu: 19;
+      --et: 16;
+    }
+    &.frame10 .hj,
+    &.frame11 .hj {
+      --es: 1;
+      --eu: 19;
+      --et: 17;
+    }
+    &.frame10 .hk,
+    &.frame11 .hk {
+      --es: 1;
+      --eu: 19;
+      --et: 18;
+    }
+    &.frame10 .hl,
+    &.frame11 .hl {
+      --es: 1;
+      --eu: 19;
+      --et: 19;
+    }
+    &.frame10 .hm,
+    &.frame11 .hm {
+      --es: 1;
+      --eu: 19;
+      --et: 23;
+    }
+    &.frame10 .hn,
+    &.frame11 .hn {
+      --es: 1;
+      --eu: 19;
+      --et: 24;
+    }
+    &.frame10 .ho,
+    &.frame11 .ho {
+      --es: 1;
+      --eu: 19;
+      --et: 30;
+    }
+    &.frame10 .hp,
+    &.frame11 .hp {
+      --es: 1;
+      --eu: 19;
+      --et: 31;
+    }
+    &.frame10 .hq,
+    &.frame11 .hq {
+      --es: 1;
+      --eu: 19;
+      --et: 33;
+    }
+    &.frame10 .hr,
+    &.frame11 .hr {
+      --es: 1;
+      --eu: 19;
+      --et: 34;
+    }
+    &.frame10 .ht,
+    &.frame11 .ht {
+      --es: 1;
+      --eu: 20;
+      --et: 8;
+    }
+    &.frame10 .hu,
+    &.frame11 .hu {
+      --es: 1;
+      --eu: 20;
+      --et: 9;
+    }
+    &.frame10 .hv,
+    &.frame11 .hv {
+      --es: 1;
+      --eu: 21;
+      --et: 6;
+    }
+    &.frame10 .hw,
+    &.frame11 .hw {
+      --es: 1;
+      --eu: 21;
+      --et: 10;
+    }
+    &.frame10 .hx,
+    &.frame11 .hx {
+      --es: 1;
+      --eu: 22;
+      --et: 4;
+    }
+    &.frame10 .hy,
+    &.frame11 .hy {
+      --es: 1;
+      --eu: 22;
+      --et: 5;
+    }
+    &.frame10 .hz,
+    &.frame11 .hz {
+      --es: 1;
+      --eu: 23;
+      --et: 2;
+    }
+    &.frame10 .ia,
+    &.frame11 .ia {
+      --es: 1;
+      --eu: 24;
+    }
+    &.frame10 .ip,
+    &.frame11 .ic {
+      --es: 1;
+      --eu: 14;
+      --et: 14;
+    }
+    &.frame10 .iq {
+      --es: 1;
+      --eu: 14;
+      --et: 17;
+    }
+    &.frame10 .ir,
+    &.frame11 .if {
+      --es: 1;
+      --eu: 14;
+      --et: 21;
+    }
+    &.frame10 .is,
+    &.frame11 .ii {
+      --es: 1;
+      --eu: 14;
+      --et: 28;
+    }
+    &.frame11 .ie {
+      --es: 1;
+      --eu: 14;
+      --et: 20;
+    }
+    &.frame11 .ij {
+      --es: 1;
+      --eu: 14;
+      --et: 29;
+    }
+    &.frame11 .ik {
+      --es: 1;
+      --eu: 14;
+      --et: 31;
+    }
+    &.frame11 .il {
+      --es: 1;
+      --eu: 14;
+      --et: 53;
+    }
+    &.frame11 .im {
+      --es: 1;
+      --eu: 14;
+      --et: 54;
+    }
+    &.frame11 .in {
+      --es: 1;
+      --eu: 14;
+      --et: 60;
+    }
+    &.frame11 .io {
+      --es: 1;
+      --eu: 14;
+      --et: 32;
+    }
+    &.frame11 .ip {
+      --es: 1;
+      --eu: 14;
+      --et: 34;
+    }
+    &.frame11 .iq {
+      --es: 1;
+      --eu: 14;
+      --et: 37;
+    }
+    &.frame11 .ir {
+      --es: 1;
+      --eu: 14;
+      --et: 41;
+    }
+    &.frame11 .is {
+      --es: 1;
+      --eu: 14;
+      --et: 48;
+    }
+    .iw {
+      position: absolute;
+      left: var(--p);
+      z-index: 20;
+      font: var(--j, var(--ev));
+      color: var(--k);
+      text-align: right;
+      width: calc(var(--q) * 1ch);
+      overflow: hidden;
+      user-select: none;
+      opacity: var(--es, 0);
+      transition: transform var(--e), opacity var(--e);
+      filter: var(--cm-line-numbers-filter, none);
+    }
+    .ix {
+      top: calc(var(--o) + 0 * var(--b));
+    }
+    .iy {
+      top: calc(var(--o) + 1 * var(--b));
+    }
+    .iz {
+      top: calc(var(--o) + 2 * var(--b));
+    }
+    .ja {
+      top: calc(var(--o) + 3 * var(--b));
+    }
+    .jb {
+      top: calc(var(--o) + 4 * var(--b));
+    }
+    .jc {
+      top: calc(var(--o) + 5 * var(--b));
+    }
+    .jd {
+      top: calc(var(--o) + 6 * var(--b));
+    }
+    .je {
+      top: calc(var(--o) + 7 * var(--b));
+    }
+    .jf {
+      top: calc(var(--o) + 8 * var(--b));
+    }
+    .jg {
+      top: calc(var(--o) + 9 * var(--b));
+    }
+    .jh {
+      top: calc(var(--o) + 10 * var(--b));
+    }
+    .ji {
+      top: calc(var(--o) + 11 * var(--b));
+    }
+    .jj {
+      top: calc(var(--o) + 12 * var(--b));
+    }
+    .jk {
+      top: calc(var(--o) + 13 * var(--b));
+    }
+    .jl {
+      top: calc(var(--o) + 14 * var(--b));
+    }
+    .jm {
+      top: calc(var(--o) + 15 * var(--b));
+    }
+    .jn {
+      top: calc(var(--o) + 16 * var(--b));
+    }
+    .jo {
+      top: calc(var(--o) + 17 * var(--b));
+    }
+    .jp {
+      top: calc(var(--o) + 18 * var(--b));
+    }
+    .jq {
+      top: calc(var(--o) + 19 * var(--b));
+    }
+    .jr {
+      top: calc(var(--o) + 20 * var(--b));
+    }
+    .js {
+      top: calc(var(--o) + 21 * var(--b));
+    }
+    .jt {
+      top: calc(var(--o) + 22 * var(--b));
+    }
+    .ju {
+      top: calc(var(--o) + 23 * var(--b));
+    }
+    .jv {
+      top: calc(var(--o) + 24 * var(--b));
+    }
+    .jw {
+      white-space: break-spaces;
+      position: absolute;
+      top: var(--r);
+      left: var(--s);
+      z-index: 60;
+      color: transparent;
+      display: none;
+      font: inherit;
+      margin: 0;
+    }
+    &.frame0 .jx,
+    &.frame1 .jy,
+    &.frame2 .jz,
+    &.frame3 .ka,
+    &.frame4 .kb,
+    &.frame5 .kc,
+    &.frame6 .kd,
+    &.frame7 .ke,
+    &.frame8 .kf,
+    &.frame9 .kg,
+    &.frame10 .kh,
+    &.frame11 .ki {
+      display: block;
+    }
+  }
+</style>

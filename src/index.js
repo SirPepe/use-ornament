@@ -1,9 +1,36 @@
+// Tutorial
+import "@codemovie/code-movie-runtime";
+
+const runtime = document.querySelector("code-movie-runtime");
+const next = document.querySelector("button.next");
+const prev = document.querySelector("button.prev");
+
+function updateTutorialUi() {
+  prev.disabled = runtime.current === 0;
+  next.disabled = runtime.current === runtime.maxFrame;
+}
+
+next.addEventListener("click", () => {
+  runtime.next();
+  updateTutorialUi();
+});
+prev.addEventListener("click", () => {
+  runtime.prev();
+  updateTutorialUi();
+});
+
+updateTutorialUi();
+
+// Wrappers for scrolling tables
+
 for (const table of document.querySelectorAll("table")) {
   const wrapper = document.createElement("div");
   wrapper.className = "tableScroller";
   table.replaceWith(wrapper);
   wrapper.append(table);
 }
+
+// Internal jump links
 
 const referenceIdMatch = {};
 

@@ -35,6 +35,7 @@
   --border: 0.15rem solid var(--border-color);
   --box-shadow: 0.5rem 0.5rem 0 #27252e13;
   --highlight-color: hsl(47, 100%, 90%);
+  --highlight-color-2: hsl(47, 100%, 95%);
   --highlight-color-alt: hsl(108, 100%, 90%);
   --highlight-color-alt-2: hsl(249, 100%, 95%);
   font-family: "Space Mono", monospace;
@@ -201,6 +202,122 @@ aside {
   }
 }
 
+aside.sidebar {
+  display: block;
+  float: right;
+  width: 40%;
+  margin: 1em 0 1em 3em;
+  background: var(--highlight-color-2);
+  h3 {
+    margin-top: 0.5em;
+  }
+}
+
+@media (max-width: 600px) {
+  aside.sidebar {
+    width: auto;
+    float: none;
+    margin: 0;
+  }
+}
+
+.tutorial {
+  position: relative;
+}
+
+.cm-animation {
+  font-family: inherit;
+  line-height: inherit;
+  --cm-scene-background: none;
+  pre {
+    background: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+  }
+}
+
+code-movie-runtime {
+  border: var(--border);
+  padding: 1em;
+  margin: 1em 0 1.5em 0; /* 1.5em on bottom for visual shadow compensation */
+  box-shadow: var(--box-shadow);
+}
+
+.tutorial-controls {
+  position: absolute;
+  right: 2ch;
+  top: 58.5ch;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1ch;
+}
+
+.tutorial-steps {
+  margin: 1em 0;
+  padding: 0;
+  list-style: none;
+  li {
+    display: none;
+  }
+  li::before {
+    font-weight: bold;
+  }
+}
+
+li:nth-child(1)::before {
+  content: "Step 1: ";
+}
+li:nth-child(2)::before {
+  content: "Step 2: ";
+}
+li:nth-child(3)::before {
+  content: "Step 3: ";
+}
+li:nth-child(4)::before {
+  content: "Step 4: ";
+}
+li:nth-child(5)::before {
+  content: "Step 5: ";
+}
+li:nth-child(6)::before {
+  content: "Step 6: ";
+}
+li:nth-child(7)::before {
+  content: "Step 7: ";
+}
+li:nth-child(8)::before {
+  content: "Step 8: ";
+}
+li:nth-child(9)::before {
+  content: "Step 9: ";
+}
+li:nth-child(10)::before {
+  content: "Step 10: ";
+}
+li:nth-child(11)::before {
+  content: "Step 11: ";
+}
+li:nth-child(12)::before {
+  content: "Step 12: ";
+}
+
+code-movie-runtime:has(.frame0) ~ .tutorial-steps li:nth-child(1),
+code-movie-runtime:has(.frame1) ~ .tutorial-steps li:nth-child(2),
+code-movie-runtime:has(.frame2) ~ .tutorial-steps li:nth-child(3),
+code-movie-runtime:has(.frame3) ~ .tutorial-steps li:nth-child(4),
+code-movie-runtime:has(.frame4) ~ .tutorial-steps li:nth-child(5),
+code-movie-runtime:has(.frame5) ~ .tutorial-steps li:nth-child(6),
+code-movie-runtime:has(.frame6) ~ .tutorial-steps li:nth-child(7),
+code-movie-runtime:has(.frame7) ~ .tutorial-steps li:nth-child(8),
+code-movie-runtime:has(.frame8) ~ .tutorial-steps li:nth-child(9),
+code-movie-runtime:has(.frame9) ~ .tutorial-steps li:nth-child(10),
+code-movie-runtime:has(.frame10) ~ .tutorial-steps li:nth-child(11),
+code-movie-runtime:has(.frame11) ~ .tutorial-steps li:nth-child(12) {
+  display: block;
+}
+
 details {
   margin: 1em 0 1.5em 0; /* 1.5em on bottom for visual shadow compensation */
   border: var(--border);
@@ -290,4 +407,28 @@ a[href^="#"].ref:visited {
 }
 a[href^="#"]:focus {
   outline-color: currentColor;
+}
+
+button {
+  font: inherit;
+  background-color: var(--background-color);
+  border: var(--border);
+  font-weight: bold;
+  cursor: pointer;
+  outline: 2px dotted transparent;
+  transition: border-color 500ms, outline-color 500ms;
+  padding: 0.125em 0.5em;
+}
+
+button:not(:disabled):hover {
+  border-color: hsl(108, 60%, 50%);
+}
+
+button:not(:disabled):focus {
+  outline-color: hsl(108, 60%, 50%);
+}
+
+button:disabled {
+  color: inherit;
+  opacity: 0.5;
 }
