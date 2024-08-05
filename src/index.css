@@ -241,17 +241,19 @@ aside.sidebar {
 code-movie-runtime {
   border: var(--border);
   padding: 1em;
-  margin: 1em 0 1.5em 0; /* 1.5em on bottom for visual shadow compensation */
+  margin: 1em 1em 1.5em 0; /* 1.5em on bottom for visual shadow compensation */
   box-shadow: var(--box-shadow);
 }
 
-.tutorial-controls {
-  position: absolute;
-  right: 2ch;
-  top: 58.5ch;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1ch;
+@media (min-width: 440px) {
+  .tutorial-controls {
+    position: absolute;
+    right: 3ch;
+    top: 58.5ch;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1ch;
+  }
 }
 
 .tutorial-steps {
@@ -330,6 +332,11 @@ details {
   overflow: auto;
   margin: 1em 0 1.5em 0; /* 1.5em on bottom for visual shadow compensation */
   box-shadow: var(--box-shadow);
+}
+
+.tutorialScroller {
+  max-width: 100%;
+  overflow: auto;
 }
 
 table {

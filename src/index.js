@@ -21,7 +21,7 @@ prev.addEventListener("click", () => {
 
 updateTutorialUi();
 
-// Wrappers for scrolling tables
+// Wrappers for scrolling tables and the tutorial animation
 
 for (const table of document.querySelectorAll("table")) {
   const wrapper = document.createElement("div");
@@ -29,6 +29,12 @@ for (const table of document.querySelectorAll("table")) {
   table.replaceWith(wrapper);
   wrapper.append(table);
 }
+
+const tutorial = document.querySelector(".tutorial  ");
+const wrapper = document.createElement("div");
+wrapper.className = "tutorialScroller";
+tutorial.replaceWith(wrapper);
+wrapper.append(tutorial);
 
 // Internal jump links
 
