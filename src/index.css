@@ -29,11 +29,13 @@
 }
 
 :root {
-  --text-color: #27252e;
+  --text-color: hsl(253, 11%, 13%);
   --background-color: hsl(60, 4%, 97%);
-  --border-color: #27252e23;
+  --border-color: hsla(253, 11%, 13%, 0.333);
   --border: 0.15rem solid var(--border-color);
-  --box-shadow: 0.5rem 0.5rem 0 #27252e13;
+  --box-shadow: 0.5rem 0.5rem 0 hsla(253, 11%, 13%, 0.333);
+  --link-color: blue;
+  --link-color-visited: hsl(240, 80%, 60%);
   --highlight-color: hsl(47, 100%, 90%);
   --highlight-color-2: hsl(47, 100%, 95%);
   --highlight-color-alt: hsl(108, 100%, 90%);
@@ -48,7 +50,8 @@
 }
 
 :target {
-  background: hsl(47, 100%, 93%);
+  background: var(--highlight-color-2);
+  box-shadow: 0 0 2px var(--highlight-color-2);
 }
 
 code {
@@ -138,7 +141,7 @@ summary {
 }
 
 summary:focus {
-  outline: 2px solid blue;
+  outline: 2px solid var(--link-color);
 }
 
 li {
@@ -266,43 +269,42 @@ code-movie-runtime {
   li::before {
     font-weight: bold;
   }
-}
-
-li:nth-child(1)::before {
-  content: "Step 1: ";
-}
-li:nth-child(2)::before {
-  content: "Step 2: ";
-}
-li:nth-child(3)::before {
-  content: "Step 3: ";
-}
-li:nth-child(4)::before {
-  content: "Step 4: ";
-}
-li:nth-child(5)::before {
-  content: "Step 5: ";
-}
-li:nth-child(6)::before {
-  content: "Step 6: ";
-}
-li:nth-child(7)::before {
-  content: "Step 7: ";
-}
-li:nth-child(8)::before {
-  content: "Step 8: ";
-}
-li:nth-child(9)::before {
-  content: "Step 9: ";
-}
-li:nth-child(10)::before {
-  content: "Step 10: ";
-}
-li:nth-child(11)::before {
-  content: "Step 11: ";
-}
-li:nth-child(12)::before {
-  content: "Step 12: ";
+  li:nth-child(1)::before {
+    content: "Step 1: ";
+  }
+  li:nth-child(2)::before {
+    content: "Step 2: ";
+  }
+  li:nth-child(3)::before {
+    content: "Step 3: ";
+  }
+  li:nth-child(4)::before {
+    content: "Step 4: ";
+  }
+  li:nth-child(5)::before {
+    content: "Step 5: ";
+  }
+  li:nth-child(6)::before {
+    content: "Step 6: ";
+  }
+  li:nth-child(7)::before {
+    content: "Step 7: ";
+  }
+  li:nth-child(8)::before {
+    content: "Step 8: ";
+  }
+  li:nth-child(9)::before {
+    content: "Step 9: ";
+  }
+  li:nth-child(10)::before {
+    content: "Step 10: ";
+  }
+  li:nth-child(11)::before {
+    content: "Step 11: ";
+  }
+  li:nth-child(12)::before {
+    content: "Step 12: ";
+  }
 }
 
 code-movie-runtime:has(.frame0) ~ .tutorial-steps li:nth-child(1),
@@ -348,7 +350,7 @@ table {
 th,
 td {
   text-align: left;
-  border: 0.1em solid var(--text-color);
+  border: 0.1em solid var(--border-color);
   padding: 0.2em 0.4em;
 }
 
@@ -369,7 +371,7 @@ footer {
 
 a,
 a:link {
-  color: rgb(0, 60, 255);
+  color: var(--link-color);
   text-decoration: underline;
   font-weight: bold;
   transition: color 500ms, outline-color 500ms;
@@ -377,17 +379,18 @@ a:link {
 }
 
 a:visited {
-  color: rgb(46, 43, 226);
+  color: var(--link-color-visited);
   text-decoration: underline;
 }
 
 a:hover {
+  color: var(--link-color);
   text-decoration: none;
 }
 
 a:focus {
-  outline-color: blue;
-  color: blue;
+  color: var(--link-color);
+  outline-color: var(--link-color);
 }
 
 a:active {

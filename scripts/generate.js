@@ -23,7 +23,7 @@ const template = (html) => {
     <div class="wrapper">
       <header>
         <h1>A framework for <mark>web component frameworks</mark></h1>
-        <p><code>npm i @sirpepe/ornament</code></p>
+        <p><code>npm i <a href="https://www.npmjs.com/package/@sirpepe/ornament">@sirpepe/ornament</a></code></p>
       </header>
       <main>${html}</main>
       <footer>

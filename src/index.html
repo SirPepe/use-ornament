@@ -14,10 +14,10 @@
     <div class="wrapper">
       <header>
         <h1>A framework for <mark>web component frameworks</mark></h1>
-        <p><code>npm i @sirpepe/ornament</code></p>
+        <p><code>npm i <a href="https://www.npmjs.com/package/@sirpepe/ornament">@sirpepe/ornament</a></code></p>
       </header>
-      <main><p>📢 <strong>What&#39;s new in 2.1.0?</strong> <a href="https://github.com/SirPepe/ornament/blob/main/changelog.md">Check out the Changelog!</a></p>
-<p><strong>Build your own frontend framework</strong> with Ornament, a mid-level,
+      <main><p>📢 <strong>What&#39;s new in 2.2.0?</strong> <a href="https://github.com/SirPepe/ornament/blob/main/changelog.md">Check out the Changelog!</a></p>
+<p><strong>Build your own frontend framework</strong> with Ornament, a stable, mid-level,
 pareto-optimal, treeshakable and tiny TypeScript-positive toolkit for web
 component infrastructure! Escape from heavyweight frameworks, constant rewrites
 and the all-encompassing frontend FOMO with a declarative, simple, and type-safe
@@ -52,8 +52,9 @@ API for web components:</p>
     <span class="hljs-variable language_">this</span>.#shadow.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">`Hello! My name is <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.name}</span>, my age is <span class="hljs-subst">${<span class="hljs-variable language_">this</span>.age}</span>`</span>;
   }
 }
-</code></pre><p>Ornament makes web components fun and easy when compared to the equivalent
-boilerplate monstrosity that one would have to write by hand otherwise:</p>
+</code></pre><p>Ornament makes quasi-vanilla web components fun and easy when compared to the
+equivalent boilerplate monstrosity that one would have to write by hand
+otherwise:</p>
 <details>
 <summary>😱 Unveil the horror 😱</summary>
 
@@ -227,13 +228,13 @@ and enjoy your very own frontend web framework.</p>
 
 <h3 id="installation">Installation</h3>
 <p>Install <a href="https://www.npmjs.com/package/@sirpepe/ornament">@sirpepe/ornament</a>
-with your favorite package manager. To get the decorator syntax working in 2024,
+with your favorite package manager. To get the decorator syntax working in 2025,
 you will probably need <a href="https://babeljs.io/docs/babel-plugin-proposal-decorators">@babel/plugin-proposal-decorators</a>
 (with option <code>version</code> set to <code>&quot;2023-11&quot;</code>) or
 <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators">TypeScript 5.0+</a>
 (with the option <code>experimentalDecorators</code> turned <em>off</em>).</p>
 <p>Apart from that, Ornament is just a bunch of functions. No further setup
-required, no extra concepts to learn.</p>
+required.</p>
 <h3 id="general-philosophy">General philosophy</h3>
 <p>The native APIs for web components are verbose and imperative, but lend
 themselves to quite a bit of streamlining with
@@ -261,7 +262,8 @@ following:</p>
 <li>specialized syntax for every (or any specific) use case</li>
 </ul>
 <p>You can (and probably have to) therefore pick or write your own solutions for
-the above features. Check out the <code>examples</code> folder for inspiration!</p>
+the above features. Check out the <code>examples</code> folder for inspiration! The
+examples can be built using <code>npm run build-examples</code>.</p>
 <h3 id="exit-strategy">Exit strategy</h3>
 <p>Every good library should come with an exit strategy as well as install
 instructions. Here is how you can get rid of Ornament if you want to migrate
@@ -333,8 +335,16 @@ universal, and will therefore more or less always keep chugging along.</p>
 <td>Define an accessor to work as a content attribute and associated IDL attribute with a given data type</td>
 </tr>
 <tr>
+<td><code>@state()</code></td>
+<td>Accessor</td>
+<td>✕</td>
+<td>✓</td>
+<td>✓[^2]</td>
+<td>Track the accessor&#39;s value in the element&#39;s <a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet">CustomStateSet</a></td>
+</tr>
+<tr>
 <td><code>@reactive()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -342,7 +352,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@init()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -350,7 +360,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@connected()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -358,7 +368,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@disconnected()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -366,7 +376,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@adopted()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -374,7 +384,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@formAssociated()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -382,7 +392,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@formReset()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -390,7 +400,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@formDisabled()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -398,7 +408,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@formStateRestore()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -406,7 +416,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@subscribe()</code></td>
-<td>Accessor, Method, Field[^2]</td>
+<td>Accessor, Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -414,7 +424,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@observe()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✕</td>
 <td>✓</td>
 <td>✓</td>
@@ -422,7 +432,7 @@ universal, and will therefore more or less always keep chugging along.</p>
 </tr>
 <tr>
 <td><code>@debounce()</code></td>
-<td>Method, Field[^2]</td>
+<td>Method, Field[^3]</td>
 <td>✓</td>
 <td>✓</td>
 <td>✓</td>
@@ -433,7 +443,8 @@ universal, and will therefore more or less always keep chugging along.</p>
     Can be <code>#private</code> or a symbol <em>if</em> a non-private non-symbol getter/setter
     pair for the attribute name exists and a content attribute name has been
     set using the <code>as</code> option.</p>
-<p>[^2]: Class field values must be of type <code>function</code></p>
+<p>[^2]: Can be a symbol <em>if</em> a string value has been provided for the state field</p>
+<p>[^3]: Class field values must be of type <code>function</code></p>
 <h3 id="definetagname-string-options-elementdefinitionoptions---registry-customelementregistry--windowcustomelements"><code>@define(tagName: string, options: ElementDefinitionOptions = {}, registry: CustomElementRegistry = window.customElements)</code></h3>
 <p><strong>Class decorator</strong> to register a class as a custom element, basically an
 alternative syntax for <a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define"><code>customElements.define()</code></a>;</p>
@@ -446,7 +457,9 @@ alternative syntax for <a href="https://developer.mozilla.org/en-US/docs/Web/API
 </code></pre><p><code>@define()</code> also sets up attribute observation for use with the
 <code>@attr()</code> decorator, prepares the hooks for
 lifecycle decorators like <code>@connected()</code> and ensures that property upgrades for
-previously undefined elements happen in a predictable fashion.</p>
+previously undefined elements happen in a predictable fashion. Ornament&#39;s
+features will only work if the component class is decorated with either
+<code>@define()</code> or <code>@enhance()</code>.</p>
 <details>
 <summary>What are safe upgrades?</summary>
 
@@ -547,7 +560,9 @@ subclass:</p>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Base3</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">HTMLElement</span> {}
 @<span class="hljs-title function_">enhance</span>()
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyTest3</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Base3</span> {}
-</code></pre><h3 id="proptransformer-transformerany-any"><code>@prop(transformer: Transformer&lt;any, any&gt;)</code></h3>
+</code></pre><p>Remember that Ornament&#39;s features will only work if the component class is
+decorated with either <code>@define()</code> or <code>@enhance()</code>.</p>
+<h3 id="proptransformer-transformerany-any"><code>@prop(transformer: Transformer&lt;any, any&gt;)</code></h3>
 <p><strong>Accessor decorator</strong> to define an IDL property on the custom element class
 <em>without</em> an associated content attribute. Such a property is more or less a
 regular accessor with two additional features:</p>
@@ -696,6 +711,71 @@ attributes will not cause <code>@reactive()</code> methods to run.</p>
 <li><strong><code>as</code> (string, optional)</strong>: Sets an attribute name different from the accessor&#39;s name, similar to how the <code>class</code> content attribute works for the <code>className</code> IDL attribute on built-in elements. If <code>as</code> is not set, the content attribute&#39;s name will be equal to the accessor&#39;s name. <code>as</code> is required when the decorator is applied to a symbol or private property.</li>
 <li><strong><code>reflective</code> (boolean, optional)</strong>: If <code>false</code>, prevents the content attribute from updating when the IDL attribute is updated, similar to how <code>value</code> works on <code>input</code> elements. Defaults to true.</li>
 </ul>
+<h3 id="stateoptions-stateoptions--"><code>@state(options: StateOptions = {})</code></h3>
+<p><strong>Accessor decorator</strong> that tracks the accessor&#39;s value in the element&#39;s
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet">CustomStateSet</a>.
+By default, the state&#39;s name is the decorated member&#39;s name and <code>Boolean</code> is
+used to decide whether a state should be added or removed from the set.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, state } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="hljs-title function_">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">HTMLElement</span> {
+  @<span class="hljs-title function_">state</span>()
+  accessor foo = <span class="hljs-number">0</span>;
+  <span class="hljs-comment">// Default: tracks the state &quot;foo&quot; by transforming the value with Boolean()</span>
+
+  @<span class="hljs-title function_">state</span>({ <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;isOdd&quot;</span>, <span class="hljs-attr">toBoolean</span>: <span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> value % <span class="hljs-number">2</span> !== <span class="hljs-number">0</span> })
+  accessor bar = <span class="hljs-number">0</span>;
+  <span class="hljs-comment">// Custom: tracks &quot;bar&quot; as &quot;isOff&quot; by transforming the value with toBoolean()</span>
+}
+
+<span class="hljs-keyword">let</span> testEl = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&quot;my-test&quot;</span>);
+
+<span class="hljs-comment">// Custom state &quot;foo&quot; is not set, since Boolean(0) === false</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(testEl.<span class="hljs-title function_">matches</span>(<span class="hljs-string">&quot;:state(foo)&quot;</span>)); <span class="hljs-comment">// &gt; false</span>
+
+<span class="hljs-comment">// Custom state &quot;isOdd&quot; is not set, since (value % 2 !== 0) === false</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(testEl.<span class="hljs-title function_">matches</span>(<span class="hljs-string">&quot;:state(isOdd)&quot;</span>)); <span class="hljs-comment">// &gt; false</span>
+
+testEl.<span class="hljs-property">foo</span> = <span class="hljs-number">1</span>;
+testEl.<span class="hljs-property">bar</span> = <span class="hljs-number">1</span>;
+
+<span class="hljs-comment">// Custom state &quot;foo&quot; is set, since Boolean(1) === true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(testEl.<span class="hljs-title function_">matches</span>(<span class="hljs-string">&quot;:state(foo)&quot;</span>)); <span class="hljs-comment">// &gt; true</span>
+
+<span class="hljs-comment">// Custom state &quot;isOdd&quot; is set, since (value % 2 !== 0) === true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(testEl.<span class="hljs-title function_">matches</span>(<span class="hljs-string">&quot;:state(isOdd)&quot;</span>)); <span class="hljs-comment">// &gt; true</span>
+</code></pre><p>The decorator works with private accessors. If no <code>name</code> option is provided, the
+custom state name includes the <code>#</code> sign. Use on symbol accessors requires the
+<code>name</code> option.</p>
+<p>To properly combine with <code>@prop()</code> and <code>@attr()</code>, <code>@state()</code> should be applied
+to the accessor last to benefit from the type checking and/or conversion
+provided from the other decorators:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, state, prop, number } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="hljs-title function_">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">HTMLElement</span> {
+  @<span class="hljs-title function_">prop</span>(<span class="hljs-title function_">number</span>({ <span class="hljs-attr">min</span>: <span class="hljs-number">0</span> })) <span class="hljs-comment">// &lt;- @prop() comes first</span>
+  @<span class="hljs-title function_">state</span>({ <span class="hljs-attr">toBoolean</span>: <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> x % <span class="hljs-number">2</span> === <span class="hljs-number">0</span> }) <span class="hljs-comment">// &lt;- @state() comes last</span>
+  accessor foo = <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-keyword">const</span> testEl = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Test</span>();
+<span class="hljs-comment">// state &quot;foo&quot; is true</span>
+
+testEl.<span class="hljs-property">foo</span> = <span class="hljs-number">1</span>;
+<span class="hljs-comment">// state &quot;foo&quot; is false</span>
+
+<span class="hljs-keyword">try</span> {
+  testEl.<span class="hljs-property">foo</span> = -<span class="hljs-number">2</span>; <span class="hljs-comment">// &lt;- this fails</span>
+} <span class="hljs-keyword">catch</span> {
+  <span class="hljs-comment">// state &quot;foo&quot; on el still false; @prop intercepted the set operation</span>
+}
+</code></pre><h4 id="options-for-state">Options for <code>@state()</code></h4>
+<ul>
+<li><strong><code>name</code> (string, optional)</strong>: name of the state in the CustomStateSet. If <code>name</code> is not set, the state&#39;s name will be equal to the accessor&#39;s name. <code>name</code> is required when the decorator is applied to a symbol.</li>
+<li><strong><code>toBoolean</code> (((value, instance) =&gt; boolean), optional)</strong>: Function to transform the accessor&#39;s value into a boolean, which in turn decides whether a state should be added or removed from the set. Defaults to the <code>Boolean</code> function.</li>
+</ul>
 <h3 id="reactiveoptions-reactiveoptions--"><code>@reactive(options: ReactiveOptions = {})</code></h3>
 <p><strong>Method and class field decorator</strong> that runs class members when accessors
 decorated with <code>@prop()</code> or <code>@attr()</code> change their values:</p>
@@ -738,7 +818,7 @@ called immediately before the function is scheduled to run</li>
 <ul>
 <li><strong><code>keys</code> (Array&lt;string | symbol&gt;, optional)</strong>: List of attributes (defined by <code>@prop()</code> or <code>@attr()</code>) to monitor. Can include private names and symbols. Defaults to monitoring all content and IDL attributes defined by <code>@prop()</code> or <code>@attr()</code>.</li>
 <li><strong><code>excludeKeys</code> (Array&lt;string | symbol&gt;, optional)</strong>: List of attributes (defined by <code>@prop()</code> or <code>@attr()</code>) not to monitor. Can include private names and symbols. Defaults to an empty array.</li>
-<li><strong><code>predicate</code> (Function <code>(instance: T) =&gt; boolean</code>)</strong>: If provided, controls whether or not the decorated method is called for a given change. Note that this function is not part of the class declaration itself and can therefore <em>not</em> access private fields on <code>instance</code>.</li>
+<li><strong><code>predicate</code> (Function <code>(instance: T, prop: string | symbol, newValue: any) =&gt; boolean</code>)</strong>: If provided, controls whether or not the decorated method is called for a given change. Note that this function is not part of the class declaration itself and can therefore <em>not</em> access private fields on <code>instance</code>, but the predicate function gets passed the affected IDL property&#39;s name and new value.</li>
 </ul>
 <h3 id="init"><code>@init()</code></h3>
 <p><strong>Method and class field decorator</strong> that runs class members when the class
@@ -1122,7 +1202,7 @@ able to return anything but <code>undefined</code>.</p>
 </li>
 </ul>
 <h3 id="observector-observerconstructor-options-observeroptions--"><code>@observe(ctor: ObserverConstructor, options: ObserverOptions = {})</code></h3>
-<p><strong>Method and class field decorator</strong> that sets up a <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver">MutationObserver</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver">ResizeObserver</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API">IntersectionObserver</a> with the element instance as the target and the decorated method as the callback. This enables the web component to observe itself:</p>
+<p><strong>Method and class field decorator</strong> that sets up a <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver">MutationObserver</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver">ResizeObserver</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API">IntersectionObserver</a> with the element instance as the target and the decorated method as the callback. This enables the component to observe itself:</p>
 <pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, observe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
 
 @<span class="hljs-title function_">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
@@ -1140,7 +1220,7 @@ able to return anything but <code>undefined</code>.</p>
 el.<span class="hljs-property">innerText</span> = <span class="hljs-string">&quot;Test&quot;</span>; <span class="hljs-comment">// cause mutation</span>
 
 <span class="hljs-comment">// Test.reactToChanges() gets called asynchronously by the observer</span>
-</code></pre><p><code>@observe()</code> always observes the element that the decorated method belongs to and its reactions are always observably (heh) asynchronous. The decorator does little more than create an observer object with the options provided and the decorated method as the callback function. In theory this should work with every kind of DOM-related observer but has only been tested with MutationObserver, ResizeObserver and IntersectionObserver so far.</p>
+</code></pre><p><code>@observe()</code> always observes the element that the decorated method belongs to and its reactions are always observably (heh) asynchronous. The decorator does little more than create an observer object with the options provided and the decorated method as the callback function. In theory this should work with every kind of DOM-related observer, but has only been tested with MutationObserver, ResizeObserver and IntersectionObserver so far.</p>
 <h4 id="options-for-observe">Options for <code>@observe()</code></h4>
 <ul>
 <li><strong><code>Ctor</code> (function)</strong>: The observer constructor function (probably one of <code>MutationObserver</code>, <code>ResizeObserver</code>, and <code>IntersectionObserver</code>)</li>
@@ -1992,7 +2072,25 @@ as the last argument.</p>
 </code></pre><h3 id="class-ornamenteventk-extends-keyof-ornamenteventmap">class <code>OrnamentEvent&lt;K extends keyof OrnamentEventMap&gt;</code></h3>
 <p>Event type used on the internal event bus. Only really useful if you want to
 create your own events while using TypeScript.</p>
-<h2 id="symbols">Symbols</h2>
+<h2 id="other-utilities">Other utilities</h2>
+<h3 id="getinternalsinstance-htmlelement-elementinternals"><code>getInternals(instance: HTMLElement): ElementInternals</code></h3>
+<p>Get the <a href="https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals">ElementInternals</a>
+for a component instance. While <code>getInternals()</code> be called as often as required,
+component&#39;s <code>attachInternals()</code> methods are still single-use:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { define, getInternals } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
+
+@<span class="hljs-title function_">define</span>(<span class="hljs-string">&quot;my-test&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">HTMLElement</span> {}
+<span class="hljs-keyword">const</span> testEl = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Test</span>();
+
+<span class="hljs-keyword">const</span> internals1 = <span class="hljs-title function_">getInternals</span>(testEl);
+<span class="hljs-keyword">const</span> internals2 = testEl.<span class="hljs-title function_">attachInternals</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(internals1 === internals2); <span class="hljs-comment">// &gt; true</span>
+
+<span class="hljs-title function_">getInternals</span>(testEl); <span class="hljs-comment">// works a second time</span>
+<span class="hljs-title function_">getInternals</span>(testEl); <span class="hljs-comment">// works a third time</span>
+testEl.<span class="hljs-title function_">attachInternals</span>()).<span class="hljs-property">to</span>.<span class="hljs-keyword">throw</span>(); <span class="hljs-comment">// &gt; Exception on second use</span>
+</code></pre><h2 id="symbols">Symbols</h2>
 <h3 id="no_value"><code>NO_VALUE</code></h3>
 <p>Transformers can return a special symbol to indicate that they were unable to
 parse an input. This symbol is exported by Ornament as <code>NO_VALUE</code> and is also
