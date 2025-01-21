@@ -242,6 +242,7 @@ aside.sidebar {
 }
 
 code-movie-runtime {
+  display: block;
   border: var(--border);
   padding: 1em;
   margin: 1em 1em 1.5em 0; /* 1.5em on bottom for visual shadow compensation */
