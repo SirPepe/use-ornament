@@ -16,7 +16,7 @@
         <h1>A framework for <mark>web component frameworks</mark></h1>
         <p><code>npm i <a href="https://www.npmjs.com/package/@sirpepe/ornament">@sirpepe/ornament</a></code></p>
       </header>
-      <main><p>📢 <strong>What&#39;s new in 2.2.2?</strong> <a href="https://github.com/SirPepe/ornament/blob/main/changelog.md">Check out the Changelog!</a></p>
+      <main><p>📢 <strong>What&#39;s new in 3.0.0?</strong> <a href="https://github.com/SirPepe/ornament/blob/main/changelog.md">Check out the Changelog!</a></p>
 <p><strong>Build your own frontend framework</strong> with Ornament, a stable, mid-level,
 pareto-optimal, treeshakable and tiny TypeScript-positive toolkit for web
 component infrastructure! Escape from heavyweight frameworks, constant rewrites
@@ -774,7 +774,7 @@ testEl.<span class="hljs-property">foo</span> = <span class="hljs-number">1</spa
 </code></pre><h4 id="options-for-state">Options for <code>@state()</code></h4>
 <ul>
 <li><strong><code>name</code> (string, optional)</strong>: name of the state in the CustomStateSet. If <code>name</code> is not set, the state&#39;s name will be equal to the accessor&#39;s name. <code>name</code> is required when the decorator is applied to a symbol.</li>
-<li><strong><code>toBoolean</code> (((value, instance) =&gt; boolean), optional)</strong>: Function to transform the accessor&#39;s value into a boolean, which in turn decides whether a state should be added or removed from the set. Defaults to the <code>Boolean</code> function.</li>
+<li><strong><code>toBoolean</code> (((value, instance) =&gt; boolean), optional)</strong>: Function to transform the accessor&#39;s value into a boolean, which in turn decides whether a state should be added or removed from the set. Defaults to the <code>Boolean</code> function. Called with <code>this</code> set to the component instance.</li>
 </ul>
 <h3 id="reactiveoptions-reactiveoptions--"><code>@reactive(options: ReactiveOptions = {})</code></h3>
 <p><strong>Method and class field decorator</strong> that runs class members when accessors
@@ -818,7 +818,7 @@ called immediately before the function is scheduled to run</li>
 <ul>
 <li><strong><code>keys</code> (Array&lt;string | symbol&gt;, optional)</strong>: List of attributes (defined by <code>@prop()</code> or <code>@attr()</code>) to monitor. Can include private names and symbols. Defaults to monitoring all content and IDL attributes defined by <code>@prop()</code> or <code>@attr()</code>.</li>
 <li><strong><code>excludeKeys</code> (Array&lt;string | symbol&gt;, optional)</strong>: List of attributes (defined by <code>@prop()</code> or <code>@attr()</code>) not to monitor. Can include private names and symbols. Defaults to an empty array.</li>
-<li><strong><code>predicate</code> (Function <code>(instance: T, prop: string | symbol, newValue: any) =&gt; boolean</code>)</strong>: If provided, controls whether or not the decorated method is called for a given change. Note that this function is not part of the class declaration itself and can therefore <em>not</em> access private fields on <code>instance</code>, but the predicate function gets passed the affected IDL property&#39;s name and new value.</li>
+<li><strong><code>predicate</code> (Function <code>(this: T, prop: string | symbol, newValue: any, instance: T) =&gt; boolean</code>)</strong>: If provided, controls whether or not the decorated method is called for a given change. Note that this function is not part of the class declaration itself and can therefore <em>not</em> access private fields on <code>instance</code>, but the predicate function gets passed the affected IDL property&#39;s name and new value.</li>
 </ul>
 <h3 id="init"><code>@init()</code></h3>
 <p><strong>Method and class field decorator</strong> that runs class members when the class
@@ -979,8 +979,9 @@ not work in Chrome-based browsers as of November 2023.</p>
 the decorated class member is a method or a function, it runs when the
 EventTarget emits a new event or when the signal receives a new value. If the
 decorated member is an accessor, it gets updated with the last event object (for
-event targets) or signal values (for signals) and in turn causes methods
-decorated with <code>@reactive()</code> to run.</p>
+event targets) or signal values (for signals). You can decorate the accessor
+with <code>@prop()</code> to cause methods decorated with <code>@reactive()</code> to run when its
+value changes.</p>
 <h4 id="subscribe-to-eventtargets-subscribetargetortargetfactory-eventtarget--instance-t--eventtarget--promiseeventtarget-eventnames-string-options-eventsubscribeoptions--">Subscribe to EventTargets: <code>@subscribe(targetOrTargetFactory: EventTarget | ((instance: T) =&gt; EventTarget) | Promise&lt;EventTarget&gt;, eventNames: string, options: EventSubscribeOptions = {})</code></h4>
 <p>Subscribe the decorated class member to one or more events an EventTarget.
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget">EventTarget</a> is
@@ -1039,7 +1040,7 @@ nested functions and promises. This is annoying to handle on the type level,
 you&#39;ll just have to <code>any</code> your way around that or provide this capability in
 a type-safe wrapper.</p>
 <p>Making the <code>@subscribe()</code> decorator type-safe for use with events is a gnarly
-prospect. Given an event target and an event name, the decorator can&#39;t know
+prospect. Given an event target and an event name, the decorator <em>can&#39;t</em> know
 what type of event the method must expect. Therefore the following is possible
 by default:</p>
 <pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { define, subscribe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@sirpepe/ornament&quot;</span>;
@@ -1057,7 +1058,7 @@ by default:</p>
 </code></pre><p>A mapping between event names and corresponding event types (such as <code>&quot;click&quot;</code>
 → <code>MouseEvent</code>) exists for specific cases. For example <code>HTMLElementEventMap</code>
 contains the mappings for events emitted by HTML elements. But because
-<code>@subscribe()</code> can work with <em>any event target</em>, the existence or relevancy of
+<code>@subscribe()</code> can work with <em>any event target</em>, the existence or relevance of
 such a mapping can&#39;t be assumed. The only way around this is to create an
 abstraction for specific use cases where such a mapping is available. This can
 be based on <code>@subscribe()</code> itself:</p>
@@ -1102,8 +1103,8 @@ be based on <code>@subscribe()</code> itself:</p>
 <li><strong><code>targetOrTargetFactory</code> (EventTarget | Promise&lt;EventTarget&gt; | ((instance: T) =&gt; EventTarget) | Promise&lt;EventTarget&gt;)</strong>: The event target (or event-target-returning function/promise) to subscribe to</li>
 <li><strong><code>eventNames</code> (string)</strong>: The event(s) to listen to. To subscribe to multiple events, pass a single string with the event names separated by whitespace</li>
 <li><strong><code>options</code> (object, optional)</strong>: Event handling options, consisting of...<ul>
-<li><strong>predicate (function <code>(instance: T, event: Event) =&gt; boolean</code>, optional)</strong>: If provided, controls whether or not the decorated method is called for a given event. Gets passed the element instance and the event object, and must return a boolean. Note that this method always handles the raw event object, before and eventual <code>transform()</code> is applied.</li>
-<li><strong>transform (function <code>&lt;U&gt;(instance: T, event: Event) =&gt; U</code>, optional)</strong>: If provided, transforms the event object into something else. The decorated class element must be compatible with the type returned from <code>transform()</code>.</li>
+<li><strong>predicate (function <code>(this: T, event: Event, instance: T) =&gt; boolean</code>, optional)</strong>: If provided, controls whether or not the decorated method is called for a given event. Gets passed the element instance and the event object, and must return a boolean. Note that this method always handles the raw event object, before and eventual <code>transform()</code> is applied.</li>
+<li><strong>transform (function <code>&lt;U&gt;(this: T, event: Event, instance: T) =&gt; U</code>, optional)</strong>: If provided, transforms the event object into something else. The decorated class element must be compatible with the type returned from <code>transform()</code>.</li>
 <li><strong>activateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to activate the subscription (that is, when to actually start listening on the EventTarget). Defaults to <code>[&quot;init&quot;, &quot;connected&quot;]</code>.</li>
 <li><strong>deactivateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to deactivate the subscription (when to call <code>removeEventListener()</code> on the EventTarget). Defaults to <code>[&quot;disconnected&quot;]</code>.</li>
 <li><strong>capture (boolean, optional):</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#parameters">option for <code>addEventListener()</code></a></li>
@@ -1146,8 +1147,8 @@ to throw events around.</p>
 <ul>
 <li><strong><code>signal</code> (Signal)</strong>: The signal to subscribe to</li>
 <li><strong><code>options</code> (object, optional)</strong>: Update handling options, consisting of...<ul>
-<li><strong>predicate (function <code>(instance: T, value) =&gt; boolean</code>, optional)</strong>: If provided, controls whether or not the decorated method is called for a given signal update. Gets passed the element instance and the signal&#39;s value, and must return a boolean. Note that this method always handles the raw signal value, before and eventual <code>transform()</code> is applied.</li>
-<li><strong>transform (function <code>&lt;U&gt;(instance: T, value) =&gt; U</code>, optional)</strong>: If provided, transforms the signal value into something else. The decorated class element must be compatible with the type returned from <code>transform()</code>.</li>
+<li><strong>predicate (function <code>(this: T, value, instance: T) =&gt; boolean</code>, optional)</strong>: If provided, controls whether or not the decorated method is called for a given signal update. Gets passed the element instance and the signal&#39;s value, and must return a boolean. Note that this method always handles the raw signal value, before and eventual <code>transform()</code> is applied.</li>
+<li><strong>transform (function <code>&lt;U&gt;(this: T, value, instance: T) =&gt; U</code>, optional)</strong>: If provided, transforms the signal value into something else. The decorated class element must be compatible with the type returned from <code>transform()</code>.</li>
 <li><strong>activateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to activate the subscription (that is, when to actually subscribe to the Signal). Defaults to <code>[&quot;init&quot;, &quot;connected&quot;]</code>.</li>
 <li><strong>deactivateOn (Array&lt;string&gt;, optional):</strong> Ornament event on which to unsubscribe from the signal. Defaults to <code>[&quot;disconnected&quot;]</code>.</li>
 </ul>
