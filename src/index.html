@@ -16,7 +16,7 @@
         <h1>A framework for <mark>web component frameworks</mark></h1>
         <p><code>npm i <a href="https://www.npmjs.com/package/@sirpepe/ornament">@sirpepe/ornament</a></code></p>
       </header>
-      <main><p>📢 <strong>What&#39;s new in 3.0.0?</strong> <a href="https://github.com/SirPepe/ornament/blob/main/changelog.md">Check out the Changelog!</a></p>
+      <main><p>📢 <strong>What&#39;s new in 3.0.1?</strong> <a href="https://github.com/SirPepe/ornament/blob/main/changelog.md">Check out the Changelog!</a></p>
 <p><strong>Build your own frontend framework</strong> with Ornament, a stable, mid-level,
 pareto-optimal, treeshakable and tiny TypeScript-positive toolkit for web
 component infrastructure! Escape from heavyweight frameworks, constant rewrites
@@ -1742,6 +1742,25 @@ the IDL attribute&#39;s value will remain unchanged. Any attempt at setting the
 IDL attribute to values other than <code>A</code> or <code>B</code> will result in an exception.</p>
 <p>The default value is either the value the accessor was initialized with or, if
 the accessor has no initial value, the first element in <code>values</code>.</p>
+<details>
+<summary>Notes for TypeScript</summary>
+
+<p>To use <code>literal()</code> with literal union types, make sure that the <code>values</code> option
+is <em>not</em> subject to type widening, eg. via <code>as const</code>:</p>
+<pre><code class="hljs language-javascript">@<span class="hljs-title function_">define</span>(<span class="hljs-string">&quot;test-element&quot;</span>)
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TestElement</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">HTMLElement</span> {
+
+  <span class="hljs-comment">// Works: values is [&quot;a&quot;, &quot;b&quot;]</span>
+  @<span class="hljs-title function_">prop</span>(<span class="hljs-title function_">literal</span>({ <span class="hljs-attr">values</span>: [<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>] <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>, <span class="hljs-attr">transform</span>: <span class="hljs-title function_">string</span>() }))
+  accessor <span class="hljs-attr">bah</span>: <span class="hljs-string">&quot;a&quot;</span> | <span class="hljs-string">&quot;b&quot;</span> = <span class="hljs-string">&quot;a&quot;</span>;
+
+  <span class="hljs-comment">// Errors: values is string[]</span>
+  @<span class="hljs-title function_">prop</span>(<span class="hljs-title function_">literal</span>({ <span class="hljs-attr">values</span>: [<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>], <span class="hljs-attr">transform</span>: <span class="hljs-title function_">string</span>() }))
+  accessor <span class="hljs-attr">bbb</span>: <span class="hljs-string">&quot;a&quot;</span> | <span class="hljs-string">&quot;b&quot;</span> = <span class="hljs-string">&quot;a&quot;</span>;
+}
+</code></pre><p>The ordering of <code>values</code> is not important.</p>
+</details>
+
 <h4 id="options-for-literaloptions">Options for <code>literal(options?)</code></h4>
 <ul>
 <li><strong><code>values</code> (array)</strong>: List of valid values. Must contain at least one element.</li>
