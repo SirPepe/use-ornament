@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/generate.js && vite src",
-    "build": "rm -rf docs && mkdir docs && cp static/.htaccess docs/.htaccess && node scripts/generate.js && vite build src --out-dir=../docs"
+    "build": "rm -rf docs && mkdir docs && cp static/.htaccess docs/.htaccess && node scripts/generate.js && vite build src --base=./ --out-dir=../docs"
   },
   "author": "peter@peterkroener.de",
   "license": "MIT",
