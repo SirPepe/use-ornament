@@ -112,6 +112,9 @@ pre code {
 
 body {
   margin: 1em;
+  @media (width < 400px) {
+    margin: 0.5em;
+  }
 }
 
 .wrapper {
