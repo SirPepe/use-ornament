@@ -15,7 +15,9 @@ const template = (html) => {
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content="A framework for web component frameworks" />
     <meta name="fediverse:creator" content="@sirpepe@mastodon.social" />
-    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="stylesheet" href="./index.css">
   </head>
   <body>
@@ -98,11 +100,8 @@ const tutorialInsert = `<h2 id="tutorial">Tutorial: click counter with Preact</h
 const marked = new Marked();
 
 marked.use(gfmHeadingId(), {
+  // Tweak tokens
   walkTokens(token) {
-    // Use the headline from the template instead of what the readme provides
-    if (token.type === "html" && token.raw.startsWith("<h1>")) {
-      token.text = token.raw = "";
-    }
     // Link to GH
     if (token.type === "link") {
       if (token.href === "./changelog.md") {
@@ -119,6 +118,15 @@ marked.use(gfmHeadingId(), {
         block: true,
       });
     }
+  },
+  // Drop top-level headline in favor of the template
+  renderer: {
+    heading({ depth }) {
+      if (depth === 1) {
+        return "";
+      }
+      return false;
+    },
   },
 });
 

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (1:1.2.2+202305151921+b0a8486541)"
+   sodipodi:docname="icon-src.svg"
+   inkscape:export-filename="icon.png"
+   inkscape:export-xdpi="6"
+   inkscape:export-ydpi="6"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="1.1893044"
+     inkscape:cx="591.94265"
+     inkscape:cy="337.17188"
+     inkscape:window-width="2560"
+     inkscape:window-height="1403"
+     inkscape:window-x="1080"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid182"
+       spacingx="8.4666666"
+       spacingy="8.4666666"
+       empspacing="4" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <rect
+       x="32"
+       y="32"
+       width="5246.0162"
+       height="4131.0101"
+       id="rect238" />
+  </defs>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,-446.5711,-159.33701)"
+       id="text236"
+       style="font-weight:bold;font-size:3779.53px;line-height:1;font-family:Pacifico;-inkscape-font-specification:'Pacifico Bold';text-align:center;white-space:pre;shape-inside:url(#rect238);display:inline;fill:#ff0560;stroke:#ffffff;stroke-width:120.945;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"><tspan
+         x="1498.4725"
+         y="2890.2536"
+         id="tspan8033"><tspan
+           style="font-weight:normal;font-family:'Space Mono';-inkscape-font-specification:'Space Mono';fill:#b6b6b7;stroke-linecap:square"
+           id="tspan8031">&lt;</tspan></tspan></text>
+  </g>
+</svg>
