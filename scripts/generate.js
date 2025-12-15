@@ -2,9 +2,8 @@ import { fileURLToPath } from "node:url";
 import { rmSync, readFileSync, writeFileSync } from "node:fs";
 import { Marked } from "marked";
 import { gfmHeadingId } from "marked-gfm-heading-id";
-import { animateHTML, toHTML } from "@codemovie/code-movie";
+import { toHTML } from "@codemovie/code-movie";
 import ecmascript from "@codemovie/code-movie/languages/ecmascript";
-import animationJSON from "./animation.json" with { type: "json" };
 const js = ecmascript({ jsx: true });
 
 const template = (html) => {
@@ -61,6 +60,9 @@ const vanillaInsert = `<aside class="sidebar">
   </p>
 </aside>`;
 
+const animationJSON = JSON.parse(
+  readFileSync("./scripts/animation.json", { encoding: "utf-8" })
+);
 const tutorialAnimation = toHTML(animationJSON, { tabSize: 2, language: js });
 
 const tutorialInsert = `<h2 id="tutorial">Tutorial: click counter with Preact</h2>
@@ -137,15 +139,22 @@ function hack(string, re, ...contentToInsert) {
 // Insert author aside and placeholder for the tutorial insert. The tutorial
 // insert needs to be added after the text has run through Marked; otherwise
 // empty lines will get turned into <p>
-const withAuthor = hack(readme, /## Guide/, authorInsert, "PLACEHOLDER_FOR_TUTORIAL");
+const withAuthor = hack(
+  readme,
+  /## Guide/,
+  authorInsert,
+  "PLACEHOLDER_FOR_TUTORIAL"
+);
 
 // Insert vanilla aside
 const withVanilla = hack(withAuthor, /### Installation/, vanillaInsert);
 
 const html = template(marked.parse(withVanilla));
 
-const htmlWithTutorial = html.replace("<p>PLACEHOLDER_FOR_TUTORIAL</p>", tutorialInsert);
+const htmlWithTutorial = html.replace(
+  "<p>PLACEHOLDER_FOR_TUTORIAL</p>",
+  tutorialInsert
+);
 
 rmSync(destination, { force: true, recursive: true });
 writeFileSync(destination, htmlWithTutorial);
-
