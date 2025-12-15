@@ -1,4 +1,8 @@
-@import url("./theme.css");
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 @font-face {
   font-family: "Space Mono";
@@ -28,12 +32,22 @@
   font-display: swap;
 }
 
+@keyframes bounce-lr {
+  0%,
+  100% {
+    transform: scale(0.9, 1.1) translateX(0.2em);
+  }
+  50% {
+    transform: scale(1.1, 0.9) translateX(-0.2em);
+  }
+}
+
 :root {
   --text-color: hsl(253, 11%, 13%);
   --background-color: hsl(60, 4%, 97%);
-  --border-color: hsla(253, 11%, 13%, 0.333);
+  --border-color: hsla(253, 11%, 13%, 0.3);
   --border: 0.15rem solid var(--border-color);
-  --box-shadow: 0.5rem 0.5rem 0 hsla(253, 11%, 13%, 0.333);
+  --box-shadow: 0.5rem 0.5rem 0 var(--border-color);
   --link-color: blue;
   --link-color-visited: hsl(240, 80%, 60%);
   --highlight-color: hsl(47, 100%, 90%);
@@ -47,6 +61,29 @@
   line-height: 1.6;
   color: var(--text-color);
   background: var(--background-color);
+  --cm-content-margin-top: 1em;
+  --cm-content-margin-right: 1em;
+  --cm-content-margin-bottom: 1em;
+  --cm-content-margin-left: 1em;
+  --cm-font-family: "Space Mono";
+  --cm-line-height: 2.6;
+  --cm-scene-background: transparent;
+  --cm-comment-color: #007400;
+  --cm-alternativeComment-color: #c0c0c0;
+  --cm-string-color: #c41a16;
+  --cm-declaration-color: #5c2699;
+  --cm-declaration-weight: normal;
+  --cm-keyword-color: #aa0d91;
+  --cm-keyword-weight: normal;
+  --cm-invocation-color: #1c00cf;
+  --cm-global-color: #007400;
+  --cm-decoration-line-background-background: var(--highlight-color);
+  --cm-decoration-text-background-background: var(--highlight-color);
+}
+
+.cm-animation [data-cm-gutter-decoration-text="➡️"] span {
+  display: inline-block;
+  animation: 1000ms ease-in-out 0s infinite alternate both running bounce-lr;
 }
 
 :target {
@@ -104,19 +141,48 @@ h3 {
 }
 
 h1 {
-  font-size: 3.5em;
-  line-height: 1.4;
+  span,
+  &::before {
+    font-size: 3em;
+  }
+  font-size: 3em;
+  line-height: 1.3;
+  margin-top: 0;
+}
+
+@media (width < 850px) {
+  h1 {
+    span,
+    &::before {
+      font-size: 2em;
+    }
+  }
+}
+
+@media (width < 650px) {
+  h1 {
+    font-size: 2em;
+  }
 }
 
 h2 {
-  font-size: 2em;
-  line-height: 1.5;
+  font-size: 2.4em;
+  line-height: 1.2;
   margin-top: 4rem;
 }
 
 h3 {
   font-size: 1.5em;
   margin-top: 3rem;
+}
+
+h4 {
+  font-size: 1.2em;
+  margin-top: 3rem;
+}
+
+h5 {
+  font-size: 1em;
 }
 
 header p {
@@ -149,20 +215,20 @@ li {
   margin-bottom: 0.5em;
 }
 
-pre {
+.cm-highlight {
   border: var(--border);
-  padding: 1em;
   margin: 1em 0 1.5em 0; /* 1.5em on bottom for visual shadow compensation */
   box-shadow: var(--box-shadow);
-  font: inherit;
   max-width: 100%;
+  width: 100% !important;
   overflow: auto;
 }
 
 /* Specifically "unveil the horror" */
-details summary + pre {
+details summary + .cm-highlight {
   border: none;
   padding: 0;
+  margin-bottom: 0;
   box-shadow: none;
 }
 
@@ -173,11 +239,12 @@ aside {
   padding: 0 1em;
   box-shadow: var(--box-shadow);
   display: grid;
-  grid-template-columns: 1fr 256px;
+  grid-template-columns: 1fr auto;
   gap: 0 2em;
   h2 {
+    font-size: 1.5em;
     grid-column: 1;
-    margin: 0.5em 0;
+    margin: 1em 0 0 0;
   }
   div {
     grid-column: 1;
@@ -187,8 +254,8 @@ aside {
     grid-row: 1 / 3;
     max-width: 256px;
     margin: 1em 0;
-    border-radius: 50%;
     border: var(--border);
+    box-shadow: var(--box-shadow);
   }
 }
 
@@ -226,37 +293,30 @@ aside.sidebar {
 
 .tutorial {
   position: relative;
+  width: min-content;
 }
 
 .cm-animation {
-  font-family: inherit;
-  line-height: inherit;
-  --cm-scene-background: none;
-  pre {
-    background: none;
-    margin: 0;
-    padding: 0;
-    box-shadow: none;
-    border: none;
-  }
+  --cm-line-numbers-enabled: 1;
+  --cm-line-numbers-margin-left: 2.5em;
+  --cm-line-numbers-margin-right: 1.5em;
 }
 
 code-movie-runtime {
-  display: block;
+  display: inline-block;
   border: var(--border);
-  padding: 1em;
-  margin: 1em 1em 1.5em 0; /* 1.5em on bottom for visual shadow compensation */
   box-shadow: var(--box-shadow);
 }
 
 @media (min-width: 440px) {
   .tutorial-controls {
     position: absolute;
-    right: 3ch;
-    top: 58.5ch;
+    right: 2.5ch;
+    top: 61.5ch;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1ch;
+    z-index: 1;
   }
 }
 

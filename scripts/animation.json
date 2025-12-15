@@ -1,0 +1,280 @@
+[
+  {
+    "code": "// Regular web component class\nclass ClickCounter extends HTMLElement {\n}",
+    "decorations": []
+  },
+  {
+    "code": "// Regular web component class\nclass ClickCounter extends HTMLElement {\n  // Public accessor for the initial value\n  accessor value = 0;\n\n  // Internal state for the current click count\n  accessor #count = this.value;\n}",
+    "decorations": []
+  },
+  {
+    "code": "import { define } from \"@sirpepe/ornament\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public accessor for the initial value\n  accessor value = 0;\n\n  // Internal state for the current click count\n  accessor #count = this.value;\n}",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 4,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "GUTTER",
+        "line": 1,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 1,
+        "toLine": 1,
+        "data": {
+          "className": ""
+        }
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 4,
+        "toLine": 4,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  },
+  {
+    "code": "import { define, attr, prop, number } from \"@sirpepe/ornament\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public content attribute for the initial value\n  @attr(number({ min: 0 })) accessor value = 0;\n\n  // Internal attribute for the current click count\n  @prop(number({ min: 0 })) accessor #count = this.value;\n}",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 7,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "GUTTER",
+        "line": 10,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "TEXT",
+        "from": 17,
+        "to": 21,
+        "data": {
+          "className": ""
+        }
+      },
+      {
+        "kind": "TEXT",
+        "from": 23,
+        "to": 27,
+        "data": {
+          "className": ""
+        }
+      },
+      {
+        "kind": "TEXT",
+        "from": 29,
+        "to": 35,
+        "data": {
+          "className": ""
+        }
+      },
+      {
+        "kind": "TEXT",
+        "from": 227,
+        "to": 252,
+        "data": {
+          "className": ""
+        }
+      },
+      {
+        "kind": "TEXT",
+        "from": 328,
+        "to": 353,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  },
+  {
+    "code": "import { define, attr, prop, number } from \"@sirpepe/ornament\";\nimport { Fragment, h, render } from \"preact\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public content attribute for the initial value\n  @attr(number({ min: 0 })) accessor value = 0;\n\n  // Internal attribute for the current click count\n  @prop(number({ min: 0 })) accessor #count = this.value;\n}",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 2,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 2,
+        "toLine": 2,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  },
+  {
+    "code": "import { define, attr, prop, number } from \"@sirpepe/ornament\";\nimport { Fragment, h, render } from \"preact\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public content attribute for the initial value\n  @attr(number({ min: 0 })) accessor value = 0;\n\n  // Internal attribute for the current click count\n  @prop(number({ min: 0 })) accessor #count = this.value;\n\n  // Component's render logic, boilt with preact\n  #render() {}\n}",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 14,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 13,
+        "toLine": 14,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  },
+  {
+    "code": "import { define, attr, prop, number } from \"@sirpepe/ornament\";\nimport { Fragment, h, render } from \"preact\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public content attribute for the initial value\n  @attr(number({ min: 0 })) accessor value = 0;\n\n  // Internal attribute for the current click count\n  @prop(number({ min: 0 })) accessor #count = this.value;\n\n  // Component's render logic, boilt with preact\n  #render() {\n    render(<></>, this);\n  }\n}",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 15,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 15,
+        "toLine": 15,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  },
+  {
+    "code": "import { define, attr, prop, number } from \"@sirpepe/ornament\";\nimport { Fragment, h, render } from \"preact\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public content attribute for the initial value\n  @attr(number({ min: 0 })) accessor value = 0;\n\n  // Internal attribute for the current click count\n  @prop(number({ min: 0 })) accessor #count = this.value;\n\n  // Component's render logic, boilt with preact\n  #render() {\n    render(\n      <>\n        <button onClick={() => this.#count++}>+1</button>\n      </>,\n      this,\n    );\n  }\n}",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 17,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 16,
+        "toLine": 18,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  },
+  {
+    "code": "import { define, attr, prop, number } from \"@sirpepe/ornament\";\nimport { Fragment, h, render } from \"preact\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public content attribute for the initial value\n  @attr(number({ min: 0 })) accessor value = 0;\n\n  // Internal attribute for the current click count\n  @prop(number({ min: 0 })) accessor #count = this.value;\n\n  // Component's render logic, boilt with preact\n  #render() {\n    render(\n      <>\n        <button onClick={() => this.#count++}>+1</button>\n        Total: <b>{this.#count}</b>\n      </>,\n      this,\n    );\n  }\n}",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 18,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 18,
+        "toLine": 18,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  },
+  {
+    "code": "import { define, attr, prop, number, connected } from \"@sirpepe/ornament\";\nimport { Fragment, h, render } from \"preact\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public content attribute for the initial value\n  @attr(number({ min: 0 })) accessor value = 0;\n\n  // Internal attribute for the current click count\n  @prop(number({ min: 0 })) accessor #count = this.value;\n\n  // Component's render logic, boilt with preact\n  @connected() // run method when the component connects\n  #render() {\n    render(\n      <>\n        <button onClick={() => this.#count++}>+1</button>\n        Total: <b>{this.#count}</b>\n      </>,\n      this,\n    );\n  }\n}\n",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 1,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "GUTTER",
+        "line": 14,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "TEXT",
+        "from": 37,
+        "to": 46,
+        "data": {
+          "className": ""
+        }
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 14,
+        "toLine": 14,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  },
+  {
+    "code": "import { define, attr, prop, number, reactive, connected } from \"@sirpepe/ornament\";\nimport { Fragment, h, render } from \"preact\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public content attribute for the initial value\n  @attr(number({ min: 0 })) accessor value = 0;\n\n  // Internal attribute for the current click count\n  @prop(number({ min: 0 })) accessor #count = this.value;\n\n  // Component's render logic, boilt with preact\n  @connected() // run method when the component connects\n  @reactive() // run method when attributes change\n  #render() {\n    render(\n      <>\n        <button onClick={() => this.#count++}>+1</button>\n        Total: <b>{this.#count}</b>\n      </>,\n      this,\n    );\n  }\n}",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 15,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "GUTTER",
+        "line": 1,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "TEXT",
+        "from": 37,
+        "to": 45,
+        "data": {
+          "className": ""
+        }
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 15,
+        "toLine": 15,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  },
+  {
+    "code": "import { define, attr, prop, number, reactive, connected } from \"@sirpepe/ornament\";\nimport { Fragment, h, render } from \"preact\";\n\n// Register the class a a custom HTML tag\n@define(\"click-counter\")\nclass ClickCounter extends HTMLElement {\n  // Public content attribute for the initial value\n  @attr(number({ min: 0 })) accessor value = 0;\n\n  // Internal attribute for the current click count\n  @prop(number({ min: 0 })) accessor #count = this.value;\n\n  // Component's render logic, boilt with preact\n  @connected() // run method when the component connects\n  @reactive({ keys: [\"#count\"] }) // run method when this.#count changes\n  #render() {\n    render(\n      <>\n        <button onClick={() => this.#count++}>+1</button>\n        Total: <b>{this.#count}</b>\n      </>,\n      this,\n    );\n  }\n}",
+    "decorations": [
+      {
+        "kind": "GUTTER",
+        "line": 15,
+        "text": "➡️",
+        "data": {}
+      },
+      {
+        "kind": "LINE",
+        "fromLine": 15,
+        "toLine": 15,
+        "data": {
+          "className": ""
+        }
+      }
+    ]
+  }
+]
